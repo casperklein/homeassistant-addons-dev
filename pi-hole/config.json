@@ -5,7 +5,7 @@
   "description": "Network-wide ad blocking",
   "url": "https://github.com/casperklein/hassio-addons/tree/master/pi-hole",
   "image": "casperklein/pi-hole",
-  "arch": ["aarch64", "amd64", "armhf", "armv7",
+  "arch": ["aarch64", "amd64", "armhf", "armv7"],
   "webui": "[PROTO:ssl]://[HOST]:[PORT:4865]",
   "ingress": true,
   "ingress_port": 61478,

@@ -2,4 +2,4 @@
 
 ## Installation:
 
-Add [this](https://github.com/casperklein/hassio-addons-dev) repository to your Home Assistant instance.
+Add [this](https://github.com/casperklein/homeassistant-addons-dev) repository to your Home Assistant instance.

@@ -1,5 +1,5 @@
 {
-  "name": "Pi-hole",
+  "name": "Pi-hole (deprecated)",
   "version": "4.1.2",
   "slug": "pi-hole",
   "description": "Network-wide ad blocking",

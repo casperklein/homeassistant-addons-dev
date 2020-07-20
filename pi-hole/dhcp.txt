@@ -1,0 +1,7 @@
+config.json
+	"privileged": ["NET_ADMIN"],
+	"host_network": true
+
+https://github.com/pi-hole/docker-pi-hole/issues/495
+
+Set ENV ServerIP to fix, however then pi-hole does not respond to DNS querys --> HA specific, does not happen with pure docker on test maschine.

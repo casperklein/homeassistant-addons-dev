@@ -1,7 +1,7 @@
 {
-  "name": "Pi-hole",
-  "version": "5.1.1",
-  "slug": "pihole-dev",
+  "name": "Pi-hole-dev",
+  "version": "5.2.1",
+  "slug": "piholedev",
   "description": "Network-wide Ad Blocking",
   "url": "https://github.com/casperklein/homeassistant-addons/tree/master/pi-hole",
   "image": "casperklein/homeassistant-pihole-dev",
@@ -23,6 +23,7 @@
     "80/tcp": "UNPROTECTED web UI (not required for Ingress)"
   },
   "boot": "auto",
+  "timeout": 60,
   "options": {},
   "schema": {},
   "init": false

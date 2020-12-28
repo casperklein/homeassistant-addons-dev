@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.3.4.1
+
+- [Fix chmod/chown error on addon start](https://github.com/pi-hole/docker-pi-hole/pull/676)
+
+## 5.3.4
+
+- [Pi-hole 5.2.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.2)
+- [AdminLTE 5.2.2](https://github.com/pi-hole/AdminLTE/releases/tag/v5.2.2)
+- [FTL 5.3.4](https://github.com/pi-hole/FTL/releases/tag/v5.3.4)
+
+## 5.2.2
+
+- [Pi-hole 5.2.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.2)
+- [Changes to DNS settings are no longer lost on add-on restart](https://github.com/pi-hole/docker-pi-hole/pull/721)
+
 ## 5.2.1
 
 - Pi-hole 5.2.1

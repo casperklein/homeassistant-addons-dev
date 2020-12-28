@@ -28,7 +28,9 @@
 	  "dnscrypt": []
   },
   "schema": {
-	  "dnscrypt": ["str"]
+	  "dnscrypt": [
+		  { "name": ["str"], "stamp": ["str"] }
+	  ]
   },
   "init": false
 }

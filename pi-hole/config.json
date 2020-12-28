@@ -25,10 +25,10 @@
   "boot": "auto",
   "timeout": 60,
   "options": {
-	  "dnscrypt-proxy": []
+	  "dnscrypt": []
   },
   "schema": {
-	  "dnscrypt-proxy": ["str"]
+	  "dnscrypt": ["str"]
   },
   "init": false
 }

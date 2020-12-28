@@ -25,18 +25,7 @@
   "boot": "auto",
   "timeout": 60,
   "options": {
-	  "dnscrypt": [
-		  {
-			  "name": "1.1.1.1",
-			  "stamp": "sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"
-		  }
-	  ],
-  "logins": [
-    { "username": "beer", "password": "123456" },
-    { "username": "cheep", "password": "654321" }
-  ]
-
-	  
+	  "dnscrypt": []
   },
   "schema": {
 	  "dnscrypt": [
@@ -44,10 +33,7 @@
 			  "name": "str",
 			  "stamp": "str"
 		  }
-	  ],
-  "logins": [
-    { "username": "str", "password": "str" }
-  ]
+	  ]
   },
   "init": false
 }

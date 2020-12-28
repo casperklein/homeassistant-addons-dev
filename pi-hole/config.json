@@ -25,11 +25,14 @@
   "boot": "auto",
   "timeout": 60,
   "options": {
-	  "dnscrypt": []
+	  "dnscrypt": [
+		  "name": null,
+		  "stamp": null
+	  ]
   },
   "schema": {
 	  "dnscrypt": [
-		  { "name": ["str"], "stamp": ["str"] }
+		  { "name": "str", "stamp": "str" }
 	  ]
   },
   "init": false

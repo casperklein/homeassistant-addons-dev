@@ -5,6 +5,7 @@ set -ueo pipefail
 OPTIONS="/data/options.json"
 CONFIG="/dnscrypt-proxy.toml"
 SERVICE="/var/run/s6/services/dnscrypt-proxy"
+PH_CONFIG="/data/pihole/setupVars.conf"
 
 # ugly hack. NAME is inherited from image. FIXME
 unset NAME
@@ -41,6 +42,16 @@ if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
 		done
 	} >> "$CONFIG"
 
+	# Check for other configured DNS servers
+	if grep -qF 'PIHOLE_DNS_2' "$PH_CONFIG"; then
+		echo "WARNING: 127.0.0.1#5353 is not the only configured DNS server"
+	fi
+
+	# Check if DNSSEC is enabled
+	if ! grep -qF 'DNSSEC=false' "$PH_CONFIG"; then
+		echo "WARNING: DNSSEC is configured. DNS resolution will NOT work until this is fixed."
+	fi
+
 	# Start dnscrypt-proxy
 	echo "INFO: Starting dnscrypt-proxy."
 	/dnscrypt-proxy
@@ -49,4 +60,8 @@ else
 	s6-svc -O "$SERVICE"
 	echo "INFO: No DNSCrypt/DOH settings found in configuration."
 	echo "INFO: NOT starting dnscrypt-proxy."
+
+	if ! grep -qP 'PIHOLE_DNS_[0-9]+=127\.0\.0\.1#5353' "$PH_CONFIG"; then
+		echo "WARNING: Custom DNS server 127.0.0.1#5353 is configured. DNS resolution will NOT work until dnscrypt-proxy is configured in the addon configuration."
+	fi
 fi

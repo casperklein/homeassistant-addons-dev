@@ -33,6 +33,8 @@ In Pi-hole the following **must** be configured:
 - Disable all previous configured DNS servers
 - Disable DNSSEC validation. This is now handled by dnscrypt-proxy.
 
+To test your setup, visit https://1.1.1.1/help. If you see "Using DNS over HTTPS (DoH): yes", all should be fine :)
+
 ## Not implemented
 
 - DHCP server (https://github.com/pi-hole/docker-pi-hole/issues/495)

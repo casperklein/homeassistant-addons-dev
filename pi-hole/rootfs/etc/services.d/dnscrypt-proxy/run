@@ -12,35 +12,38 @@ unset NAME
 
 # Check if there are dnscrypt settings
 if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
-	# Read settings
-	while read -r SERVER; do
-		# {"name":"cloud1","stamp":"sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"}
-		NAME+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f4)")
-		STAMP+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f8)")
-	done < <(jq -r '.dnscrypt[] | @base64' "$OPTIONS")
+	# Only create configuration on first run, in case dnscrypt-proxy crashed and is restarted by s6.
+	if ! grep -qF 'server_names' "$CONFIG"; then
+		# Read settings
+		while read -r SERVER; do
+			# {"name":"cloud1","stamp":"sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"}
+			NAME+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f4)")
+			STAMP+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f8)")
+		done < <(jq -r '.dnscrypt[] | @base64' "$OPTIONS")
 
-	# Create custom dnscrypt-proxy configuration
-	{
-		FIRST=true
-		echo -n 'server_names = ['
-		for i in "${NAME[@]}"; do
-			if [ "$FIRST" = true ]; then
-				echo -n "'$i'"
-				FIRST=false
-			else
-				echo -n ",'$i'"
-			fi
-		done
-		echo ']'
-		echo "[static]"
-	} >> "$CONFIG"
+		# Create custom dnscrypt-proxy configuration
+		{
+			FIRST=true
+			echo -n 'server_names = ['
+			for i in "${NAME[@]}"; do
+				if [ "$FIRST" = true ]; then
+					echo -n "'$i'"
+					FIRST=false
+				else
+					echo -n ",'$i'"
+				fi
+			done
+			echo ']'
+			echo "[static]"
+		} >> "$CONFIG"
 
-	{
-		for i in "${!NAME[@]}"; do
-			echo "[static.'${NAME[$i]}']"
-			echo "stamp = '${STAMP[$i]}'"
-		done
-	} >> "$CONFIG"
+		{
+			for i in "${!NAME[@]}"; do
+				echo "[static.'${NAME[$i]}']"
+				echo "stamp = '${STAMP[$i]}'"
+			done
+		} >> "$CONFIG"
+	fi
 
 	# Check for other configured DNS servers
 	if grep -qF 'PIHOLE_DNS_2' "$PH_CONFIG"; then

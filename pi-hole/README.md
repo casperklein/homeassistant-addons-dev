@@ -31,7 +31,7 @@ In Pi-hole the following **must** be configured:
 
 - Custom DNS server: `127.0.0.1:5353`
 - Disable all previous configured DNS servers
-- Disable DNSSEC validation. This is now handled by `dnscrypt-proxy`.
+- Disable DNSSEC validation. This is now handled by dnscrypt-proxy.
 
 ## Not implemented
 

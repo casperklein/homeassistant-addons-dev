@@ -1,9 +1,2 @@
-server_names = ['cloudflare1','cloudflare2']
-listen_addresses = ['0.0.0.0:5053']
+listen_addresses = ['0.0.0.0:5353']
 cache = false
-
-[static]
-[static.'cloudflare1']
-stamp = 'sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5'
-[static.'cloudflare2']
-stamp = 'sdns://AgcAAAAAAAAABzEuMC4wLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5'

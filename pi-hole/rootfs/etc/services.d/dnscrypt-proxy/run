@@ -2,4 +2,51 @@
 
 set -ueo pipefail
 
-/dnscrypt-proxy
+OPTIONS="/data/options.json"
+CONFIG="/dnscrypt-proxy.toml"
+SERVICE="/var/run/s6/services/dnscrypt-proxy"
+
+# ugly hack. NAME is inherited from image. FIXME
+unset NAME
+
+# Check if there are dnscrypt settings
+if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
+	# Read settings
+	while read -r SERVER; do
+		# {"name":"cloud1","stamp":"sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"}
+		NAME+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f4)")
+		STAMP+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f8)")
+	done < <(jq -r '.dnscrypt[] | @base64' "$OPTIONS")
+
+	# Create custom dnscrypt-proxy configuration
+	{
+		FIRST=true
+		echo -n 'server_names = ['
+		for i in "${NAME[@]}"; do
+			if [ "$FIRST" = true ]; then
+				echo -n "'$i'"
+				FIRST=false
+			else
+				echo -n ",'$i'"
+			fi
+		done
+		echo ']'
+		echo "[static]"
+	} >> "$CONFIG"
+
+	{
+		for i in "${!NAME[@]}"; do
+			echo "[static.'${NAME[$i]}']"
+			echo "stamp = '${STAMP[$i]}'"
+		done
+	} >> "$CONFIG"
+
+	# Start dnscrypt-proxy
+	echo "INFO: Starting dnscrypt-proxy."
+	/dnscrypt-proxy
+else
+	# Disable s6 service
+	s6-svc -O "$SERVICE"
+	echo "INFO: No DNSCrypt/DOH settings found in configuration."
+	echo "INFO: NOT starting dnscrypt-proxy."
+fi

@@ -6,7 +6,7 @@ ENV	NAME="homeassistant-pihole-dev"
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Update base image packages
-RUN	apt-get update && apt-get -y upgrade && rm -rf /var/lib/apt/lists/*
+RUN	apt-get update && apt-get -y upgrade && apt-get -y install jq && rm -rf /var/lib/apt/lists/*
 
 # Copy root filesystem
 COPY	rootfs /
@@ -19,7 +19,7 @@ RUN	sed -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.conf*
 ;	sed -i 's/^expire.url/#expire.url/g'	/etc/.pihole/advanced/lighttpd.conf*
 
 # Fix chmod/chown errors on startup
-# Not yet merged PR 676
+# PR 676: Not yet merged in upstream
 # https://github.com/pi-hole/docker-pi-hole/pull/676
 RUN	apt-get update \
 ;	apt-get -y install patch \
@@ -35,17 +35,13 @@ RUN	wget -qO- 'https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.
 #RUN	echo | pihole -a -p
 
 # For network host mode, ServerIP have to be set --> https://github.com/pi-hole/docker-pi-hole/issues/495
+# Already fixed upstream. Below should not be neccesary when implementing network host mode at some time.
 #RUN	echo 'ServerIP=$(ip route get 1.1.1.1 | cut -d" " -f7)' >> /bash_functions.sh
-
-# https://github.com/pi-hole/docker-pi-hole/issues/505
-# Custom Pi-hole upstream DNS server
-#ENV	DNS1="1.1.1.1"
-#ENV	DNS2="8.8.8.8"
 
 FROM	scratch
 
 ARG	BUILD_ARCH
-ENV	VERSION="5.3.4.1"
+ENV	VERSION="5.3.4.2"
 LABEL	io.hass.name="Pi-hole-dev"
 LABEL	io.hass.description="Network-wide Ad Blocking"
 LABEL	io.hass.arch="${BUILD_ARCH}"

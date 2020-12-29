@@ -56,7 +56,7 @@ if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
 	fi
 
 	# Check if DNSSEC is enabled
-	if ! grep -qF 'DNSSEC=false' "$PH_CONFIG"; then
+	if grep -qF 'DNSSEC=true' "$PH_CONFIG"; then
 		echo "WARNING: DNSSEC is configured. DNS resolution will NOT work until this is fixed."
 	fi
 
@@ -69,6 +69,7 @@ else
 	echo "INFO: No DNSCrypt/DOH settings found in configuration."
 	echo "INFO: NOT starting dnscrypt-proxy."
 
+	# Check if custom DNS server is configured
 	if grep -qP 'PIHOLE_DNS_[0-9]+=127\.0\.0\.1#5353' "$PH_CONFIG"; then
 		echo "WARNING: Custom DNS server 127.0.0.1#5353 is configured. DNS resolution will NOT work until dnscrypt-proxy is configured in the addon configuration."
 	fi

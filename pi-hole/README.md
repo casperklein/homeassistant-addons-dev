@@ -29,9 +29,9 @@ DNS stamps contain all the parameters required to connect to a secure DNS server
 
 In Pi-hole the following **must** be configured:
 
-- Custom DNS server: `127.0.0.1:5353`
-- Disable all previous configured DNS servers
-- Disable DNSSEC validation. This is now handled by dnscrypt-proxy.
+- Custom DNS server: `127.0.0.1#5353`
+- Disable all other configured DNS servers
+- Disable DNSSEC validation. This will be handled by dnscrypt-proxy.
 
 To test your setup, visit https://1.1.1.1/help. If you see "Using DNS over HTTPS (DoH): yes", all should be fine :)
 

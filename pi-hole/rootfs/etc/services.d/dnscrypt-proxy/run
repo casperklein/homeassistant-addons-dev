@@ -7,9 +7,6 @@ CONFIG="/dnscrypt-proxy.toml"
 SERVICE="/var/run/s6/services/dnscrypt-proxy"
 PH_CONFIG="/data/pihole/setupVars.conf"
 
-# ugly hack. NAME is inherited from image. FIXME
-unset NAME
-
 # Check if there are dnscrypt settings
 if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
 	# Only create configuration on first run, in case dnscrypt-proxy crashed and is restarted by s6.

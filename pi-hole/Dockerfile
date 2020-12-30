@@ -3,13 +3,15 @@ FROM	pihole/pihole:v5.3.4 as build
 ENV	USER="casperklein"
 ENV	NAME="homeassistant-pihole-dev"
 
+ENV	DNSCRYPT="2.0.44"
+
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
-# Update base image packages
-RUN	apt-get update && apt-get -y upgrade && apt-get -y install jq && rm -rf /var/lib/apt/lists/*
-
-# Copy root filesystem
-COPY	rootfs /
+# Update base image packages, install jq and cleanup
+RUN	apt-get update && apt-get -y upgrade \
+&&	apt-get -y install	jq \
+				patch \
+&&	rm -rf /var/lib/apt/lists/*
 
 # Disable x-frame-options for Home Assistant Ingress
 RUN	sed -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/lighttpd.conf*
@@ -18,18 +20,19 @@ RUN	sed -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/light
 RUN	sed -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.conf* \
 ;	sed -i 's/^expire.url/#expire.url/g'	/etc/.pihole/advanced/lighttpd.conf*
 
+# Copy root filesystem
+COPY	rootfs /
+
 # Fix chmod/chown errors on startup
 # PR 676: Not yet merged in upstream
 # https://github.com/pi-hole/docker-pi-hole/pull/676
-RUN	apt-get update \
-;	apt-get -y install patch \
-;	wget https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pull/676.diff \
+RUN	wget https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pull/676.diff \
 ;	patch -i 676.diff bash_functions.sh \
 ;	apt-get -y purge patch \
-;	rm 676.diff \
-;	rm -rf /var/lib/apt/lists/*
+;	rm 676.diff
 
-RUN	wget -qO- 'https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.44/dnscrypt-proxy-linux_arm64-2.0.44.tar.gz' | tar --strip-component 1 -x linux-arm64/dnscrypt-proxy -z
+# Install dnscrypt
+RUN	wget -qO- "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/$DNSCRYPT/dnscrypt-proxy-linux_arm64-$DNSCRYPT.tar.gz" | tar --strip-component 1 -x linux-arm64/dnscrypt-proxy -z
 
 # Unset Pi-hole password for Home Assistant Ingress
 #RUN	echo | pihole -a -p
@@ -66,7 +69,7 @@ ENV	S6_KEEP_ENV 1
 ENV	S6_LOGGING 0
 ENV	S6OVERLAY_RELEASE https://github.com/just-containers/s6-overlay/releases/download/v1.22.1.0/s6-overlay-amd64.tar.gz
 ENV	ServerIP 0.0.0.0
-ENV	VERSION v5.1.2
+ENV	VERSION v5.3.4
 EXPOSE	443
 EXPOSE	53 53/udp
 EXPOSE	67/udp

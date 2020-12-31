@@ -31,9 +31,6 @@ RUN	wget https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pul
 ;	apt-get -y purge patch \
 ;	rm 676.diff
 
-# Install dnscrypt
-RUN	wget -qO- "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/$DNSCRYPT/dnscrypt-proxy-linux_arm64-$DNSCRYPT.tar.gz" | tar --strip-component 1 -x linux-arm64/dnscrypt-proxy -z
-
 # Unset Pi-hole password for Home Assistant Ingress
 #RUN	echo | pihole -a -p
 
@@ -41,6 +38,29 @@ RUN	wget -qO- "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/$DNS
 # Already fixed upstream. Below should not be neccesary when implementing network host mode at some time.
 #RUN	echo 'ServerIP=$(ip route get 1.1.1.1 | cut -d" " -f7)' >> /bash_functions.sh
 
+####################################################################################################
+# Install dnscrypt 2.0.44 @ 2020-06-11
+#RUN	wget -qO- "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/$DNSCRYPT/dnscrypt-proxy-linux_arm64-$DNSCRYPT.tar.gz" | tar --strip-component 1 -x linux-arm64/dnscrypt-proxy -z
+
+# Build dnscrypt from source 2020-12-26
+FROM	ubuntu:20.04 as dnscrypt
+
+ENV	GIT_USER="dnscrypt"
+ENV	GIT_REPO="dnscrypt-proxy"
+ENV	GIT_COMMIT="254a4a653297d8d16d13f5e8d9a0c574f230467d"
+ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
+ENV	DEBIAN_FRONTEND=noninteractive
+
+RUN	apt-get update && apt-get -y upgrade && apt-get -y install golang
+
+WORKDIR	/$GIT_REPO
+ADD	$GIT_ARCHIVE /
+RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
+WORKDIR	dnscrypt-proxy
+RUN	go build -ldflags="-s -w" -mod vendor
+####################################################################################################
+
+# Build final image
 FROM	scratch
 
 ARG	BUILD_ARCH
@@ -76,4 +96,5 @@ EXPOSE	67/udp
 EXPOSE	80
 HEALTHCHECK CMD dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
 
+COPY	--from=dnscrypt /dnscrypt-proxy/dnscrypt-proxy/dnscrypt-proxy /
 COPY	--from=build / /

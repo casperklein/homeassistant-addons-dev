@@ -51,7 +51,7 @@ ENV	GIT_COMMIT="254a4a653297d8d16d13f5e8d9a0c574f230467d"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 ENV	DEBIAN_FRONTEND=noninteractive
 
-RUN	apt-get update && apt-get -y upgrade && apt-get -y install golang
+RUN	apt-get update && apt-get -y upgrade && apt-get -y --no-install-recommends install golang
 
 WORKDIR	/$GIT_REPO
 ADD	$GIT_ARCHIVE /

@@ -3,7 +3,7 @@ FROM	pihole/pihole:v5.3.4 as build
 ENV	USER="casperklein"
 ENV	NAME="homeassistant-pihole-dev"
 
-ENV	DNSCRYPT="2.0.44"
+#ENV	DNSCRYPT="2.0.44"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -47,7 +47,7 @@ FROM	ubuntu:20.04 as dnscrypt
 
 ENV	GIT_USER="dnscrypt"
 ENV	GIT_REPO="dnscrypt-proxy"
-ENV	GIT_COMMIT="254a4a653297d8d16d13f5e8d9a0c574f230467d"
+ENV	GIT_COMMIT="e519dd17bc0574ed4e8939f00547dc457ed698e2"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 ENV	DEBIAN_FRONTEND=noninteractive
 

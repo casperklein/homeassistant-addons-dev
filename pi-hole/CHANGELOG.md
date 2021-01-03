@@ -2,7 +2,7 @@
 
 ## 5.3.4.2
 
-- [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) added. DNSCrypt and DNS over HTTPS (DOH) can now be used with Pi-hole. See README for more information.
+- [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) added. DNSCrypt and DNS over HTTPS (DoH) can now be used with Pi-hole. See README for more information.
 
 ## 5.3.4.1
 

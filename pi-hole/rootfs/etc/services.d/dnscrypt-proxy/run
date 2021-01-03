@@ -44,7 +44,7 @@ if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
 
 	# Check if custom DNS server is properly configured
 	if ! grep -qP 'PIHOLE_DNS_[0-9]+=127\.0\.0\.1#5353' "$PH_CONFIG"; then
-		echo "WARNING: Custom DNS server 127.0.0.1#5353 is NOT configured. DNSCrypt/DOH name resolution will NOT work until this is fixed."
+		echo "WARNING: Custom DNS server 127.0.0.1#5353 is NOT configured. DNSCrypt/DoH name resolution will NOT work until this is fixed."
 	fi
 
 	# Check for other configured DNS servers
@@ -63,7 +63,7 @@ if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
 else
 	# Disable s6 service
 	s6-svc -O "$SERVICE"
-	echo "INFO: No DNSCrypt/DOH settings found in configuration."
+	echo "INFO: No DNSCrypt/DoH settings found in configuration."
 	echo "INFO: NOT starting dnscrypt-proxy."
 
 	# Check if custom DNS server is configured

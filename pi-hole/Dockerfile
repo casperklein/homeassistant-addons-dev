@@ -42,12 +42,12 @@ RUN	wget https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pul
 # Install dnscrypt 2.0.44 @ 2020-06-11
 #RUN	wget -qO- "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/$DNSCRYPT/dnscrypt-proxy-linux_arm64-$DNSCRYPT.tar.gz" | tar --strip-component 1 -x linux-arm64/dnscrypt-proxy -z
 
-# Build dnscrypt from source 2020-12-26
+# Build dnscrypt from source
 FROM	ubuntu:20.04 as dnscrypt
 
 ENV	GIT_USER="dnscrypt"
 ENV	GIT_REPO="dnscrypt-proxy"
-ENV	GIT_COMMIT="e519dd17bc0574ed4e8939f00547dc457ed698e2"
+ENV	GIT_COMMIT="2.0.45"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 ENV	DEBIAN_FRONTEND=noninteractive
 

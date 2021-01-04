@@ -1,9 +1,8 @@
-FROM	pihole/pihole:v5.3.4 as build
+# Customzie upstream image #########################################################################
+FROM	pihole/pihole:v5.3.4 as pihole
 
 ENV	USER="casperklein"
 ENV	NAME="homeassistant-pihole-dev"
-
-#ENV	DNSCRYPT="2.0.44"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -31,18 +30,11 @@ RUN	wget https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pul
 ;	apt-get -y purge patch \
 ;	rm 676.diff
 
-# Unset Pi-hole password for Home Assistant Ingress
-#RUN	echo | pihole -a -p
-
 # For network host mode, ServerIP have to be set --> https://github.com/pi-hole/docker-pi-hole/issues/495
 # Already fixed upstream. Below should not be neccesary when implementing network host mode at some time.
 #RUN	echo 'ServerIP=$(ip route get 1.1.1.1 | cut -d" " -f7)' >> /bash_functions.sh
 
-####################################################################################################
-# Install dnscrypt 2.0.44 @ 2020-06-11
-#RUN	wget -qO- "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/$DNSCRYPT/dnscrypt-proxy-linux_arm64-$DNSCRYPT.tar.gz" | tar --strip-component 1 -x linux-arm64/dnscrypt-proxy -z
-
-# Build dnscrypt from source
+# Build dnscrypt-proxy from source #################################################################
 FROM	ubuntu:20.04 as dnscrypt
 
 ENV	GIT_USER="dnscrypt"
@@ -60,7 +52,7 @@ WORKDIR	dnscrypt-proxy
 RUN	go build -ldflags="-s -w" -mod vendor
 ####################################################################################################
 
-# Build final image
+# Build final image ################################################################################
 FROM	scratch
 
 ARG	BUILD_ARCH
@@ -97,4 +89,4 @@ EXPOSE	80
 HEALTHCHECK CMD dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
 
 COPY	--from=dnscrypt /dnscrypt-proxy/dnscrypt-proxy/dnscrypt-proxy /
-COPY	--from=build / /
+COPY	--from=pihole / /

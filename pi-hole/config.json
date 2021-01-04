@@ -12,6 +12,8 @@
   "ingress_entry": "/admin/",
   "panel_icon": "mdi:pi-hole",
   "startup": "system",
+  "privileged": ["NET_ADMIN"],
+  "host_network": true,
   "ports": {
     "53/tcp": 53,
     "53/udp": 53,

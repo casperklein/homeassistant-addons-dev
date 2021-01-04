@@ -19,6 +19,9 @@ RUN	sed -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/light
 RUN	sed -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.conf* \
 ;	sed -i 's/^expire.url/#expire.url/g'	/etc/.pihole/advanced/lighttpd.conf*
 
+# Network hostmode -> change port FIXME
+RUN	sed -i '/^server.port/ s/80/8053/'		/etc/.pihole/advanced/lighttpd.conf*
+
 # Copy root filesystem
 COPY	rootfs /
 

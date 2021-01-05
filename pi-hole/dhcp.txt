@@ -2,6 +2,14 @@ config.json
 	"privileged": ["NET_ADMIN"],
 	"host_network": true
 
-https://github.com/pi-hole/docker-pi-hole/issues/495
+Dockerfile
+# Network hostmode -> change port to avoid conflict with ycast
+RUN	sed -i '/^server.port/ s/80/8053/'	/etc/.pihole/advanced/lighttpd.conf*
 
-Set ENV ServerIP to fix, however then pi-hole does not respond to DNS querys --> HA specific, does not happen with pure docker on test maschine.
+# For network host mode, ServerIP have to be set --> https://github.com/pi-hole/docker-pi-hole/issues/495
+# Already fixed upstream. Below should not be neccesary when implementing network host mode at some time.
+#RUN    echo 'ServerIP=$(ip route get 1.1.1.1 | cut -d" " -f7)' >> /bash_functions.sh
+
+
+
+If host_network is set, pi-hole does not respond to DNS querys --> HA specific, does not happen with pure docker on test maschine.

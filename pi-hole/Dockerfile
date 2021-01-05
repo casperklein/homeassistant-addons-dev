@@ -19,9 +19,6 @@ RUN	sed -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/light
 RUN	sed -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.conf* \
 ;	sed -i 's/^expire.url/#expire.url/g'	/etc/.pihole/advanced/lighttpd.conf*
 
-# Network hostmode -> change port FIXME
-# RUN	sed -i '/^server.port/ s/80/8053/'		/etc/.pihole/advanced/lighttpd.conf*
-
 # Copy root filesystem
 COPY	rootfs /
 
@@ -32,10 +29,6 @@ RUN	wget https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pul
 ;	patch -i 676.diff bash_functions.sh \
 ;	apt-get -y purge patch \
 ;	rm 676.diff
-
-# For network host mode, ServerIP have to be set --> https://github.com/pi-hole/docker-pi-hole/issues/495
-# Already fixed upstream. Below should not be neccesary when implementing network host mode at some time.
-#RUN	echo 'ServerIP=$(ip route get 1.1.1.1 | cut -d" " -f7)' >> /bash_functions.sh
 
 # Build dnscrypt-proxy from source #################################################################
 FROM	ubuntu:20.04 as dnscrypt

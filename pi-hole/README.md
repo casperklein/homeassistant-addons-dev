@@ -17,7 +17,7 @@
 
 ## How to use DNSCrypt or DNS over HTTPS (DoH) with Pi-hole:
 
-This is achived by using [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy). You have to configure one or more DNS server for use with dnscrypt-proxy. To use Cloudflare DNS for example, put this in the add-on configuration:
+This is achieved by using [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy). You have to configure one or more DNS server for use with dnscrypt-proxy. To use Cloudflare DNS for example, put this in the add-on configuration:
 
     dnscrypt:
       - name: "Cloudflare 1.1.1.1"

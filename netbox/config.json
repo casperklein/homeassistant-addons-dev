@@ -1,6 +1,6 @@
 {
   "name": "Netbox-dev",
-  "version": "2.10.4",
+  "version": "2.10.5",
   "slug": "netbox",
   "description": "NetBox is an open source web application designed to help manage and document computer networks",
   "url": "https://github.com/casperklein/homeassistant-addons/tree/master/netbox",
@@ -11,6 +11,7 @@
   "webui": "http://[HOST]:[PORT:80]/",
   "ingress": true,
   "ingress_port": 80,
+  "ingress_entry": "/",
   "options": {
         "user": "",
         "password": ""

@@ -76,6 +76,8 @@ EXPOSE	80
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
+RUN	sed -i "s;X_FRAME_OPTIONS = 'SAMEORIGIN';X_FRAME_OPTIONS = 'ALLOWALL';" /opt/netbox/netbox/netbox/settings.py
+
 CMD	["/run.sh"]
 
 COPY	--from=build / /

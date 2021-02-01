@@ -15,7 +15,7 @@ RUN	apt-get update \
 &&	apt-get -y install $PACKAGES
 
 # Download source
-WORKDIR /opt/netbox
+WORKDIR	/opt/netbox
 ADD	$GIT_ARCHIVE /
 RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 
@@ -38,7 +38,11 @@ RUN	/etc/init.d/redis-server start \
 &&	python3 manage.py migrate \
 &&	python3 manage.py collectstatic --no-input \
 &&	/etc/init.d/redis-server stop \
-&&	pg_ctlcluster 11 main stop
+&&	pg_ctlcluster 11 main stop \
+# Disable x-frame-options for Home Assistant Ingress
+&&	sed -i "s;X_FRAME_OPTIONS = 'SAMEORIGIN';X_FRAME_OPTIONS = 'ALLOWALL';" /opt/netbox/netbox/netbox/settings.py \
+# Let PostgreSQL listen on all interfaces
+&&	sed -i "s/#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
 
 # Cleanup
 RUN	apt-get -y purge $PACKAGES_CLEAN \
@@ -76,7 +80,6 @@ EXPOSE	80
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-RUN	sed -i "s;X_FRAME_OPTIONS = 'SAMEORIGIN';X_FRAME_OPTIONS = 'ALLOWALL';" /opt/netbox/netbox/netbox/settings.py
 
 CMD	["/run.sh"]
 

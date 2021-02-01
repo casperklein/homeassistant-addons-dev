@@ -9,9 +9,6 @@
   "startup": "application",
   "boot": "auto",
   "webui": "http://[HOST]:[PORT:80]/",
-  "ingress": true,
-  "ingress_port": 80,
-  "panel_icon": "mdi:cube-outline",
   "options": {
         "user": "",
         "password": ""

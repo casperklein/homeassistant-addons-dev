@@ -42,7 +42,8 @@ RUN	/etc/init.d/redis-server start \
 # Disable x-frame-options for Home Assistant Ingress
 &&	sed -i "s;X_FRAME_OPTIONS = 'SAMEORIGIN';X_FRAME_OPTIONS = 'ALLOWALL';" /opt/netbox/netbox/netbox/settings.py \
 # Let PostgreSQL listen on all interfaces
-&&	sed -i "s/#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
+&&	sed -i "s/#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf \
+&&	echo 'host all all 0.0.0.0/0 md5' >> /etc/postgresql/11/main/pg_hba.conf
 
 # Cleanup
 RUN	apt-get -y purge $PACKAGES_CLEAN \

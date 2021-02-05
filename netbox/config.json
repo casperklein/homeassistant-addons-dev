@@ -8,7 +8,7 @@
   "arch": ["amd64","aarch64"],
   "startup": "application",
   "boot": "auto",
-  "webui": "[PROTO:ssl]://[HOST]:[PORT:80]/",
+  "webui": "[PROTO:https]://[HOST]:[PORT:80]/",
   "map": ["ssl"],
   "options": {
         "user": "",

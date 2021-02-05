@@ -20,7 +20,7 @@
   "schema": {
         "user": "str",
         "password": "str",
-        "ssl": "bool",
+        "https": "bool",
 	"certfile": "str",
         "keyfile": "str"
   },

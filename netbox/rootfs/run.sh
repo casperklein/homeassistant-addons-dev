@@ -49,6 +49,9 @@ fi
 python3 /opt/netbox/netbox/manage.py migrate
 
 if [ "$HTTPS" = true ]; then
+	[ ! -f "/ssl/$CERT" ] && echo "Error: Certificate '$CERT' not found." >&2 && exit 1
+	[ ! -f "/ssl/$KEY" ] && echo "Error: Certificate '$KEY' not found." >&2 && exit 1
+
 	cat > /etc/stunnel/stunnel.conf <<-CONFIG
 	pid = /var/run/stunnel.pid
 	[https]
@@ -56,8 +59,10 @@ if [ "$HTTPS" = true ]; then
 	connect = 80
 	cert = /etc/stunnel/stunnel.pem
 	CONFIG
+
 	cat /ssl/"$CERT" /ssl/"$KEY" > /etc/stunnel/stunnel.pem
 	chmod 400 /etc/stunnel/stunnel.pem
+
 	/etc/init.d/stunnel4 start || {
 		echo "Error: Failed to start stunnel SSL encryption wrapper."
 		exit 1

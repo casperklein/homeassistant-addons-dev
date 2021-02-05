@@ -19,6 +19,11 @@ sed -i "s;^data_directory.*;data_directory = '/data/postgresql/11/main';" /etc/p
 USER=$(jq --raw-output '.user' /data/options.json)
 PASS=$(jq --raw-output '.password' /data/options.json)
 
+# Get HTTPS settings
+HTTPS=$(jq --raw-output '.https' /data/options.json)
+CERT=$(jq --raw-output '.certfile' /data/options.json)
+KEY=$(jq --raw-output '.keyfile' /data/options.json)
+
 MAIL=netbox@localhost
 
 # fix permissions after snapshot restore
@@ -27,12 +32,12 @@ chown -R postgres: /data/postgresql
 /etc/init.d/redis-server start || {
 	echo "Error: Failed to start redis-server"
 	exit 1
-}
+} >&2
 
 pg_ctlcluster 11 main start || {
 	echo "Error: Failed to start postgresql-server"
 	exit 1
-}
+} >&2
 
 # add netbox superuser
 if [ -n "$USER" ] && [ -n "$PASS" ]; then
@@ -42,6 +47,22 @@ fi
 
 # run database migrations
 python3 /opt/netbox/netbox/manage.py migrate
+
+if [ "$HTTPS" = true ]; then
+	cat > /etc/stunnel/stunnel.conf <<-CONFIG
+	pid = /var/run/stunnel.pid
+	[https]
+	accept  = 443
+	connect = 80
+	cert = /etc/stunnel/stunnel.pem
+	CONFIG
+	cat /ssl/"$CERT" /ssl/"$KEY" > /etc/stunnel/stunnel.pem
+	chmod 400 /etc/stunnel/stunnel.pem
+	/etc/init.d/stunnel4 start || {
+		echo "Error: Failed to start stunnel SSL encryption wrapper."
+		exit 1
+	} >&2
+fi
 
 # start netbox
 exec python3 /opt/netbox/netbox/manage.py runserver 0.0.0.0:80 --insecure

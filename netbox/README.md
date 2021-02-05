@@ -27,7 +27,10 @@ Example add-on configuration:
 
     {
       "user": "admin",
-      "password": "insecure"
+      "password": "insecure",
+      "https": true,
+      "certfile": "fullchain.pem",
+      "keyfile": "privatekey.pem"
     }
 
 **Note**: _This is just an example, don't copy and paste it! Create your own!_

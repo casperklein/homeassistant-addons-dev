@@ -1,6 +1,6 @@
 {
   "name": "Netbox-dev",
-  "version": "2.10.4.1",
+  "version": "2.10.4.2",
   "slug": "netbox",
   "description": "NetBox is an open source web application designed to help manage and document computer networks",
   "url": "https://github.com/casperklein/homeassistant-addons/tree/master/netbox",
@@ -8,14 +8,21 @@
   "arch": ["amd64","aarch64"],
   "startup": "application",
   "boot": "auto",
-  "webui": "http://[HOST]:[PORT:80]/",
+  "webui": "[PROTO:ssl]://[HOST]:[PORT:80]/",
+  "map": ["ssl"],
   "options": {
         "user": "",
-        "password": ""
+        "password": "",
+	"https": false,
+	"certfile": "fullchain.pem",
+	"keyfile": "privatekey.pem"
   },
   "schema": {
         "user": "str",
-        "password": "str"
+        "password": "str",
+        "ssl": "bool",
+	"certfile": "str",
+        "keyfile": "str"
   },
   "ports": {
         "80/tcp": 5580,

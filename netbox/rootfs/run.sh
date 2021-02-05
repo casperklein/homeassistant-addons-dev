@@ -56,7 +56,7 @@ if [ "$HTTPS" = true ]; then
 	pid = /var/run/stunnel.pid
 	[https]
 	accept  = 443
-	connect = 80
+	connect = 444
 	cert = /etc/stunnel/stunnel.pem
 	CONFIG
 
@@ -70,4 +70,8 @@ if [ "$HTTPS" = true ]; then
 fi
 
 # start netbox
-exec python3 /opt/netbox/netbox/manage.py runserver 0.0.0.0:80 --insecure
+if [ "$HTTPS" = true ]; then
+	exec python3 /opt/netbox/netbox/manage.py runserver 0.0.0.0:444 --insecure
+else
+	exec python3 /opt/netbox/netbox/manage.py runserver 0.0.0.0:80 --insecure
+fi

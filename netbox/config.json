@@ -26,10 +26,12 @@
   },
   "ports": {
         "80/tcp": 5580,
+	"443/tcp": 5581,
 	"5432/tcp": null
   },
   "ports_description": {
-	  "80/tcp": "Netbox WebGUI",
+	  "80/tcp": "Netbox WebGUI (HTTP)",
+	  "443/tcp": "Netbox WebGUI (HTTPS)",
 	  "5432/tcp": "PostgreSQL"
   },
   "init": false,

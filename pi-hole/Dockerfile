@@ -1,8 +1,5 @@
 # Customzie upstream image #########################################################################
-FROM	pihole/pihole:v5.3.4 as pihole
-
-ENV	USER="casperklein"
-ENV	NAME="homeassistant-pihole-dev"
+FROM	pihole/pihole:v5.6 as pihole
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -46,13 +43,22 @@ ADD	$GIT_ARCHIVE /
 RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 WORKDIR	dnscrypt-proxy
 RUN	go build -ldflags="-s -w" -mod vendor
-####################################################################################################
+
+# Check if build args are not empty ################################################################
+FROM	bash:latest
+
+ARG	BUILD_ARCH
+ARG	VERSION
+
+RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
+RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
 # Build final image ################################################################################
 FROM	scratch
 
 ARG	BUILD_ARCH
-ENV	VERSION="5.3.4.2"
+ARG	VERSION
+
 LABEL	io.hass.name="Pi-hole-dev"
 LABEL	io.hass.description="Network-wide Ad Blocking"
 LABEL	io.hass.arch="${BUILD_ARCH}"
@@ -61,7 +67,7 @@ LABEL	io.hass.version="${VERSION}"
 
 LABEL	image="casperklein/homeassistant-pihole:${VERSION}"
 LABEL	maintainer="Casper Klein"
-LABEL	url="https://github.com/casperklein/homeassistant-addons/tree/master/pi-hole"
+LABEL	url="https://github.com/casperklein/homeassistant-addons/tree/master/pi-hole-dev"
 
 # From base image
 ENTRYPOINT [ "/s6-init" ]
@@ -75,12 +81,11 @@ ENV	PIHOLE_INSTALL /root/ph_install.sh
 ENV	S6_BEHAVIOUR_IF_STAGE2_FAILS 2
 ENV	S6_KEEP_ENV 1
 ENV	S6_LOGGING 0
-ENV	S6OVERLAY_RELEASE https://github.com/just-containers/s6-overlay/releases/download/v1.22.1.0/s6-overlay-amd64.tar.gz
 ENV	ServerIP 0.0.0.0
-ENV	VERSION v5.3.4
-EXPOSE	443
+ENV	VERSION v5.2.4
+#EXPOSE	443
 EXPOSE	53 53/udp
-EXPOSE	67/udp
+#EXPOSE	67/udp
 EXPOSE	80
 HEALTHCHECK CMD dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
 

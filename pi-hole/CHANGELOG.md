@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.6
+
+- [FTL 5.6](https://github.com/pi-hole/FTL/releases/tag/v5.6) [Blog](https://pi-hole.net/2021/01/27/pi-hole-ftl-v5-6-released/#page-content)
+- [#771](https://github.com/pi-hole/docker-pi-hole/pull/771) Skip full distro check on start
+
+## 5.5.1 - Security Update for FTL
+
+- [Pi-hole 5.2.4](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.4)
+- [AdminLTE 5.3.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.3.1)
+- [FTL 5.5.1](https://github.com/pi-hole/FTL/releases/tag/v5.5.1)
+
+## 5.4.0
+
+- [Pi-hole 5.2.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.3)
+- [AdminLTE 5.3](https://github.com/pi-hole/AdminLTE/releases/tag/v5.3)
+- [FTL 5.4](https://github.com/pi-hole/FTL/releases/tag/v5.4)
+
 ## 5.3.4.2
 
 - [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) added. DNSCrypt and DNS over HTTPS (DoH) can now be used with Pi-hole. See README for more information.

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ue
+set -ueo pipefail
 
 if [ ! -d /data/postgresql ]; then
 	# Migrate DB to persistant storage
@@ -10,7 +10,7 @@ if [ ! -d /data/postgresql ]; then
 
 	# Override secret key from image
 	echo "Generating new secret key.."
-	KEY=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 50)
+	KEY=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 50 || true)
 	sed -i "s/^SECRET_KEY.*/SECRET_KEY = '$KEY'/" /opt/netbox/netbox/netbox/configuration.py
 fi
 

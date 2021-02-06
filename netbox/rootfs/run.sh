@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ueo pipefail
+
 if [ ! -d /data/postgresql ]; then
 	# Migrate DB to persistant storage
 	echo "Migrating DB.."
@@ -50,7 +52,7 @@ python3 /opt/netbox/netbox/manage.py migrate
 
 if [ "$HTTPS" = true ]; then
 	[ ! -f "/ssl/$CERT" ] && echo "Error: Certificate '$CERT' not found." >&2 && exit 1
-	[ ! -f "/ssl/$KEY" ] && echo "Error: Certificate '$KEY' not found." >&2 && exit 1
+	[ ! -f "/ssl/$KEY" ] && echo "Error: Certificate key '$KEY' not found." >&2 && exit 1
 
 	cat > /etc/stunnel/stunnel.conf <<-CONFIG
 	pid = /var/run/stunnel.pid
@@ -60,7 +62,7 @@ if [ "$HTTPS" = true ]; then
 	cert = /etc/stunnel/stunnel.pem
 	CONFIG
 
-	cat /ssl/"$CERT" /ssl/"$KEY" > /etc/stunnel/stunnel.pem
+	cat /ssl/{"$CERT","$KEY"} > /etc/stunnel/stunnel.pem
 	chmod 400 /etc/stunnel/stunnel.pem
 
 	/etc/init.d/stunnel4 start || {

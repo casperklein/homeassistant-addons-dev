@@ -7,6 +7,7 @@ SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 RUN	apt-get update && apt-get -y upgrade \
 &&	apt-get -y install	jq \
 				patch \
+				stunnel4 \
 &&	rm -rf /var/lib/apt/lists/*
 
 # Disable x-frame-options for Home Assistant Ingress

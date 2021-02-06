@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.6.1
+
+- HTTPS support added.
+
 ## 5.6
 
 - [FTL 5.6](https://github.com/pi-hole/FTL/releases/tag/v5.6) [Blog](https://pi-hole.net/2021/01/27/pi-hole-ftl-v5-6-released/#page-content)

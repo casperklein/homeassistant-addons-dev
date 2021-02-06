@@ -1,17 +1,18 @@
 {
   "name": "Pi-hole-dev",
-  "version": "5.6",
+  "version": "5.6.1",
   "slug": "piholedev",
   "description": "Network-wide Ad Blocking",
   "url": "https://github.com/casperklein/homeassistant-addons/tree/master/pi-hole",
   "image": "casperklein/homeassistant-pihole-dev",
   "arch": ["aarch64", "amd64", "armhf", "armv7"],
-  "webui": "[PROTO:ssl]://[HOST]:[PORT:80]",
+  "webui": "[PROTO:https]://[HOST]:[PORT:80]",
   "ingress": true,
   "ingress_port": 80,
   "ingress_entry": "/admin/",
   "panel_icon": "mdi:pi-hole",
   "startup": "system",
+  "map": ["ssl"],
   "ports": {
     "53/tcp": 53,
     "53/udp": 53,
@@ -25,15 +26,19 @@
   "boot": "auto",
   "timeout": 60,
   "options": {
-	  "dnscrypt": []
+    "https": false,
+    "certfile": "fullchain.pem",
+    "keyfile": "privatekey.pem",
+    "dnscrypt": []
   },
   "schema": {
-	  "dnscrypt": [
-		  {
-			  "name": "str",
-			  "stamp": "str"
-		  }
-	  ]
+    "https": "bool",
+    "certfile": "str",
+    "keyfile": "str",
+    "dnscrypt": [{
+      "name": "str",
+      "stamp": "str"
+    }]
   },
   "init": false
 }

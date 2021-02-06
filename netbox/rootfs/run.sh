@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ueo pipefail
+set -ue
 
 if [ ! -d /data/postgresql ]; then
 	# Migrate DB to persistant storage

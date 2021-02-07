@@ -29,7 +29,7 @@ ln -s /data/log /var/log
 
 source /https.sh
 if [ "$HTTPS" = true ]; then
-	sed -i '/^server.port/server.port = 443/g' /etc/.pihole/advanced/lighttpd.conf
+	sed -i 's/^server\.port.*/server.port = 443/g' /etc/.pihole/advanced/lighttpd.conf*
 fi
 
 

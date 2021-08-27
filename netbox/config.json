@@ -1,9 +1,9 @@
 {
   "name": "Netbox-dev",
-  "version": "2.10.4.2",
+  "version": "2.11.12",
   "slug": "netbox",
   "description": "NetBox is an open source web application designed to help manage and document computer networks",
-  "url": "https://github.com/casperklein/homeassistant-addons/tree/master/netbox",
+  "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/netbox",
   "image": "casperklein/homeassistant-netbox-dev",
   "arch": ["amd64","aarch64"],
   "startup": "application",
@@ -11,26 +11,26 @@
   "webui": "[PROTO:https]://[HOST]:[PORT:80]/",
   "map": ["ssl"],
   "options": {
-        "user": "",
-        "password": "",
-	"https": false,
-	"certfile": "fullchain.pem",
-	"keyfile": "privatekey.pem"
+    "user": "",
+    "password": "",
+    "https": false,
+    "certfile": "fullchain.pem",
+    "keyfile": "privatekey.pem"
   },
   "schema": {
-        "user": "str",
-        "password": "str",
-        "https": "bool",
-	"certfile": "str",
-        "keyfile": "str"
+    "user": "str",
+    "password": "str",
+    "https": "bool",
+    "certfile": "str",
+    "keyfile": "str"
   },
   "ports": {
-        "80/tcp": 5580,
-	"5432/tcp": null
+    "80/tcp": 5580,
+    "5432/tcp": null
   },
   "ports_description": {
-	  "80/tcp": "Netbox WebGUI",
-	  "5432/tcp": "PostgreSQL"
+    "80/tcp": "Netbox WebGUI",
+    "5432/tcp": "PostgreSQL"
   },
   "init": false,
   "stage": "experimental"

@@ -56,8 +56,9 @@ if [ -d /data/postgresql/11 ]; then
 
 	echo "Info: Import netbox database to new cluster.."
 	pg_ctlcluster 13 main start
-	#sudo -u postgres psql -c 'create database netbox'
-	sudo -u postgres psql < /data/postgresql11_netbox.sql > /dev/null
+	sudo -u postgres psql -c 'drop database netbox' > /dev/null
+	sudo -u postgres psql -c 'create database netbox' > /dev/null
+	sudo -u postgres psql netbox < /data/postgresql11_netbox.sql > /dev/null
 	pg_ctlcluster 13 main stop
 
 	echo "Info: Migration successful."

@@ -2,7 +2,7 @@
 
 ## 2.11.13
 
-- Upgrade base image to Debian 11 (PostgreSQL 11 --> 13, Redis 5.0.3 --> 6.0.5)
+- Base image upgraded to Debian 11 (PostgreSQL 11 --> 13, Redis 5.0.3 --> 6.0.5)
 - This release migrates the netbox DB from PostgreSQL 11 to 13.
 - Make sure, to make a backup/snapshot of this addon before you update.
 

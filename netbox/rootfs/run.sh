@@ -3,8 +3,7 @@
 set -ueo pipefail
 
 if [ ! -d /data/postgresql/13 ]; then
-	# Migrate DB to persistant storage
-	echo "Migrating DB.."
+	echo "Migrating DB to persistant storage.."
 	mkdir -p /data/postgresql/13
 	mv /var/lib/postgresql/13/main /data/postgresql/13
 

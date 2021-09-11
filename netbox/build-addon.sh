@@ -14,5 +14,5 @@ ARCH=$(dpkg --print-architecture)
 
 echo "Building: $TAG"
 echo
-docker build -t "$TAG" --build-arg VERSION="$VERSION" --build-arg BUILD_ARCH="$ARCH" .
-docker tag "$TAG" "$IMAGE:latest"
+docker buildx build -t "$TAG" --build-arg VERSION="$VERSION" --build-arg BUILD_ARCH="$ARCH" --progress plain .
+#docker tag "$TAG" "$IMAGE:latest"

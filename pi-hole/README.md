@@ -15,34 +15,6 @@
 1. Install the Pi-hole add-on.
 1. Start the add-on.
 
-## Configuration:
-
-**Note**: _Remember to restart the add-on when the configuration is changed._
-
-Example add-on configuration:
-
-    "https": true
-    "certfile": "fullchain.pem"
-    "keyfile": "privatekey.pem"
-
-**Note**: _This is just an example, don't copy and paste it! Create your own!_
-
-### Option: `https`
-
-Enables/Disables HTTPS on the web interface. Set it `true` to enable it, `false` otherwise.
-
-### Option: `certfile`
-
-A file containing a certificate, including its chain. If this file doesn't exist, the add-on start will fail.
-
-**Note**: The file MUST be stored in the Home Assistant `/ssl` directory, which is the default for Home Assistant.
-
-### Option: `keyfile`
-
-A file containing the private key. If this file doesn't exist, the add-on start will fail.
-
-**Note**: The file MUST be stored in the Home Assistant `/ssl` directory, which is the default for Home Assistant.
-
 ## How to use DNSCrypt or DNS over HTTPS (DoH) with Pi-hole:
 
 This is achieved by using [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy). You have to configure one or more DNS server for use with dnscrypt-proxy. To use Cloudflare DNS for example, put this in the add-on configuration:
@@ -53,14 +25,14 @@ This is achieved by using [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-
       - name: "Cloudflare 1.0.0.1"
         stamp: "sdns://AgcAAAAAAAAABzEuMC4wLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"
 
-DNS stamps contain all the parameters required to connect to a secure DNS server as a single string. To create own stamps, you can use: https://dnscrypt.info/stamps/. Or you can just use any of these [public servers](https://dnscrypt.info/public-servers).
+DNS stamps contain all the parameters required to connect to a secure DNS server as a single string. To create own stamps, you can use: [https://dnscrypt.info/stamps/](https://dnscrypt.info/stamps/). Or you can just use any of these [public servers](https://dnscrypt.info/public-servers).
 
 In Pi-hole the following **must** be configured:
 
 - Custom DNS server: `127.0.0.1#5353`
 - Disable all other configured DNS servers
 
-To test your setup, visit https://1.1.1.1/help. If you see "Using DNS over HTTPS (DoH): yes", all should be fine :)
+To test your setup, visit [https://1.1.1.1/help](https://1.1.1.1/help). If you see "Using DNS over HTTPS (DoH): yes", all should be fine :)
 
 ## Not implemented
 

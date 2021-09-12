@@ -27,11 +27,5 @@ ln -s /data/pihole /etc/pihole
 ln -s /data/dnsmasq.d /etc/dnsmasq.d
 ln -s /data/log /var/log
 
-source /https.sh
-if [ "$HTTPS" = true ]; then
-	sed -i 's/^server\.port.*/server.port = 443/g' /etc/.pihole/advanced/lighttpd.conf*
-fi
-
-
-echo "***** Fix permissions.."
-chown -R www-data: /var/log/lighttpd
+#echo "***** Fix permissions.."
+#chown -R www-data: /data/log/lighttpd

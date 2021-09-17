@@ -2,7 +2,11 @@
 
 ## 3.0.2
 
+This is a major release update. It might be worth, reading the changelogs :wink:
+
 - [netbox 3.0.2](https://github.com/netbox-community/netbox/releases/tag/v3.0.2)
+- [netbox 3.0.1](https://github.com/netbox-community/netbox/releases/tag/v3.0.1)
+- **[netbox 3.0.0](https://github.com/netbox-community/netbox/releases/tag/v3.0.0)**
 
 ## 2.11.13
 

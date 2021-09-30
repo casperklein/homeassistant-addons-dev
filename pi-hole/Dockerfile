@@ -58,15 +58,15 @@ FROM	scratch
 ARG	BUILD_ARCH
 ARG	VERSION
 
-LABEL	io.hass.name="Pi-hole"
+LABEL	io.hass.name="Pi-hole-dev"
 LABEL	io.hass.description="Network-wide Ad Blocking"
 LABEL	io.hass.arch="${BUILD_ARCH}"
 LABEL	io.hass.type="addon"
 LABEL	io.hass.version="${VERSION}"
 
-LABEL	image="casperklein/homeassistant-pihole:${VERSION}"
+LABEL	image="casperklein/homeassistant-pihole-dev:${VERSION}"
 LABEL	maintainer="Casper Klein"
-LABEL	url="https://github.com/casperklein/homeassistant-addons/tree/master/pi-hole"
+LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole"
 
 # From base image
 ENTRYPOINT [ "/s6-init" ]

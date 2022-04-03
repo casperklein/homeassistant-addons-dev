@@ -1,5 +1,31 @@
 # Changelog
 
+## 2022.04.1
+
+- [Pi-hole 5.9.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.9.1)
+
+## 2022.02.1
+
+- [Pi-hole 5.9](https://github.com/pi-hole/pi-hole/releases/tag/v5.9)
+- [AdminLTE 5.11](https://github.com/pi-hole/AdminLTE/releases/tag/v5.11)
+- [FTL 5.14](https://github.com/pi-hole/FTL/releases/tag/v5.14)
+
+## 2022.01.1
+
+- [Pi-hole 5.8](https://github.com/pi-hole/pi-hole/releases/tag/v5.8)
+- [AdminLTE 5.10](https://github.com/pi-hole/AdminLTE/releases/tag/v5.10)
+- [FTL 5.13](https://github.com/pi-hole/FTL/releases/tag/v5.13)
+
+## 2022.01
+
+- [Some fixes](https://github.com/pi-hole/docker-pi-hole/releases/tag/2022.01)
+
+## 2021.12.1
+
+- [Pi-hole 5.7](https://github.com/pi-hole/pi-hole/releases/tag/v5.7)
+- [AdminLTE 5.9](https://github.com/pi-hole/AdminLTE/releases/tag/v5.9)
+- [FTL 5.12.1](https://github.com/pi-hole/FTL/releases/tag/v5.12.1)
+
 ## 2021.10.1
 
 - [Pi-hole 5.6](https://github.com/pi-hole/pi-hole/releases/tag/v5.6)

@@ -1,5 +1,93 @@
 # Changelog
 
+## 3.1.11
+
+- [netbox 3.1.11](https://github.com/netbox-community/netbox/releases/tag/v3.1.11)
+
+## 3.1.10
+
+- [netbox 3.1.10](https://github.com/netbox-community/netbox/releases/tag/v3.1.10)
+
+## 3.1.9
+
+- [netbox 3.1.9](https://github.com/netbox-community/netbox/releases/tag/v3.1.9)
+
+## 3.1.8
+
+- [netbox 3.1.8](https://github.com/netbox-community/netbox/releases/tag/v3.1.8)
+
+## 3.1.7
+
+- [netbox 3.1.7](https://github.com/netbox-community/netbox/releases/tag/v3.1.7)
+
+## 3.1.6
+
+- [netbox 3.1.6](https://github.com/netbox-community/netbox/releases/tag/v3.1.6)
+
+## 3.1.5
+
+- [netbox 3.1.5](https://github.com/netbox-community/netbox/releases/tag/v3.1.5)
+
+## 3.1.4
+
+- [netbox 3.1.4](https://github.com/netbox-community/netbox/releases/tag/v3.1.4)
+
+## 3.1.3
+
+- [netbox 3.1.3](https://github.com/netbox-community/netbox/releases/tag/v3.1.3)
+
+## 3.1.2
+
+- [netbox 3.1.2](https://github.com/netbox-community/netbox/releases/tag/v3.1.2)
+
+## 3.1.1
+
+- [netbox 3.1.1](https://github.com/netbox-community/netbox/releases/tag/v3.1.1)
+
+## 3.1.0
+
+- [netbox 3.1.0](https://github.com/netbox-community/netbox/releases/tag/v3.1.0)
+
+## 3.0.12
+
+- [netbox 3.0.12](https://github.com/netbox-community/netbox/releases/tag/v3.0.12)
+
+## 3.0.11
+
+- [netbox 3.0.11](https://github.com/netbox-community/netbox/releases/tag/v3.0.11)
+
+## 3.0.10
+
+- [netbox 3.0.10](https://github.com/netbox-community/netbox/releases/tag/v3.0.10)
+
+## 3.0.9
+
+- [netbox 3.0.9](https://github.com/netbox-community/netbox/releases/tag/v3.0.9)
+
+## 3.0.8
+
+- [netbox 3.0.8](https://github.com/netbox-community/netbox/releases/tag/v3.0.8)
+
+## 3.0.7
+
+- [netbox 3.0.7](https://github.com/netbox-community/netbox/releases/tag/v3.0.7)
+
+## 3.0.6
+
+- [netbox 3.0.6](https://github.com/netbox-community/netbox/releases/tag/v3.0.6)
+
+## 3.0.5
+
+- [netbox 3.0.5](https://github.com/netbox-community/netbox/releases/tag/v3.0.5)
+
+## 3.0.4
+
+- [netbox 3.0.4](https://github.com/netbox-community/netbox/releases/tag/v3.0.4)
+
+## 3.0.3
+
+- [netbox 3.0.3](https://github.com/netbox-community/netbox/releases/tag/v3.0.3)
+
 ## 3.0.2
 
 This is a major release update. It might be worth, reading the changelogs :wink:
@@ -11,7 +99,7 @@ This is a major release update. It might be worth, reading the changelogs :wink:
 ## 2.11.13
 
 - Base image upgraded to Debian 11 (PostgreSQL 11 --> 13, Redis 5.0.3 --> 6.0.5)
-- This and further releases migrates the netbox DB from PostgreSQL 11 to 13.
+- This and future releases migrates the netbox DB from PostgreSQL 11 to 13.
 - Make sure, to make a backup/snapshot of this addon before you update.
 
 ## 2.11.12
@@ -144,7 +232,6 @@ This is a major release update. It might be worth, reading the changelogs :wink:
 ## 2.8.6
 
 - [netbox 2.8.6](https://github.com/netbox-community/netbox/releases/tag/v2.8.6)
-
 
 ## 2.8.5
 

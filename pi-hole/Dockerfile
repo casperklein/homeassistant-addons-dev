@@ -5,7 +5,7 @@ SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Update base image packages, install jq and cleanup
 RUN	apt-get update && apt-get -y upgrade \
-&&	apt-get -y install jq patch \
+&&	apt-get -y install jq patch wget \
 &&	rm -rf /var/lib/apt/lists/*
 
 # Disable x-frame-options for Home Assistant Ingress

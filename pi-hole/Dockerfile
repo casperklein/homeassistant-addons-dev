@@ -1,5 +1,5 @@
 # Customize upstream image #########################################################################
-FROM	pihole/pihole:2022.07.1 as pihole
+FROM	pihole/pihole:2022.08.2 as pihole
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -72,22 +72,22 @@ LABEL	maintainer="Casper Klein"
 LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole"
 
 # From base image
-# docker-image-options pihole/pihole:2022.07 | sort | grep -v -e LABEL -e 'ENV PIHOLE_DOCKER_TAG'
+# docker-image-options pihole/pihole:latest | sort | grep -v -e LABEL -e 'ENV PIHOLE_DOCKER_TAG'
 ENTRYPOINT ["/s6-init"]
 ENV DNSMASQ_USER="pihole"
 ENV FTL_CMD="no-daemon"
+ENV FTLCONF_LOCAL_IPV4="0.0.0.0"
 ENV IPv6="True"
 ENV PATH="/opt/pihole:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ENV PHP_ENV_CONFIG="/etc/lighttpd/conf-enabled/15-fastcgi-php.conf"
 ENV PHP_ERROR_LOG="/var/log/lighttpd/error-pihole.log"
 ENV phpver="php"
-ENV PIHOLE_DOCKER_TAG="2022.07.1"
+ENV PIHOLE_DOCKER_TAG="2022.08.2"
 ENV PIHOLE_INSTALL="/etc/.pihole/automated install/basic-install.sh"
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2"
 ENV S6_KEEP_ENV="1"
 ENV S6_LOGGING="0"
-ENV S6_OVERLAY_VERSION="v2.1.0.2"
-ENV ServerIP="0.0.0.0"
+ENV S6_OVERLAY_VERSION="v3.1.1.2"
 EXPOSE 53/tcp
 EXPOSE 53/udp
 EXPOSE 67/udp

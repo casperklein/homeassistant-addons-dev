@@ -9,8 +9,8 @@ set -ueo pipefail
 cd /etc/s6-overlay/s6-rc.d
 for i in */; do
 	FILE="$i/dependencies"
-	# pihole hack. add line ending
 	if [ -f "$FILE" ]; then
+		# pihole hack. add missing line ending
 		sed -i -e '$a\' "$FILE"
 	fi
 	echo base >> "$FILE"

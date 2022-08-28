@@ -20,6 +20,10 @@ RUN	sedfile -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.c
 
 RUN	rm /bin/sedfile
 
+# Fix s6 dependencies: wait for cont-init.d to finish, before starting services s6-rc.d
+# https://github.com/just-containers/s6-overlay/issues/471
+RUN	/bin/fix-dependencies.sh && rm /bin/fix-dependencies.sh
+
 # Silent capsh error output
 # https://github.com/pi-hole/docker-pi-hole/pull/1133
 # FROM	alpine:3 as patch

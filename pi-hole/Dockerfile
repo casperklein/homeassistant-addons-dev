@@ -1,5 +1,5 @@
 # Customize upstream image #########################################################################
-FROM	pihole/pihole:2022.08.2 as pihole
+FROM	pihole/pihole:2022.08.3 as pihole
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -21,8 +21,9 @@ RUN	sedfile -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.c
 RUN	rm /bin/sedfile
 
 # Fix s6 dependencies: wait for cont-init.d to finish, before starting services s6-rc.d
+# This adds "base" as dependency for all services
 # https://github.com/just-containers/s6-overlay/issues/471
-RUN	/bin/fix-dependencies.sh && rm /bin/fix-dependencies.sh
+# RUN	/bin/fix-dependencies.sh && rm /bin/fix-dependencies.sh
 
 # Silent capsh error output
 # https://github.com/pi-hole/docker-pi-hole/pull/1133
@@ -86,7 +87,7 @@ ENV PATH="/opt/pihole:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/b
 ENV PHP_ENV_CONFIG="/etc/lighttpd/conf-enabled/15-fastcgi-php.conf"
 ENV PHP_ERROR_LOG="/var/log/lighttpd/error-pihole.log"
 ENV phpver="php"
-ENV PIHOLE_DOCKER_TAG="2022.08.2"
+ENV PIHOLE_DOCKER_TAG="2022.08.3"
 ENV PIHOLE_INSTALL="/etc/.pihole/automated install/basic-install.sh"
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2"
 ENV S6_KEEP_ENV="1"

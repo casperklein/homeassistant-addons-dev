@@ -18,6 +18,7 @@ fi >&2
 
 sedfile -i -E 's|^  "name": "(.*)"|  "name": "\1-dev"|' config.json
 sedfile -i -E 's|^  "image": "(.*)"|  "image": "\1-dev"|' config.json
+sedfile -i -E 's|^  "slug": "(.*)"|  "slug": "\1-dev"|' config.json
 sedfile -i    's|casperklein/homeassistant-addons/tree/master|casperklein/homeassistant-addons-dev/tree/master|' config.json
 
 sedfile -i -E 's|io.hass.name="(.*)"|io.hass.name="\1-dev"|' Dockerfile

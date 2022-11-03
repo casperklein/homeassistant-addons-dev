@@ -1,5 +1,27 @@
 # Changelog
 
+## 2022.10
+
+- [Pi-hole 5.13](https://github.com/pi-hole/pi-hole/releases/tag/v5.13)
+- [AdminLTE 5.16](https://github.com/pi-hole/AdminLTE/releases/tag/v5.16)
+- [FTL 5.18.2](https://github.com/pi-hole/FTL/releases/tag/v5.18.2)
+
+## 2022.09.4
+
+- [Pi-hole 5.12.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.12.2)
+- [AdminLTE 5.15.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.15.1)
+- [FTL 5.18.1](https://github.com/pi-hole/FTL/releases/tag/v5.18.1)
+
+## 2022.09.3
+
+- [Pi-hole 5.12.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.12.1)
+- [AdminLTE 5.15](https://github.com/pi-hole/AdminLTE/releases/tag/v5.15)
+- [FTL 5.18](https://github.com/pi-hole/FTL/releases/tag/v5.18)
+
+## 2022.09.2
+
+- [AdminLTE 5.14.2](https://github.com/pi-hole/AdminLTE/releases/tag/v5.14.2)
+
 ## 2022.09.1
 
 - [Pi-hole 5.12](https://github.com/pi-hole/pi-hole/releases/tag/v5.12)

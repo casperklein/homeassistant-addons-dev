@@ -1,5 +1,73 @@
 # Changelog
 
+## 3.3.7
+
+- [netbox 3.3.7](https://github.com/netbox-community/netbox/releases/tag/v3.3.7)
+
+## 3.3.6
+
+- [netbox 3.3.6](https://github.com/netbox-community/netbox/releases/tag/v3.3.6)
+
+## 3.3.5
+
+- [netbox 3.3.5](https://github.com/netbox-community/netbox/releases/tag/v3.3.5)
+
+## 3.3.4
+
+- [netbox 3.3.4](https://github.com/netbox-community/netbox/releases/tag/v3.3.4)
+
+## 3.3.3
+
+- [netbox 3.3.3](https://github.com/netbox-community/netbox/releases/tag/v3.3.3)
+
+## 3.3.2
+
+- [netbox 3.3.2](https://github.com/netbox-community/netbox/releases/tag/v3.3.2)
+
+## 3.3.1
+
+- [netbox 3.3.1](https://github.com/netbox-community/netbox/releases/tag/v3.3.1)
+
+## 3.3.0
+
+- [netbox 3.3.0](https://github.com/netbox-community/netbox/releases/tag/v3.3.0)
+
+## 3.2.9
+
+- [netbox 3.2.9](https://github.com/netbox-community/netbox/releases/tag/v3.2.9)
+
+## 3.2.8
+
+- [netbox 3.2.8](https://github.com/netbox-community/netbox/releases/tag/v3.2.8)
+
+## 3.2.7
+
+- [netbox 3.2.7](https://github.com/netbox-community/netbox/releases/tag/v3.2.7)
+
+## 3.2.6
+
+- [netbox 3.2.6](https://github.com/netbox-community/netbox/releases/tag/v3.2.6)
+
+## 3.2.5
+
+- [netbox 3.2.5](https://github.com/netbox-community/netbox/releases/tag/v3.2.5)
+
+## 3.2.4
+
+- [netbox 3.2.4](https://github.com/netbox-community/netbox/releases/tag/v3.2.4)
+
+## 3.2.3
+
+- [netbox 3.2.3](https://github.com/netbox-community/netbox/releases/tag/v3.2.3)
+
+## 3.2.2
+
+- [netbox 3.2.2](https://github.com/netbox-community/netbox/releases/tag/v3.2.2)
+
+## 3.2.1
+
+- [netbox 3.2.1](https://github.com/netbox-community/netbox/releases/tag/v3.2.1)
+
 ## 3.2.0
 
 - [netbox 3.2.0](https://github.com/netbox-community/netbox/releases/tag/v3.2.0)

@@ -88,8 +88,24 @@ if [ -n "$USER" ] && [ -n "$PASS" ]; then
 	fi
 fi
 
+# import additional configuration (for plugins)
+if [ -f "/config/netbox/configuration.py" ]; then
+	echo "Info: Custom configuration found."
+	cat /config/netbox/configuration.py >> /opt/netbox/netbox/netbox/configuration.py
+fi
+
+# import additional requirements (for plugins)
+if [ -f "/config/netbox/requirements.txt" ]; then
+	# cat /config/netbox/requirements.txt > /opt/netbox/local_requirements.txt
+	echo "Info: Installing custom requirements.."
+	pip install -r /config/netbox/requirements.txt
+fi
+
 # run database migrations
 python3 /opt/netbox/netbox/manage.py migrate
+
+# TODO add comment.
+python3 /opt/netbox/netbox/manage.py collectstatic --no-input
 
 if [ "$HTTPS" = true ]; then
 	[ ! -f "/ssl/$CERT" ] && echo "Error: Certificate '$CERT' not found." >&2 && exit 1

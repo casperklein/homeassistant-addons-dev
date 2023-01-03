@@ -2,7 +2,7 @@ FROM	debian:11-slim as build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v3.3.8"
+ENV	GIT_COMMIT="v3.4.1"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 #ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql libpq-dev python3-pip python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev redis-server zlib1g-dev libjpeg-dev"
@@ -30,7 +30,7 @@ RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 # Copy root filesystem
 COPY	rootfs /
 
-WORKDIR /opt/netbox/netbox/netbox
+WORKDIR	/opt/netbox/netbox/netbox
 RUN	cp configuration_example.py configuration.py
 
 # Customize
@@ -45,7 +45,7 @@ RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '******************************
 
 # Install dependencies
 # ? Disable, when pip-venv is used
-WORKDIR /opt/netbox
+WORKDIR	/opt/netbox
 RUN	pip3 install --no-cache-dir --upgrade pip setuptools wheel \
 ;	pip3 install --no-cache-dir -r requirements.txt
 

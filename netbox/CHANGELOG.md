@@ -1,8 +1,26 @@
 # Changelog
 
+## 3.4.1
+
+- [netbox 3.4.1](https://github.com/netbox-community/netbox/releases/tag/v3.4.1)
+
+## 3.4.0
+
+- [netbox 3.4.0](https://github.com/netbox-community/netbox/releases/tag/v3.4.0)
+
+## 3.3.10
+
+- [netbox 3.3.10](https://github.com/netbox-community/netbox/releases/tag/v3.3.10)
+
+## 3.3.9
+
+- [netbox 3.3.9](https://github.com/netbox-community/netbox/releases/tag/v3.3.9)
+- Bind mount "media" and "share" directories ([b70aab3](https://github.com/casperklein/homeassistant-addons/commit/b70aab399019939c5831958b2a530f1b1346062e))
+
 ## 3.3.8
 
 - [netbox 3.3.8](https://github.com/netbox-community/netbox/releases/tag/v3.3.8)
+- [Plugin support added](https://github.com/casperklein/homeassistant-addons/tree/master/netbox#plugins)
 
 ## 3.3.7
 

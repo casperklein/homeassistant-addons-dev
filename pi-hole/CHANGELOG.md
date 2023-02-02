@@ -1,5 +1,30 @@
 # Changelog
 
+## 2023.01.10
+
+- [Pi-hole 5.15.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.15.3)
+- [AdminLTE 5.18.3](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18.3)
+- [FTL 5.20.1](https://github.com/pi-hole/FTL/releases/tag/v5.20.1)
+
+## 2022.12
+
+- [AdminLTE 5.18](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18)
+- [FTL 5.20](https://github.com/pi-hole/FTL/releases/tag/v5.20)
+
+## 2022.11.2
+
+- [Pi-hole 5.14.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.14.2)
+
+## 2022.11.1
+
+- [FTL 5.19.2](https://github.com/pi-hole/FTL/releases/tag/v5.19.2)
+
+## 2022.11
+
+- [Pi-hole 5.14.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.14.1)
+- [AdminLTE 5.17](https://github.com/pi-hole/AdminLTE/releases/tag/v5.17)
+- [FTL 5.19.1](https://github.com/pi-hole/FTL/releases/tag/v5.19.1)
+
 ## 2022.10
 
 - [Pi-hole 5.13](https://github.com/pi-hole/pi-hole/releases/tag/v5.13)

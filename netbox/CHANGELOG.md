@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.4.5
+
+- [netbox 3.4.5](https://github.com/netbox-community/netbox/releases/tag/v3.4.5)
+
+## 3.4.4
+
+- [netbox 3.4.4](https://github.com/netbox-community/netbox/releases/tag/v3.4.4)
+
+## 3.4.3
+
+- [netbox 3.4.3](https://github.com/netbox-community/netbox/releases/tag/v3.4.3)
+
+## 3.4.2
+
+- [netbox 3.4.2](https://github.com/netbox-community/netbox/releases/tag/v3.4.2)
+- UX: Username and password configuration is now optional ([#9](https://github.com/casperklein/homeassistant-addons/pull/9))
+
 ## 3.4.1
 
 - [netbox 3.4.1](https://github.com/netbox-community/netbox/releases/tag/v3.4.1)

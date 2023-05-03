@@ -2,7 +2,7 @@ FROM	debian:11-slim as build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v3.4.5"
+ENV	GIT_COMMIT="v3.5.0"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 #ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql libpq-dev python3-pip python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev redis-server zlib1g-dev libjpeg-dev"
@@ -42,6 +42,9 @@ RUN	sedfile -i "s/^    'USER': '',               # PostgreSQL username$/    'USE
 RUN	sedfile -i "s/^    'PASSWORD': '',           # PostgreSQL password$/    'PASSWORD': 'netbox',           # PostgreSQL password/" configuration.py
 #	If not set to a dummy value, 'python3 manage.py migrate' fails
 RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '**************************************************'/" configuration.py
+#	disable CSRF middleware. When enabled and using stunnel, the 'CSRF verification failed. Request aborted.'
+#	or set: CSRF_TRUSTED_ORIGINS = [ "https://example.com" ]
+RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
 
 # Install dependencies
 # ? Disable, when pip-venv is used

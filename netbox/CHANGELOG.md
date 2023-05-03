@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.5.0
+
+- [netbox 3.5.0](https://github.com/netbox-community/netbox/releases/tag/v3.5.0)
+
+## 3.4.10
+
+- [netbox 3.4.10](https://github.com/netbox-community/netbox/releases/tag/v3.4.10)
+
+## 3.4.9
+
+- [netbox 3.4.9](https://github.com/netbox-community/netbox/releases/tag/v3.4.9)
+
+## 3.4.8
+
+- [netbox 3.4.8](https://github.com/netbox-community/netbox/releases/tag/v3.4.8)
+
+## 3.4.7
+
+- [netbox 3.4.7](https://github.com/netbox-community/netbox/releases/tag/v3.4.7)
+
+## 3.4.6
+
+- [netbox 3.4.6](https://github.com/netbox-community/netbox/releases/tag/v3.4.6)
+
 ## 3.4.5.1
 
 - Bugfix: Make media files persistant ([#11](https://github.com/casperklein/homeassistant-addons/issues/11))

@@ -33,6 +33,9 @@ HTTPS=$(jq --raw-output '.https' /data/options.json)
 CERT=$(jq --raw-output '.certfile' /data/options.json)
 KEY=$(jq --raw-output '.keyfile' /data/options.json)
 
+# Get netbox settings
+LOGIN_REQUIRED=$(jq --raw-output '.https' /data/options.json)
+
 MAIL=netbox@localhost
 
 # fix permissions after snapshot restore
@@ -76,6 +79,19 @@ if [ -d /data/postgresql/11 ]; then
 	echo "Info: Cleanup done."
 fi
 
+# set netbox options
+if [ "$LOGIN_REQUIRED" = true ]; then
+	# https://docs.netbox.dev/en/stable/configuration/security/#login_required
+	echo "Info: Setting 'LOGIN_REQUIRED' to 'true' in configuration.py"
+	sedfile 's/^LOGIN_REQUIRED = False$/LOGIN_REQUIRED = True/' /opt/netbox/netbox/netbox/configuration.py
+fi
+
+# import additional configuration (for plugins)
+if [ -f "/config/netbox/configuration.py" ]; then
+	echo "Info: Custom configuration found."
+	cat /config/netbox/configuration.py >> /opt/netbox/netbox/netbox/configuration.py
+fi
+
 # remove stale pid
 rm -f /data/postgresql/13/main/postmaster.pid
 
@@ -88,12 +104,6 @@ pg_ctlcluster 13 main start || {
 	echo "Error: Failed to start postgresql-server"
 	exit 1
 } >&2
-
-# import additional configuration (for plugins)
-if [ -f "/config/netbox/configuration.py" ]; then
-	echo "Info: Custom configuration found."
-	cat /config/netbox/configuration.py >> /opt/netbox/netbox/netbox/configuration.py
-fi
 
 # ? pip3-venv
 # source /opt/netbox/venv/bin/activate

@@ -3,12 +3,12 @@
 set -ueo pipefail
 
 if [ ! -d /data/postgresql/13 ]; then
-	echo "Migrating DB to persistant storage.."
+	echo "Info: Migrating DB to persistant storage.."
 	mkdir -p /data/postgresql/13
 	mv /var/lib/postgresql/13/main /data/postgresql/13
 
 	# Override secret key from image
-	echo "Generating new secret key.."
+	echo "Info: Generating new secret key.."
 	KEY=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 50 || true)
 	sedfile -i "s/^SECRET_KEY.*/SECRET_KEY = '$KEY'/" /opt/netbox/netbox/netbox/configuration.py
 fi
@@ -33,14 +33,15 @@ HTTPS=$(jq --raw-output '.https' /data/options.json)
 CERT=$(jq --raw-output '.certfile' /data/options.json)
 KEY=$(jq --raw-output '.keyfile' /data/options.json)
 
-# Get netbox settings
-LOGIN_REQUIRED=$(jq --raw-output '.https' /data/options.json)
+# Get netbox option
+LOGIN_REQUIRED=$(jq --raw-output '.LOGIN_REQUIRED' /data/options.json)
 
 MAIL=netbox@localhost
 
 # fix permissions after snapshot restore
 chown -R postgres: /data/postgresql
 
+# TODO Remove with Debian 12 (Bookworm)
 # Upgrade Postgres 11 to 13
 if [ -d /data/postgresql/11 ]; then
 	echo "Info: PostgreSQL 11 database found. Start migration to version 13.."
@@ -79,11 +80,36 @@ if [ -d /data/postgresql/11 ]; then
 	echo "Info: Cleanup done."
 fi
 
-# set netbox options
+# remove stale pid
+rm -f /data/postgresql/13/main/postmaster.pid
+
+# /etc/init.d/redis-server start || {
+# 	echo "Error: Failed to start redis-server"
+# 	exit 1
+# } >&2
+supervisorctl start redis > /dev/null
+while ! redis-cli ping &>/dev/null; do
+	echo "Info: Waiting for redis to be ready.."
+	sleep 1
+done
+echo "Info: Redis is ready.."
+
+# pg_ctlcluster 13 main start || {
+# 	echo "Error: Failed to start postgresql-server"
+# 	exit 1
+# } >&2
+supervisorctl start postgresql > /dev/null
+while ! pg_isready -q; do
+	echo "Info: Waiting for redis to be postgresql.."
+	sleep 1
+done
+echo "Info: Postgresql is ready.."
+
+# set netbox option
 if [ "$LOGIN_REQUIRED" = true ]; then
 	# https://docs.netbox.dev/en/stable/configuration/security/#login_required
 	echo "Info: Setting 'LOGIN_REQUIRED' to 'true' in configuration.py"
-	sedfile 's/^LOGIN_REQUIRED = False$/LOGIN_REQUIRED = True/' /opt/netbox/netbox/netbox/configuration.py
+	sedfile -i 's/^LOGIN_REQUIRED = False$/LOGIN_REQUIRED = True/' /opt/netbox/netbox/netbox/configuration.py
 fi
 
 # import additional configuration (for plugins)
@@ -91,19 +117,6 @@ if [ -f "/config/netbox/configuration.py" ]; then
 	echo "Info: Custom configuration found."
 	cat /config/netbox/configuration.py >> /opt/netbox/netbox/netbox/configuration.py
 fi
-
-# remove stale pid
-rm -f /data/postgresql/13/main/postmaster.pid
-
-/etc/init.d/redis-server start || {
-	echo "Error: Failed to start redis-server"
-	exit 1
-} >&2
-
-pg_ctlcluster 13 main start || {
-	echo "Error: Failed to start postgresql-server"
-	exit 1
-} >&2
 
 # ? pip3-venv
 # source /opt/netbox/venv/bin/activate
@@ -126,10 +139,10 @@ fi
 # /opt/netbox/upgrade.sh
 # ? ---------
 
-echo "Applying database migrations.."
+echo "Info: Applying database migrations.."
 python3 /opt/netbox/netbox/manage.py migrate
 
-echo "Collecting static files.."
+echo "Info: Collecting static files.."
 python3 /opt/netbox/netbox/manage.py collectstatic --no-input
 
 # add netbox superuser
@@ -169,12 +182,14 @@ fi
 # printf '%s %s\n' "$(date '+[%F %T %z]')" "Housekeeping.." # gunicorn style
 printf '%s %s\n' "$(date '+[%d/%h/%G %T]')" "Housekeeping.."
 python3 /opt/netbox/netbox/manage.py housekeeping	# one-shot
-/opt/netbox/housekeeping-job.sh &			# run once a day
+# /opt/netbox/housekeeping-job.sh &			# run once a day
+supervisorctl start housekeeping > /dev/null            # run once a day
 
 # https://docs.netbox.dev/en/stable/plugins/development/background-tasks/
-echo "Starting RQ worker process.."
-python3 /opt/netbox/netbox/manage.py rqworker high default low &
+echo "Info: Starting RQ worker process.."
+# python3 /opt/netbox/netbox/manage.py rqworker high default low &
+supervisorctl start rqworker > /dev/null
 
-echo "Starting netbox.."
+echo "Info: Starting netbox.."
 # exec gunicorn --bind 127.0.0.1:$PORT --pid /var/tmp/netbox.pid --pythonpath /opt/netbox/netbox --config /opt/netbox/gunicorn.py netbox.wsgi
 exec python3 /opt/netbox/netbox/manage.py runserver 0.0.0.0:$PORT --insecure

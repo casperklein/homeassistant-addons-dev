@@ -1,9 +1,5 @@
 # Changelog
 
-## 3.5.2.1
-
-- supervisor
-
 ## 3.5.2
 
 - [netbox 3.5.2](https://github.com/netbox-community/netbox/releases/tag/v3.5.2)

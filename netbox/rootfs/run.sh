@@ -83,27 +83,15 @@ fi
 # remove stale pid
 rm -f /data/postgresql/13/main/postmaster.pid
 
-# /etc/init.d/redis-server start || {
-# 	echo "Error: Failed to start redis-server"
-# 	exit 1
-# } >&2
-supervisorctl start redis > /dev/null
-while ! redis-cli ping &>/dev/null; do
-	echo "Info: Waiting for redis to be ready.."
-	sleep 1
-done
-echo "Info: Redis is ready.."
+/etc/init.d/redis-server start || {
+	echo "Error: Failed to start redis-server"
+	exit 1
+} >&2
 
-# pg_ctlcluster 13 main start || {
-# 	echo "Error: Failed to start postgresql-server"
-# 	exit 1
-# } >&2
-supervisorctl start postgresql > /dev/null
-while ! pg_isready -q; do
-	echo "Info: Waiting for redis to be postgresql.."
-	sleep 1
-done
-echo "Info: Postgresql is ready.."
+pg_ctlcluster 13 main start || {
+	echo "Error: Failed to start postgresql-server"
+	exit 1
+} >&2
 
 # set netbox option
 if [ "$LOGIN_REQUIRED" = true ]; then
@@ -182,13 +170,11 @@ fi
 # printf '%s %s\n' "$(date '+[%F %T %z]')" "Housekeeping.." # gunicorn style
 printf '%s %s\n' "$(date '+[%d/%h/%G %T]')" "Housekeeping.."
 python3 /opt/netbox/netbox/manage.py housekeeping	# one-shot
-# /opt/netbox/housekeeping-job.sh &			# run once a day
-supervisorctl start housekeeping > /dev/null            # run once a day
+/opt/netbox/housekeeping-job.sh &			# run once a day
 
 # https://docs.netbox.dev/en/stable/plugins/development/background-tasks/
 echo "Info: Starting RQ worker process.."
-# python3 /opt/netbox/netbox/manage.py rqworker high default low &
-supervisorctl start rqworker > /dev/null
+python3 /opt/netbox/netbox/manage.py rqworker high default low &
 
 echo "Info: Starting netbox.."
 # exec gunicorn --bind 127.0.0.1:$PORT --pid /var/tmp/netbox.pid --pythonpath /opt/netbox/netbox --config /opt/netbox/gunicorn.py netbox.wsgi

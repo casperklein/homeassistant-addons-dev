@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.5.2.1
+
+- Better process control with supervisord
+- Improved error handling
+
 ## 3.5.2
 
 - [netbox 3.5.2](https://github.com/netbox-community/netbox/releases/tag/v3.5.2)

@@ -10,8 +10,10 @@ ENV	PACKAGES="python3-pip"
 # python3-venv"
 #                                                  python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
 # ENV	PACKAGES_CLEAN="                           python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
-ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init"
+ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init supervisor"
 
+# TODO
+ENV	PACKAGES="$PACKAGES procps"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -30,10 +32,17 @@ RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 # Copy root filesystem
 COPY	rootfs /
 
+# Change supervisord defaults
+# Fix for: CRIT Supervisor is running as root. Privileges were not dropped because no user is specified in the config file.
+RUN	sedfile -i 's|\[supervisord\]|[supervisord]\nuser=root|'                            /etc/supervisor/supervisord.conf \
+# Fix for: CRIT Server 'unix_http_server' running without any HTTP authentication checking.
+&&	sedfile -i 's|\[unix_http_server\]|[unix_http_server]\nusername=foo\npassword=foo|' /etc/supervisor/supervisord.conf \
+&&	sedfile -i 's|\[supervisorctl\]|[supervisorctl]\nusername=foo\npassword=foo|'       /etc/supervisor/supervisord.conf
+
 WORKDIR	/opt/netbox/netbox/netbox
 RUN	cp configuration_example.py configuration.py
 
-# Customize
+# Customize netbox
 # https://github.com/netbox-community/netbox/blob/develop/netbox/netbox/configuration_example.py
 #	ALLOWED_HOSTS = [] --> ALLOWED_HOSTS = ['*']
 RUN	sedfile -i "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = ['*']/" configuration.py
@@ -70,6 +79,9 @@ RUN	/etc/init.d/redis-server start \
 #	Let PostgreSQL listen on all interfaces
 &&	sedfile -i "s/#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/13/main/postgresql.conf \
 &&	echo 'host all all 0.0.0.0/0 md5' >> /etc/postgresql/13/main/pg_hba.conf
+
+# Customize redis
+RUN	sedfile -i 's|^daemonize yes$|daemonize no|' /etc/redis/redis.conf
 
 # Setup gunicorn
 # RUN	cp /opt/netbox/contrib/gunicorn.py	/opt/netbox/gunicorn.py \
@@ -112,7 +124,8 @@ EXPOSE	80
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-CMD	["/run.sh"]
+# CMD	["/run.sh"]
+CMD	["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 
 COPY	--from=build / /
 

@@ -2,7 +2,7 @@ FROM	debian:11-slim as build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v3.5.2"
+ENV	GIT_COMMIT="v3.5.9"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 #ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql libpq-dev python3-pip python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev redis-server zlib1g-dev libjpeg-dev"
@@ -10,12 +10,15 @@ ENV	PACKAGES="python3-pip"
 # python3-venv"
 #                                                  python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
 # ENV	PACKAGES_CLEAN="                           python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
-ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init supervisor"
-
-# TODO
-ENV	PACKAGES="$PACKAGES procps"
+ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
+
+# Check if build args are not empty ################################################################
+ARG	BUILD_ARCH
+ARG	VERSION
+RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
+RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
 # Install packages
 ENV	DEBIAN_FRONTEND=noninteractive
@@ -96,15 +99,6 @@ RUN	mkdocs build
 # RUN	apt-get -y purge $PACKAGES_CLEAN \
 # RUN	apt-get -y autoremove
 
-# Check if build args are not empty ################################################################
-FROM	bash:latest
-
-ARG	BUILD_ARCH
-ARG	VERSION
-
-RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
-RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
-
 # Build final image ################################################################################
 FROM	scratch
 
@@ -124,7 +118,6 @@ EXPOSE	80
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-# CMD	["/run.sh"]
 CMD	["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 
 COPY	--from=build / /

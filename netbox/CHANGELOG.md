@@ -1,7 +1,28 @@
 # Changelog
 
-## 3.5.2.1
+## 3.5.9
 
+- [netbox 3.5.9](https://github.com/netbox-community/netbox/releases/tag/v3.5.9)
+
+## 3.5.8
+
+- [netbox 3.5.8](https://github.com/netbox-community/netbox/releases/tag/v3.5.8)
+
+## 3.5.7
+
+- [netbox 3.5.7](https://github.com/netbox-community/netbox/releases/tag/v3.5.7)
+
+## 3.5.6
+
+- [netbox 3.5.6](https://github.com/netbox-community/netbox/releases/tag/v3.5.6)
+
+## 3.5.4
+
+- [netbox 3.5.4](https://github.com/netbox-community/netbox/releases/tag/v3.5.4)
+
+## 3.5.3
+
+- [netbox 3.5.3](https://github.com/netbox-community/netbox/releases/tag/v3.5.3)
 - Better process control with supervisord
 - Improved error handling
 

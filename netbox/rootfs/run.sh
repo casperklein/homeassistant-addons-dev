@@ -101,10 +101,6 @@ fi
 # remove stale pid
 rm -f /data/postgresql/13/main/postmaster.pid
 
-# /etc/init.d/redis-server start || {
-# 	echo "Error: Failed to start redis-server"
-# 	exit 1
-# } >&2
 supervisorctl start redis > /dev/null
 while ! redis-cli ping &> /dev/null; do
 	echo "Info: Waiting until Redis is ready.."
@@ -112,10 +108,6 @@ while ! redis-cli ping &> /dev/null; do
 done
 echo "Info: Redis is ready.."
 
-# pg_ctlcluster 13 main start || {
-# 	echo "Error: Failed to start postgresql-server"
-# 	exit 1
-# } >&2
 supervisorctl start postgresql > /dev/null
 while ! pg_isready -q; do
 	echo "Info: Waiting until Postgresql is ready.."
@@ -199,13 +191,11 @@ fi
 # Housekeeping
 # printf '%s %s\n' "$(date '+[%F %T %z]')" "Housekeeping.." # gunicorn style
 printf '%s %s\n' "$(date '+[%d/%h/%G %T]')" "Housekeeping.."
-#python3 /opt/netbox/netbox/manage.py housekeeping	# one-shot
-# /opt/netbox/housekeeping-job.sh &			# run once a day
+python3 /opt/netbox/netbox/manage.py housekeeping	# one-shot
 supervisorctl start housekeeping > /dev/null            # run once a day
 
 # https://docs.netbox.dev/en/stable/plugins/development/background-tasks/
 echo "Info: Starting RQ worker process.."
-# python3 /opt/netbox/netbox/manage.py rqworker high default low &
 supervisorctl start rqworker > /dev/null
 
 echo "Info: Starting netbox.."

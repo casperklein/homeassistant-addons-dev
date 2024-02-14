@@ -1,5 +1,54 @@
 # Changelog
 
+## 3.7.2
+
+- [netbox 3.7.2](https://github.com/netbox-community/netbox/releases/tag/v3.7.2)
+- ⚠️ Starting with this release, custom Netbox configurations (e.g. for plugins) must be placed in `addon_configs/0da538cf_netbox`. Support for the old location `config/netbox` will be removed soon.
+
+## 3.7.1
+
+- [netbox 3.7.1](https://github.com/netbox-community/netbox/releases/tag/v3.7.1)
+
+## 3.7.0
+
+- [netbox 3.7.0](https://github.com/netbox-community/netbox/releases/tag/v3.7.0)
+
+## 3.6.9
+
+- [netbox 3.6.9](https://github.com/netbox-community/netbox/releases/tag/v3.6.9)
+
+## 3.6.8
+
+- [netbox 3.6.8](https://github.com/netbox-community/netbox/releases/tag/v3.6.8)
+
+## 3.6.7
+
+- [netbox 3.6.7](https://github.com/netbox-community/netbox/releases/tag/v3.6.7)
+
+## 3.6.6
+
+- [netbox 3.6.6](https://github.com/netbox-community/netbox/releases/tag/v3.6.6)
+
+## 3.6.5
+
+- [netbox 3.6.5](https://github.com/netbox-community/netbox/releases/tag/v3.6.5)
+
+## 3.6.4
+
+- [netbox 3.6.4](https://github.com/netbox-community/netbox/releases/tag/v3.6.4)
+
+## 3.6.3
+
+- [netbox 3.6.3](https://github.com/netbox-community/netbox/releases/tag/v3.6.3)
+
+## 3.6.2
+
+- [netbox 3.6.2](https://github.com/netbox-community/netbox/releases/tag/v3.6.2)
+
+## 3.6.1
+
+- [netbox 3.6.1](https://github.com/netbox-community/netbox/releases/tag/v3.6.1)
+
 ## 3.6.0
 
 - [netbox 3.6.0](https://github.com/netbox-community/netbox/releases/tag/v3.6.0)

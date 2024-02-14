@@ -1,6 +1,6 @@
 {
   "name": "Netbox-dev",
-  "version": "3.6.0",
+  "version": "3.7.2",
   "slug": "netbox-dev",
   "description": "NetBox is an open source web application designed to help manage and document computer networks",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/netbox",
@@ -9,14 +9,15 @@
   "startup": "application",
   "boot": "auto",
   "webui": "[PROTO:https]://[HOST]:[PORT:80]/",
-  "map": ["config", "media:rw", "share:rw", "ssl"],
+  "map": ["addon_config:rw", "homeassistant_config", "media:rw", "share:rw", "ssl"],
   "options": {
     "user": "",
     "password": "",
     "https": false,
     "certfile": "fullchain.pem",
     "keyfile": "privatekey.pem",
-    "LOGIN_REQUIRED": false
+    "LOGIN_REQUIRED": false,
+    "debug": false
   },
   "schema": {
     "user": "str?",
@@ -24,7 +25,8 @@
     "https": "bool",
     "certfile": "str",
     "keyfile": "str",
-    "LOGIN_REQUIRED": "bool"
+    "LOGIN_REQUIRED": "bool",
+    "debug": "bool"
   },
   "ports": {
     "80/tcp": 5580,

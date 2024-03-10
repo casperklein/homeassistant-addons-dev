@@ -1,10 +1,64 @@
 # Changelog
 
+## 2024.02.2
+
+
+## 2024.02.1
+
+- [FTL 5.25.1](https://github.com/pi-hole/FTL/releases/tag/v5.25.1)
+
+## 2024.02.0
+
+- [FTL 5.25](https://github.com/pi-hole/FTL/releases/tag/v5.25)
+
+## 2024.01.0
+
+- [Pi-hole 5.17.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.17.3)
+- [FTL 5.24](https://github.com/pi-hole/FTL/releases/tag/v5.24)
+- Internal code cleanup
+
+## 2023.11.0
+
+- [Web 5.21](https://github.com/pi-hole/web/releases/tag/v5.21)
+
+## 2023.10.0
+
+- [Pi-hole 5.17.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.17.2)
+- [Web 5.20.2](https://github.com/pi-hole/web/releases/tag/v5.20.2) (previously known as AdminLTE)
+
+## 2023.05.2.1
+
+- [dnscrypt-proxy 2.1.5](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.5)
+
+## 2023.05.2
+
+- [Pi-hole 5.17.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.17.1)
+- [AdminLTE 5.20.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.20.1)
+- [FTL 5.23](https://github.com/pi-hole/FTL/releases/tag/v5.23)
+
+## 2023.03.1
+
+- [Pi-hole 5.16.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.16.2)
+- [AdminLTE 5.19](https://github.com/pi-hole/AdminLTE/releases/tag/v5.19)
+- [FTL 5.22](https://github.com/pi-hole/FTL/releases/tag/v5.22)
+
+## 2023.02.2
+
+- [Minor improvements](https://github.com/pi-hole/docker-pi-hole/releases/tag/2023.02.2)
+
+## 2023.02.1
+
+- [Pi-hole 5.15.5](https://github.com/pi-hole/pi-hole/releases/tag/v5.15.5)
+- [AdminLTE 5.18.4](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18.4)
+- [FTL 5.21](https://github.com/pi-hole/FTL/releases/tag/v5.21)
+- [dnscrypt-proxy 2.1.4](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.4)
+
 ## 2023.01.10
 
 - [Pi-hole 5.15.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.15.3)
 - [AdminLTE 5.18.3](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18.3)
 - [FTL 5.20.1](https://github.com/pi-hole/FTL/releases/tag/v5.20.1)
+- [dnscrypt-proxy 2.1.3](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.3)
 
 ## 2022.12
 

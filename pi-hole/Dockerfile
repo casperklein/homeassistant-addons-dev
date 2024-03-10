@@ -1,7 +1,13 @@
 # Customize upstream image #########################################################################
-FROM	pihole/pihole:2023.01.10 as pihole
+FROM	pihole/pihole:2024.02.2 as pihole
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
+
+# Check if build args are not empty ################################################################
+ARG	BUILD_ARCH
+ARG	VERSION
+RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
+RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
 # Update base image packages, install jq and cleanup
 RUN	apt-get update && apt-get -y upgrade \
@@ -14,34 +20,18 @@ COPY	rootfs /
 # Disable x-frame-options for Home Assistant Ingress
 RUN	sedfile -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/pihole-admin.conf
 
-# Fix Ingress caching problem
-#RUN	sedfile -i 's/"mod_expire"/#"mod_expire"/g'	/etc/.pihole/advanced/lighttpd.conf.debian
-#&&	sedfile -i 's/^expire.url/#expire.url/g'	/etc/.pihole/advanced/lighttpd.conf*
+# Remove docker-pi-hole update instructions
+RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" \
+rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||g' /var/www/html/admin/scripts/pi-hole/php/footer.php
 
 RUN	rm /bin/sedfile
 
-# Fixed with 2022.08.3 --> https://github.com/pi-hole/docker-pi-hole/issues/1186#issuecomment-1230214280
-# Fix s6 dependencies: wait for cont-init.d to finish, before starting services s6-rc.d
-# This adds "base" as dependency for all services
-# https://github.com/just-containers/s6-overlay/issues/471
-# RUN	/bin/fix-dependencies.sh && rm /bin/fix-dependencies.sh
-RUN	rm /bin/fix-dependencies.sh
-
-# Silent capsh error output
-# https://github.com/pi-hole/docker-pi-hole/pull/1133
-# FROM	alpine:3 as patch
-# COPY	--from=pihole /bash_functions.sh /
-# RUN	apk upgrade --no-cache \
-# &&	apk add --no-cache patch wget \
-# &&	wget --progress=dot:giga https://patch-diff.githubusercontent.com/raw/pi-hole/docker-pi-hole/pull/1133.diff \
-# &&	patch -i 1133.diff bash_functions.sh
-
 # Build dnscrypt-proxy from source #################################################################
-FROM	golang:1.19-bullseye as dnscrypt
+FROM	golang:bullseye as dnscrypt
 
 ENV	GIT_USER="dnscrypt"
 ENV	GIT_REPO="dnscrypt-proxy"
-ENV	GIT_COMMIT="2.1.2"
+ENV	GIT_COMMIT="2.1.5"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 ENV	DEBIAN_FRONTEND=noninteractive
 
@@ -52,15 +42,6 @@ ADD	$GIT_ARCHIVE /
 RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 WORKDIR	/$GIT_REPO/dnscrypt-proxy
 RUN	go build -ldflags="-s -w" -mod vendor
-
-# Check if build args are not empty ################################################################
-FROM	bash:latest
-
-ARG	BUILD_ARCH
-ARG	VERSION
-
-RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
-RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
 # Build final image ################################################################################
 FROM	scratch
@@ -86,7 +67,6 @@ ENV FTL_CMD="no-daemon"
 ENV FTLCONF_LOCAL_IPV4="0.0.0.0"
 ENV IPv6="True"
 ENV PATH="/opt/pihole:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ENV PHP_ENV_CONFIG="/etc/lighttpd/conf-enabled/15-fastcgi-php.conf"
 ENV PHP_ERROR_LOG="/var/log/lighttpd/error-pihole.log"
 ENV phpver="php"
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2"
@@ -101,5 +81,3 @@ SHELL ["/bin/bash","-c"]
 
 COPY	--from=dnscrypt /dnscrypt-proxy/dnscrypt-proxy/dnscrypt-proxy /
 COPY	--from=pihole / /
-
-# COPY	--from=patch /bash_functions.sh /

@@ -2,21 +2,17 @@ FROM	debian:12-slim as build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v3.7.2"
+ENV	GIT_COMMIT="v3.7.3"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
-#ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql libpq-dev python3-pip python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev graphviz libpq-dev libssl-dev redis-server zlib1g-dev libjpeg-dev"
-# ENV 	PACKAGES="python3 python3-pip python3-venv python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
-# ENV	PACKAGES="python3-pip"
-ENV	PACKAGES="python3-venv"
-# python3-venv"
-#                                                  python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
-# ENV	PACKAGES_CLEAN="                           python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
-ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
+#? https://docs.netbox.dev/en/stable/installation/3-netbox/#install-system-packages
+# ENV	PACKAGES="python3 python3-pip python3-venv python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
+# ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
+ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
-# Check if build args are not empty ################################################################
+# Check if build args are not empty
 ARG	BUILD_ARCH
 ARG	VERSION
 RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
@@ -60,17 +56,16 @@ RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '******************************
 #	or set: CSRF_TRUSTED_ORIGINS = [ "https://example.com" ]
 RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
 
-# use python venv
+# create and use python virtual environment
 ENV	VIRTUAL_ENV=/opt/netbox/venv
 RUN	python3 -m venv "$VIRTUAL_ENV"
 ENV	PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install dependencies
-# ? Disable, when pip-venv is used
 WORKDIR	/opt/netbox
 # RUN	pip3 install --no-cache-dir --upgrade pip setuptools wheel \
 RUN	pip3 install --no-cache-dir --upgrade pip wheel \
-;	pip3 install --no-cache-dir -r requirements.txt
+&&	pip3 install --no-cache-dir -r requirements.txt
 
 # Setup netbox
 WORKDIR	/opt/netbox/netbox
@@ -78,13 +73,7 @@ RUN	/etc/init.d/redis-server start \
 &&	pg_ctlcluster 15 main start \
 &&	sudo -u postgres psql < /db.sql \
 &&	rm -v /db.sql \
-# ? no pip3-venv
-# &&	python3 manage.py migrate \
-# &&	python3 manage.py collectstatic --no-input \
 &&	netbox-upgrade.sh \
-# ? pip3-venv; see run.sh for comments
-# https://github.com/netbox-community/netbox/blob/develop/upgrade.sh
-# &&	/opt/netbox/upgrade.sh \
 &&	/etc/init.d/redis-server stop \
 &&	pg_ctlcluster 15 main stop \
 #	Disable x-frame-options for usage with https://www.home-assistant.io/integrations/panel_iframe/
@@ -106,17 +95,16 @@ RUN	sedfile -i 's|^daemonize yes$|daemonize no|' /etc/redis/redis.conf
 # WORKDIR	/opt/netbox/
 # RUN	mkdocs build
 
-# Cleanup
-# RUN	apt-get -y purge $PACKAGES_CLEAN \
-# RUN	apt-get -y autoremove
-
-# Build final image ################################################################################
+# Build final image
 FROM	scratch
 
 ARG	BUILD_ARCH
 ARG	VERSION
+ENV	VERSION="$VERSION"
 
-# needed for [program:rqworker] and housekeeping.sh
+# activate python virtual environment
+# needed for rqworker, run.sh, housekeeping.sh
+# same as 'source /opt/netbox/venv/bin/activate'
 ENV	PATH="/opt/netbox/venv/bin:$PATH"
 
 LABEL	io.hass.name="Netbox-dev"

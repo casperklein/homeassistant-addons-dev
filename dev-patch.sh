@@ -25,5 +25,12 @@ sedfile -i -E 's|io.hass.name="(.*)"|io.hass.name="\1-dev"|' Dockerfile
 sedfile -i -E 's|image="casperklein/homeassistant-(.*):|image="casperklein/homeassistant-\1-dev:|' Dockerfile
 sedfile -i    's|casperklein/homeassistant-addons/tree/master|casperklein/homeassistant-addons-dev/tree/master|' Dockerfile
 
+sedfile -i -E 's|casperklein/homeassistant-addons\)|casperklein/homeassistant-addons-dev)|g' README.md
+sedfile -i -E 's|casperklein%2Fhomeassistant-addons%2F|casperklein%2Fhomeassistant-addons-dev%2F|g' README.md
+sedfile -i -E 's|casperklein%2Fhomeassistant-addons$|casperklein%2Fhomeassistant-addons-dev|g' README.md
+IDENTIFIER_STABLE=$(printf %s https://github.com/casperklein/homeassistant-addons  | sha1sum | head -c8)
+IDENTIFIER_DEV=$(printf %s https://github.com/casperklein/homeassistant-addons-dev | sha1sum | head -c8)
+sedfile -i "s|$IDENTIFIER_STABLE|$IDENTIFIER_DEV|g" README.md
+
 echo "Info: config.json and Dockerfile successful patched."
 echo

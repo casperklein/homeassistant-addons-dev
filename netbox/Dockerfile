@@ -60,9 +60,9 @@ RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '******************************
 RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
 
 # If this is set to a non-empty string, Python won’t try to write .pyc files on the import of source modules.
-ENV	PYTHONDONTWRITEBYTECODE 1
-# Force the stdout and stderr streams to be unbuffered. This option has no effect on the stdin stream.
-ENV	PYTHONUNBUFFERED 1
+# ENV	PYTHONDONTWRITEBYTECODE 1
+# # Force the stdout and stderr streams to be unbuffered. This option has no effect on the stdin stream.
+# ENV	PYTHONUNBUFFERED 1
 
 
 # create and use python virtual environment

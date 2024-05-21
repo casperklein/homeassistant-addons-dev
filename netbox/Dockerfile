@@ -2,13 +2,16 @@ FROM	debian:12-slim as build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v3.7.3"
+ENV	GIT_COMMIT="v4.0.2"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 #? https://docs.netbox.dev/en/stable/installation/3-netbox/#install-system-packages
 # ENV	PACKAGES="python3 python3-pip python3-venv python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
 # ENV	PACKAGES="$PACKAGES stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
 ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
+ENV	BUILD_PACKAGES="python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
+ENV	PACKAGES="$PACKAGES $BUILD_PACKAGES"
+ENV 	PACKAGES_CLEAN="$BUILD_PACKAGES"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -56,6 +59,12 @@ RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '******************************
 #	or set: CSRF_TRUSTED_ORIGINS = [ "https://example.com" ]
 RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
 
+# If this is set to a non-empty string, Python won’t try to write .pyc files on the import of source modules.
+ENV	PYTHONDONTWRITEBYTECODE 1
+# Force the stdout and stderr streams to be unbuffered. This option has no effect on the stdin stream.
+ENV	PYTHONUNBUFFERED 1
+
+
 # create and use python virtual environment
 ENV	VIRTUAL_ENV=/opt/netbox/venv
 RUN	python3 -m venv "$VIRTUAL_ENV"
@@ -94,6 +103,12 @@ RUN	sedfile -i 's|^daemonize yes$|daemonize no|' /etc/redis/redis.conf
 # TODO https://github.com/netbox-community/netbox/discussions/13165
 # WORKDIR	/opt/netbox/
 # RUN	mkdocs build
+
+
+# Cleanup
+RUN     apt-get -y purge $PACKAGES_CLEAN \
+&&      apt-get -y autoremove
+
 
 # Build final image
 FROM	scratch

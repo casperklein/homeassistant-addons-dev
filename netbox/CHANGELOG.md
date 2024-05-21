@@ -1,5 +1,29 @@
 # Changelog
 
+## 4.0.2
+
+- [netbox 4.0.2](https://github.com/netbox-community/netbox/releases/tag/v4.0.2)
+
+## 3.7.8
+
+- [netbox 3.7.8](https://github.com/netbox-community/netbox/releases/tag/v3.7.8)
+
+## 3.7.7
+
+- [netbox 3.7.7](https://github.com/netbox-community/netbox/releases/tag/v3.7.7)
+
+## 3.7.6
+
+- [netbox 3.7.6](https://github.com/netbox-community/netbox/releases/tag/v3.7.6)
+
+## 3.7.5
+
+- [netbox 3.7.5](https://github.com/netbox-community/netbox/releases/tag/v3.7.5)
+
+## 3.7.4
+
+- [netbox 3.7.4](https://github.com/netbox-community/netbox/releases/tag/v3.7.4)
+
 ## 3.7.3
 
 - [netbox 3.7.3](https://github.com/netbox-community/netbox/releases/tag/v3.7.3)

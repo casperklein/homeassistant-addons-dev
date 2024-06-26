@@ -16,7 +16,7 @@
     "https": false,
     "certfile": "fullchain.pem",
     "keyfile": "privatekey.pem",
-    "LOGIN_REQUIRED": false,
+    "LOGIN_REQUIRED": true,
     "debug": false
   },
   "schema": {

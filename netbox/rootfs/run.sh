@@ -17,17 +17,9 @@ _log() {
 	echo "$OUTPUT"
 }
 
-_debug() {
-	_log debug "$1"
-}
-
-_error() {
-	_log error "$1"
-}
-
-_info() {
-	_log info "$1"
-}
+_debug() { _log debug "$1"; }
+_error() { _log error "$1"; }
+_info()  { _log info  "$1"; }
 
 _shutdown() {
 	_info "Container shutdown in progress.."
@@ -153,7 +145,7 @@ if [ -f "/config/requirements.txt" ]; then
 fi
 
 if [ "$DEBUG" = true ]; then
-	_info "DEBUG is enabled. Creating /config/configuration-merged.py"
+	_debug "Creating /config/configuration-merged.py for debugging.."
 	echo    "# $(date +%c)"                                           > /config/configuration-merged.py
 	echo -e "# This file is auto-generated and just for debugging\n" >> /config/configuration-merged.py
 	cat "$NETBOX_CONFIG"                                             >> /config/configuration-merged.py

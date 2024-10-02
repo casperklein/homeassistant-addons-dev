@@ -59,8 +59,7 @@ RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '******************************
 RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
 
 # Install 'uv', an extremely fast Python package and project manager, written in Rust.
-RUN	curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV	PATH="/root/.cargo/bin:$PATH"
+COPY	--from=ghcr.io/astral-sh/uv:latest /uv /usr/bin/uv
 
 # create and use python virtual environment
 ENV	VIRTUAL_ENV=/opt/netbox/.venv
@@ -116,6 +115,9 @@ ENV	VERSION="$VERSION"
 # needed for rqworker, run.sh, housekeeping.sh
 # same as 'source /opt/netbox/.venv/bin/activate'
 ENV	PATH="/opt/netbox/.venv/bin:$PATH"
+
+# Show python output immediately, not buffered.
+ENV     PYTHONUNBUFFERED=1
 
 LABEL	io.hass.name="Netbox-dev"
 LABEL	io.hass.description="NetBox is an open source web application designed to help manage and document computer networks"

@@ -1,5 +1,39 @@
 # Changelog
 
+## 4.1.11
+
+- [netbox 4.1.11](https://github.com/netbox-community/netbox/releases/tag/v4.1.11)
+
+## 4.1.10
+
+- [netbox 4.1.10](https://github.com/netbox-community/netbox/releases/tag/v4.1.10)
+
+## 4.1.9
+
+- [netbox 4.1.9](https://github.com/netbox-community/netbox/releases/tag/v4.1.9)
+
+## 4.1.8
+
+- [netbox 4.1.8](https://github.com/netbox-community/netbox/releases/tag/v4.1.8)
+
+## 4.1.7
+
+- [netbox 4.1.7](https://github.com/netbox-community/netbox/releases/tag/v4.1.7)
+
+## 4.1.6
+
+- [netbox 4.1.6](https://github.com/netbox-community/netbox/releases/tag/v4.1.6)
+
+## 4.1.5
+
+- [netbox 4.1.5](https://github.com/netbox-community/netbox/releases/tag/v4.1.5)
+
+## 4.1.4
+
+- [netbox 4.1.4](https://github.com/netbox-community/netbox/releases/tag/v4.1.4)
+- Image size reduced
+- Using 'uv' instead of 'pip'
+
 ## 4.1.3
 
 - [netbox 4.1.3](https://github.com/netbox-community/netbox/releases/tag/v4.1.3)

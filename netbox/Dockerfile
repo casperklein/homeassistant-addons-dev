@@ -2,13 +2,13 @@ FROM	debian:12-slim AS build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v4.1.3"
+ENV	GIT_COMMIT="v4.1.11"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 #? https://docs.netbox.dev/en/stable/installation/3-netbox/#install-system-packages
-ENV	PACKAGES="stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
-# ENV	PACKAGES_BUILD="python3-venv python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
-ENV	PACKAGES_BUILD="python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev curl ca-certificates"
+# ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
+ENV	PACKAGES="             stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
+ENV	PACKAGES_BUILD="python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
 ENV	PACKAGES="$PACKAGES $PACKAGES_BUILD"
 ENV 	PACKAGES_CLEAN="$PACKAGES_BUILD"
 
@@ -59,6 +59,7 @@ RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '******************************
 RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
 
 # Install 'uv', an extremely fast Python package and project manager, written in Rust.
+# https://github.com/astral-sh/uv
 COPY	--from=ghcr.io/astral-sh/uv:latest /uv /usr/bin/uv
 
 # create and use python virtual environment
@@ -69,7 +70,7 @@ ENV	PATH="$VIRTUAL_ENV/bin:$PATH"
 # Install dependencies
 WORKDIR	/opt/netbox
 # RUN	pip3 install --no-cache-dir --upgrade pip setuptools wheel \
-# RUN	uv pip install --no-cache-dir --upgrade pip wheel \
+# RUN	pip3 install --no-cache-dir --upgrade pip wheel \
 RUN	uv pip install --no-cache-dir -r requirements.txt
 
 # Setup netbox

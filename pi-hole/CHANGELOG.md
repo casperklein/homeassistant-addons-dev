@@ -1,5 +1,37 @@
 # Changelog
 
+## 2024.07.0.2
+
+- [dnscrypt-proxy 2.1.7](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.7)
+
+## 2024.07.0.1
+
+- [dnscrypt-proxy 2.1.6](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.6)
+
+## 2024.07.0
+
+- [Pi-hole 5.18.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.18.3)
+
+## 2024.06.0
+
+- [Maintenance release](https://github.com/pi-hole/docker-pi-hole/releases/tag/2024.06.0)
+
+## 2024.05.0
+
+- [FTL 5.25.2](https://github.com/pi-hole/FTL/releases/tag/v5.25.2)
+
+## 2024.03.2
+
+- [Pi-hole 5.18.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.18.2)
+
+## 2024.03.1
+
+- [Pi-hole 5.18.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.18.1)
+
+## 2024.03.0
+
+- [Pi-hole 5.18](https://github.com/pi-hole/pi-hole/releases/tag/v5.18)
+
 ## 2024.02.2
 
 

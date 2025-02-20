@@ -13,7 +13,7 @@
 
 [![Open this add-on in your Home Assistant instance.][addon-badge]][addon]
 
-1. Add [this](https://github.com/casperklein/homeassistant-addons) Home Assistant add-ons repository to your Home Assistant instance or use the button above.
+1. Add [this](https://github.com/casperklein/homeassistant-addons-dev) Home Assistant add-ons repository to your Home Assistant instance or use the button above.
 1. Install the Pi-hole add-on.
 1. Start the add-on.
 
@@ -44,7 +44,7 @@ To test your setup, visit [https://1.1.1.1/help](https://1.1.1.1/help). If you s
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-blue.svg
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-blue.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-blue.svg
-[version-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fcasperklein%2Fhomeassistant-addons%2Fmaster%2Fpi-hole%2Fconfig.json
+[version-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fcasperklein%2Fhomeassistant-addons-dev%2Fmaster%2Fpi-hole%2Fconfig.json
 [image-size-shield]: https://img.shields.io/docker/image-size/casperklein/homeassistant-pihole/latest
 [addon-badge]: https://my.home-assistant.io/badges/supervisor_addon.svg
-[addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=0da538cf_pihole&repository_url=https%3A%2F%2Fgithub.com%2Fcasperklein%2Fhomeassistant-addons
+[addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=83ea786c_pihole&repository_url=https%3A%2F%2Fgithub.com%2Fcasperklein%2Fhomeassistant-addons-dev

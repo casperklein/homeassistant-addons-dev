@@ -1,7 +1,10 @@
 # Customize upstream image #########################################################################
-FROM	pihole/pihole:2024.07.0 AS pihole
+FROM	pihole/pihole:2025.02.7 AS pihole
 
-SHELL	["/bin/bash", "-o", "pipefail", "-c"]
+ARG	YQ_VERSION=v4.45.1
+ARG	SV_VERSION=0.1
+
+SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
 
 # Check if build args are not empty ################################################################
 ARG	BUILD_ARCH
@@ -9,25 +12,56 @@ ARG	VERSION
 RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
 RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
-# Update base image packages, install jq and cleanup
-RUN	apt-get update && apt-get -y upgrade \
-&&	apt-get -y install jq \
-&&	rm -rf /var/lib/apt/lists/*
+# Update base image packages
+RUN	apk upgrade --no-cache \
+&&	apk add --no-cache dumb-init
 
 # Copy root filesystem
 COPY	rootfs /
 
+# Install yq
+RUN <<EOF
+	if [ "$BUILD_ARCH" == "armhf" ]; then
+		BUILD_ARCH=arm
+	fi
+	curl -sSLf -o /usr/bin/yq "https://github.com/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_$BUILD_ARCH"
+	chmod +x /usr/bin/yq
+EOF
+
+# Install supervisor.sh
+RUN <<"EOF"
+	curl -sSLf -o /usr/bin/supervisor.sh "https://raw.githubusercontent.com/casperklein/supervisor.sh/refs/tags/$SV_VERSION/supervisor.sh"
+	chmod +x /usr/bin/supervisor.sh
+	supervisor.sh --config /etc/supervisor.yaml convert
+EOF
+
+# todo
+# todo https://github.com/pi-hole/FTL/issues/2215
 # Disable x-frame-options for Home Assistant Ingress
-RUN	sedfile -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/pihole-admin.conf
+# RUN	sedfile -i '/"X-Frame-Options"/ s/DENY/SAMEORIGIN/g' /etc/.pihole/advanced/pihole-admin.conf
+
+# Better Fix at runtime (existing setups)? --> if so, then remove from custom pi-hole.toml
+# sed '/X-Frame-Options: DENY/d' pihole.toml
+
+# Check if defaults have changed
+RUN <<"EOF"
+	CHECKSUM=$(curl -sSLf https://raw.githubusercontent.com/pi-hole/FTL/refs/heads/master/src/config/config.c | grep 'webserver.headers.d.json' | sha1sum)
+	if [ "${CHECKSUM%% *}" != "7b3d05f2871939e2d3e4036d473fa03b5c6eece4" ]; then
+		echo "Default webserver headers config has changed. Check: https://raw.githubusercontent.com/pi-hole/FTL/refs/heads/master/src/config/config.c"
+		echo
+		exit 1
+	fi
+EOF
 
 # Remove docker-pi-hole update instructions
 RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" \
-rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||g' /var/www/html/admin/scripts/pi-hole/php/footer.php
+	rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||g' /var/www/html/admin/scripts/js/footer.js
 
-RUN	rm /bin/sedfile
+# Remove no longer needed dependencies (saves 10MB)
+RUN	rm /usr/bin/sedfile /usr/bin/yq
 
 # Build dnscrypt-proxy from source #################################################################
-FROM	golang:bullseye AS dnscrypt
+FROM	golang:bookworm AS dnscrypt
 
 ENV	GIT_USER="dnscrypt"
 ENV	GIT_REPO="dnscrypt-proxy"
@@ -41,6 +75,12 @@ WORKDIR	/$GIT_REPO
 ADD	$GIT_ARCHIVE /
 RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 WORKDIR	/$GIT_REPO/dnscrypt-proxy
+
+# Compile with static linking (including all library code in the binary); needed for alpine image
+# Otherwise --> /dnscrypt-proxy: cannot execute: required file not found
+ENV	CGO_ENABLED=0
+
+# Builds a Go binary without symbol tables and debugging information, reducing the file size.
 RUN	go build -ldflags="-s -w" -mod vendor
 
 # Build final image ################################################################################
@@ -59,25 +99,34 @@ LABEL	image="casperklein/homeassistant-pihole-dev:${VERSION}"
 LABEL	maintainer="Casper Klein"
 LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole"
 
-# From base image
-# docker-image-options pihole/pihole:latest | sort | grep -v LABEL
-ENTRYPOINT ["/s6-init"]
-ENV DNSMASQ_USER="pihole"
-ENV FTL_CMD="no-daemon"
-ENV FTLCONF_LOCAL_IPV4="0.0.0.0"
-ENV IPv6="True"
-ENV PATH="/opt/pihole:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ENV PHP_ERROR_LOG="/var/log/lighttpd/error-pihole.log"
-ENV phpver="php"
-ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2"
-ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME="0"
-ENV S6_KEEP_ENV="1"
-EXPOSE 53/tcp
-EXPOSE 53/udp
-EXPOSE 67/udp
-EXPOSE 80/tcp
-HEALTHCHECK CMD dig +short +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
-SHELL ["/bin/bash","-c"]
+# Disable authentication. Done via Home Assistant ingress
+ENV	FTLCONF_webserver_api_password=""
+# TODO Try WEBPASSWORD_FILE when released, to avoid build check warning: SecretsUsedInArgOrEnv - https://docs.docker.com/go/dockerfile/rule/secrets-used-in-arg-or-env/
+# ENV	WEBPASSWORD_FILE="/etc/WEBPASSWORD_FILE"
+
+# Disable DHCP
+ENV	FTLCONF_dhcp_active="false"
 
 COPY	--from=dnscrypt /dnscrypt-proxy/dnscrypt-proxy/dnscrypt-proxy /
 COPY	--from=pihole / /
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD	[ "/usr/bin/supervisor.sh", "--config", "/etc/supervisor.yaml.sh" ]
+
+# TODO
+# Not yet in base image: https://github.com/pi-hole/docker-pi-hole/pull/1768
+EXPOSE	123/udp
+
+# From base image
+# docker-image-options pihole/pihole:latest | sort | grep -v LABEL
+
+# ENTRYPOINT ["start.sh"]
+ENV DNSMASQ_USER="pihole"
+ENV FTL_CMD="no-daemon"
+EXPOSE 443/tcp
+EXPOSE 53/tcp
+EXPOSE 53/udp
+# EXPOSE 67/udp
+EXPOSE 80/tcp
+HEALTHCHECK CMD dig +short +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
+WORKDIR /

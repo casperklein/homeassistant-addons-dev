@@ -1,0 +1,21 @@
+supervisor:
+  logfile: "/dev/stdout"
+  sigterm_grace_period: 55
+  keep_running: "on"
+
+jobs:
+  - name: "Initialization"
+    command: "/usr/bin/home-assistant.sh"
+    autostart: "on"
+    restart: "off"
+    logfile: "/dev/stdout"
+
+  - name: "Pi-hole"
+    command: "sleep 0.5; /usr/bin/start.sh"
+    autostart: "off"
+    restart: "error"
+    logfile: "/dev/stdout"
+
+# todo
+  - name: "DNSCrypt-Proxy"
+    command: "sleep 1d"

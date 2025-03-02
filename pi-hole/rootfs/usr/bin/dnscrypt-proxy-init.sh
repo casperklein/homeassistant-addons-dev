@@ -6,6 +6,7 @@ OPTIONS="/data/options.json"
 CONFIG="/dnscrypt-proxy.toml"
 SERVICE="/run/service/dnscrypt-proxy"
 PH_CONFIG="/data/pihole/setupVars.conf"
+# PH_CONFIG="/etc/pihole/pihole.toml" # todo
 
 # Check if there are dnscrypt settings
 if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
@@ -43,6 +44,7 @@ if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
 	fi
 
 	# Check if custom DNS server is properly configured
+	# TODO yq -r '.dns.upstreams[]' /etc/pihole/pihole.toml
 	if ! grep -qP 'PIHOLE_DNS_[0-9]+=127\.0\.0\.1#5353' "$PH_CONFIG"; then
 		echo "WARNING: Custom DNS server 127.0.0.1#5353 is NOT configured. DNSCrypt/DoH name resolution will NOT work until this is fixed."
 	else

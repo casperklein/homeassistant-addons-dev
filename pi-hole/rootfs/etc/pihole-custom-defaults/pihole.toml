@@ -1,0 +1,22 @@
+[dns]
+  listeningMode = "all"
+
+[dhcp]
+  [ntp.ipv4]
+  active = false
+
+  [ntp.ipv6]
+  active = false
+
+  [ntp.sync]
+  active = false
+
+[webserver]
+  headers = [
+    "Content-Security-Policy: default-src 'self' 'unsafe-inline';",
+    # "X-Frame-Options: DENY",
+    "X-Frame-Options: SAMEORIGIN",
+    "X-XSS-Protection: 0",
+    "X-Content-Type-Options: nosniff",
+    "Referrer-Policy: strict-origin-when-cross-origin"
+  ]

@@ -54,11 +54,10 @@ RUN <<"EOF"
 EOF
 
 # Remove docker-pi-hole update instructions
-RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" \
-	rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||g' /var/www/html/admin/scripts/js/footer.js
+RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||' /var/www/html/admin/scripts/js/footer.js
 
 # Remove no longer needed dependencies (saves 10MB)
-RUN	rm /usr/bin/sedfile /usr/bin/yq
+RUN	cd /usr/bin; rm sedfile yq
 
 # Build dnscrypt-proxy from source #################################################################
 FROM	golang:bookworm AS dnscrypt

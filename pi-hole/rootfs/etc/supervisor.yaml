@@ -16,6 +16,9 @@ jobs:
     restart: "error"
     logfile: "/dev/stdout"
 
+  - name: "Ingress-Proxy"
+    command: "nginx -g 'daemon off;'"
+
 # todo
   - name: "DNSCrypt-Proxy"
     command: "sleep 1d"

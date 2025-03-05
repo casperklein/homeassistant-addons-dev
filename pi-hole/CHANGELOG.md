@@ -1,6 +1,6 @@
 # Changelog
 
-## 2025.02.7
+## 2025.03.0
 
 A new major version of Pi-hole has been released. Make sure to make a backup before updating.
 

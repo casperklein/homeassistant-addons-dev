@@ -39,5 +39,7 @@
 		  }
 	  ]
   },
-  "init": false
+  "init": false,
+  "backup_pre": "supervisor.sh stop Pi-hole",
+  "backup_post": "supervisor.sh start Pi-hole"
 }

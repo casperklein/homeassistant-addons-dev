@@ -2,69 +2,98 @@
 
 set -ueo pipefail
 
-OPTIONS="/data/options.json"
-CONFIG="/dnscrypt-proxy.toml"
-SERVICE="/run/service/dnscrypt-proxy"
-PH_CONFIG="/data/pihole/setupVars.conf"
-# PH_CONFIG="/etc/pihole/pihole.toml" # todo
+ADDON_OPTIONS="/data/options.json"
+DNSCRYPT_CONFIG="/etc/dnscrypt-proxy.toml"
+PH_CONFIG="/etc/pihole/pihole.toml"
+
+_status() {
+	local BLUE=$'\e[0;34m'
+	local RESET=$'\e[0m'
+
+	printf -- '%s' "$BLUE"    # Use blue font color
+	printf -- '%(%F %T)T ' -1 # Print current date/time
+	printf -- '%s' "$1"       # Print status message
+	printf -- '%s\n' "$RESET" # Reset color
+}
+
+# (tail -F /var/log/pihole/FTL.log &) | grep -qF 'INFO: Blocking status is'
+# sleep 5
+
+# When migrating from v5, $PH_CONFIG may not exist yet
+# Initialization must be completed
+until [ -f "$PH_CONFIG" ]; do
+	sleep 10
+done
+
+DNS=()
+while read -r UPSTREAMS; do
+	DNS+=("$UPSTREAMS")
+done < <(yq -r '.dns.upstreams[]' "$PH_CONFIG")
+
+# Check if DNSCrypt-Proxy is configured in Pi-hole
+CONFIGURED_IN_PH=0
+for i in "${DNS[@]}"; do
+	if [ "$i" == "127.0.0.1#5353" ]; then
+		CONFIGURED_IN_PH=1
+	fi
+done
 
 # Check if there are dnscrypt settings
-if ! grep -qF '"dnscrypt": []' "$OPTIONS"; then
-	# Only create configuration on first run, in case dnscrypt-proxy crashed and is restarted by s6.
-	if ! grep -qF 'server_names' "$CONFIG"; then
+if ! grep -qF '"dnscrypt": []' "$ADDON_OPTIONS"; then
+	# Append configuration only on first run
+	if ! grep -qF 'server_names' "$DNSCRYPT_CONFIG"; then
+		_status "Creating DNSCrypt-Proxy configuration"
+
 		# Read settings
 		while read -r SERVER; do
 			# {"name":"cloud1","stamp":"sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"}
 			NAME+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f4)")
 			STAMP+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f8)")
-		done < <(jq -r '.dnscrypt[] | @base64' "$OPTIONS")
+		done < <(jq -r '.dnscrypt[] | @base64' "$ADDON_OPTIONS")
 
-		# Create custom dnscrypt-proxy configuration
+		# Create DNSCrypt-Proxy configuration
 		{
-			FIRST=true
+			FIRST_SERVER=1
 			echo -n 'server_names = ['
 			for i in "${NAME[@]}"; do
-				if [ "$FIRST" = true ]; then
+				if (( FIRST_SERVER == 1 )) then
 					echo -n "'$i'"
-					FIRST=false
+					FIRST_SERVER=0
 				else
 					echo -n ",'$i'"
 				fi
 			done
 			echo ']'
 			echo "[static]"
-		} >> "$CONFIG"
+		} >> "$DNSCRYPT_CONFIG"
 
-		{
-			for i in "${!NAME[@]}"; do
-				echo "[static.'${NAME[$i]}']"
-				echo "stamp = '${STAMP[$i]}'"
-			done
-		} >> "$CONFIG"
+		for i in "${!NAME[@]}"; do
+			echo "[static.'${NAME[i]}']"
+			echo "stamp = '${STAMP[i]}'"
+		done >> "$DNSCRYPT_CONFIG"
+	fi
+
+	if (( CONFIGURED_IN_PH == 0 )); then
+		_status "WARNING: Custom DNS server 127.0.0.1#5353 is not configured. DNSCrypt/DoH name resolution will not work until this is resolved."
 	fi
 
 	# Check if custom DNS server is properly configured
-	# TODO yq -r '.dns.upstreams[]' /etc/pihole/pihole.toml
-	if ! grep -qP 'PIHOLE_DNS_[0-9]+=127\.0\.0\.1#5353' "$PH_CONFIG"; then
-		echo "WARNING: Custom DNS server 127.0.0.1#5353 is NOT configured. DNSCrypt/DoH name resolution will NOT work until this is fixed."
-	else
-		# Check for other configured DNS servers
-		if grep -qF 'PIHOLE_DNS_2' "$PH_CONFIG"; then
-			echo "WARNING: There are more DNS servers configured than 127.0.0.1#5353. Not all DNS querys will be handled by dnscrypt-proxy."
+	if (( ${#DNS[@]} > 1 )); then
+		if (( CONFIGURED_IN_PH == 1 )); then
+			_status "WARNING: More than one DNS upstream server is configured in Pi-hole. Not all DNS queries will be handled by DNSCrypt-Proxy."
 		fi
 	fi
 
-	# Start dnscrypt-proxy
-	echo "INFO: Starting dnscrypt-proxy."
-	/dnscrypt-proxy
+	_status "Starting DNSCrypt-Proxy"
+	exec dnscrypt-proxy -config "$DNSCRYPT_CONFIG"
 else
-	# Disable s6 service
-	s6-svc -O "$SERVICE"
-	echo "INFO: No DNSCrypt/DoH settings found in configuration."
-	echo "INFO: NOT starting dnscrypt-proxy."
+	_status "INFO: No DNSCrypt/DoH settings found in the add-on configuration"
+	_status "INFO: DNSCrypt-Proxy is not being started"
 
 	# Check if custom DNS server is configured
-	if grep -qP 'PIHOLE_DNS_[0-9]+=127\.0\.0\.1#5353' "$PH_CONFIG"; then
-		echo "WARNING: Custom DNS server 127.0.0.1#5353 is configured. DNS resolution will NOT work until dnscrypt-proxy is configured in the addon configuration."
+	if (( CONFIGURED_IN_PH == 1 )); then
+		_status "WARNING: DNSCrypt-Proxy (127.0.0.1#5353) is configured as a custom DNS upstream server. DNS resolution will not work until DNSCrypt-Proxy is set up in the add-on configuration."
 	fi
+
+	exit 0 # Graceful exit, to not trigger a restart by supervisor.sh
 fi

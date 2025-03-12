@@ -5,20 +5,25 @@ supervisor:
 
 jobs:
   - name: "Initialization"
-    command: "/usr/bin/home-assistant.sh"
+    command: "/usr/bin/home-assistant.sh || kill -SIGTERM 1"
     autostart: "on"
     restart: "off"
     logfile: "/dev/stdout"
 
+  - name: "DNSCrypt-Proxy"
+    command: "/usr/bin/dnscrypt-proxy-init.sh"
+    autostart: "on"
+    restart: "error"
+    logfile: "/dev/stdout"
+
   - name: "Pi-hole"
-    command: "sleep 0.5; /usr/bin/start.sh"
+    command: "/usr/bin/start.sh"
     autostart: "off"
     restart: "error"
     logfile: "/dev/stdout"
 
   - name: "Ingress-Proxy"
     command: "nginx -g 'daemon off;'"
-
-# todo
-  - name: "DNSCrypt-Proxy"
-    command: "sleep 1d"
+    autostart: "on"
+    restart: "error"
+    logfile: "/dev/stdout"

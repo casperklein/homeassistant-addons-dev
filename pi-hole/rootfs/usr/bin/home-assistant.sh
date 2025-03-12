@@ -61,18 +61,12 @@ fi
 ln -s /data/pihole /etc/pihole
 
 # Not necessary; Pi-hole takes care of this --> https://github.com/pi-hole/pi-hole/blob/master/advanced/Templates/pihole-FTL-prestart.sh
-# todo fix not merged to master yet
-_status "Set permissions"
-chown -R pihole:pihole /data/pihole
-chown    root:root     /data/pihole/logrotate
+# _status "Set permissions"
+# chown -R pihole:pihole /data/pihole
+# chown    root:root     /data/pihole/logrotate
 
 _delete_obsolete_files
 
 _status "Starting Pi-hole"
 
-supervisor.sh --config /etc/supervisor.yaml.sh start "Pi-hole" >/dev/null
-
-# todo
-# https://developers.home-assistant.io/docs/add-ons/configuration/?_highlight=backup#optional-configuration-options
-#   "backup_pre": "supervisor.sh --config /etc/supervisor.yaml.sh stop 'Pi-hole'",
-#   "backup_post": "supervisor.sh --config /etc/supervisor.yaml.sh start 'Pi-hole'",
+supervisor.sh start "Pi-hole" >/dev/null

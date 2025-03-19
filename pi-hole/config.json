@@ -29,16 +29,16 @@
   "boot": "auto",
   "timeout": 60,
   "options": {
-	  "dnscrypt": [],
+    "dnscrypt": [],
     "update_gravity_on_start": false
   },
   "schema": {
-	  "dnscrypt": [
-		  {
-			  "name": "str",
-			  "stamp": "str"
-		  }
-	  ],
+    "dnscrypt": [
+      {
+        "name": "str",
+        "stamp": "str"
+      }
+    ],
     "update_gravity_on_start": "bool"
   },
   "init": false,

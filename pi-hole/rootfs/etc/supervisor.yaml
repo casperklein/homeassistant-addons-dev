@@ -2,6 +2,7 @@ supervisor:
   logfile: "/dev/stdout"
   sigterm_grace_period: 55
   keep_running: "off"
+  color: "\e[0;32m"
 
 jobs:
   - name: "Ingress-Proxy"
@@ -17,7 +18,7 @@ jobs:
     logfile: "/dev/stdout"
 
   - name: "Pi-hole"
-    command: "/usr/bin/start.sh"
+    command: "sleep 0.5; /usr/bin/start.sh"
     autostart: "off"
     restart: "off"
     logfile: "/dev/stdout"

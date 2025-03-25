@@ -1,7 +1,7 @@
 FROM	pihole/pihole:2025.03.0 AS pihole
 
 ARG	YQ_VERSION=v4.45.1
-ARG	SV_VERSION=0.2
+ARG	SV_VERSION=0.3
 ARG	TARGETARCH
 
 SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
@@ -40,8 +40,9 @@ COPY	rootfs /
 # Remove docker-pi-hole update instructions
 RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||' /var/www/html/admin/scripts/js/footer.js
 
-# Inject DNSCrypt-Proxy in Pi-hole start # todo patch?
-RUN	sedfile -i 's|.*# Wait for the capsh process.*|  supervisor.sh start "DNSCrypt-Proxy"\n\n&|' /usr/bin/start.sh
+# Start DNSCrypt-Proxy right after FTL
+# RUN	sedfile -i 's|.*# Wait for the capsh process.*|  supervisor.sh start "DNSCrypt-Proxy" >/dev/null\n\n&|' /usr/bin/start.sh
+RUN	patch -i /etc/pihole-patches/start.sh.patch /usr/bin/start.sh
 
 # TODO Remove after https://github.com/pi-hole/pi-hole/pull/6057 is merged and released
 RUN	sedfile -i 's|chown -R pihole:pihole /etc/pihole /var/log/pihole|chown -R pihole:pihole /etc/pihole/ /var/log/pihole/|' /opt/pihole/pihole-FTL-prestart.sh

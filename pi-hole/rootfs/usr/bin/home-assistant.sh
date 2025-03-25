@@ -73,7 +73,7 @@ _delete_obsolete_files
 UPDATE_GRAVITY_ON_START=$(jq --raw-output '.update_gravity_on_start' /data/options.json)
 if [ "$UPDATE_GRAVITY_ON_START" == "true" ]; then
 	# Run gravity update on Pi-hole start
-	patch -i /etc/update-gravity-on-start.patch /usr/bin/bash_functions.sh >/dev/null
+	patch -i /etc/pihole-patches/update-gravity-on-start.patch /usr/bin/bash_functions.sh >/dev/null
 fi
 
 _status "Starting Pi-hole"

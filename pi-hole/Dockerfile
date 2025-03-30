@@ -1,4 +1,4 @@
-FROM	pihole/pihole:2025.03.0 AS pihole
+FROM	pihole/pihole:2025.03.1 AS pihole
 
 ARG	YQ_VERSION=v4.45.1
 ARG	SV_VERSION=0.3
@@ -15,7 +15,7 @@ RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && ex
 # Update base image packages and install additional software
 RUN <<EOF
 	apk upgrade --no-cache
-	apk add     --no-cache dumb-init nginx patch bash-completion
+	apk add     --no-cache dumb-init nginx patch
 EOF
 
 # Install yq
@@ -44,11 +44,8 @@ RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker
 # RUN	sedfile -i 's|.*# Wait for the capsh process.*|  supervisor.sh start "DNSCrypt-Proxy" >/dev/null\n\n&|' /usr/bin/start.sh
 RUN	patch -i /etc/pihole-patches/start.sh.patch /usr/bin/start.sh
 
-# TODO Remove after https://github.com/pi-hole/pi-hole/pull/6057 is merged and released
-RUN	sedfile -i 's|chown -R pihole:pihole /etc/pihole /var/log/pihole|chown -R pihole:pihole /etc/pihole/ /var/log/pihole/|' /opt/pihole/pihole-FTL-prestart.sh
-
 # TODO Remove after https://github.com/pi-hole/pi-hole/pull/6095 is merged and released
-RUN	sedfile -i 's|saveLocation})|saveLocation} 2>/dev/null)|' /opt/pihole/gravity.sh
+#RUN	sedfile -i 's|saveLocation})|saveLocation} 2>/dev/null)|' /opt/pihole/gravity.sh
 
 # Remove obsolete files
 RUN	rm /etc/nginx/http.d/default.conf /usr/bin/sedfile

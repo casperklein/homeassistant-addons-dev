@@ -1,6 +1,6 @@
 {
   "name": "Netbox-dev",
-  "version": "4.2.6",
+  "version": "4.2.6.1",
   "slug": "netbox-dev",
   "description": "NetBox is an open source web application designed to help manage and document computer networks",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/netbox",
@@ -9,32 +9,28 @@
   "startup": "application",
   "boot": "auto",
   "webui": "[PROTO:https]://[HOST]:[PORT:80]/",
-  "map": ["addon_config:rw", "homeassistant_config", "media:rw", "share:rw", "ssl"],
+  "map": ["addon_config:rw", "media:rw", "share:rw", "ssl"],
   "options": {
     "user": "",
     "password": "",
-    "https": false,
-    "certfile": "fullchain.pem",
-    "keyfile": "privatekey.pem",
     "LOGIN_REQUIRED": true,
     "debug": false
   },
   "schema": {
     "user": "str?",
     "password": "str?",
-    "https": "bool",
-    "certfile": "str",
-    "keyfile": "str",
     "LOGIN_REQUIRED": "bool",
     "debug": "bool"
   },
   "ports": {
-    "80/tcp": 5580,
+    "80/tcp": 8001,
     "5432/tcp": null
   },
   "ports_description": {
     "80/tcp": "Netbox WebGUI",
     "5432/tcp": "PostgreSQL"
   },
-  "init": false
+  "init": false,
+  "backup_pre": "supervisorctl stop nginx && supervisorctl stop housekeeping && supervisorctl stop rqworker && supervisorctl stop netbox && supervisorctl stop redis && supervisorctl stop postgresql",
+  "backup_post": "supervisorctl start netbox"
 }

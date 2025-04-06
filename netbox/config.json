@@ -31,6 +31,6 @@
     "5432/tcp": "PostgreSQL"
   },
   "init": false,
-  "backup_pre": "supervisorctl stop nginx && supervisorctl stop housekeeping && supervisorctl stop rqworker && supervisorctl stop netbox && supervisorctl stop redis && supervisorctl stop postgresql; true",
+  "backup_pre": "bash -c 'supervisorctl stop nginx && supervisorctl stop housekeeping && supervisorctl stop rqworker && supervisorctl stop netbox && supervisorctl stop redis && supervisorctl stop postgresql'",
   "backup_post": "sleep 2; supervisorctl start netbox"
 }

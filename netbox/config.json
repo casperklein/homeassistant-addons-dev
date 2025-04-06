@@ -32,5 +32,5 @@
   },
   "init": false,
   "backup_pre": "supervisorctl stop nginx && supervisorctl stop housekeeping && supervisorctl stop rqworker && supervisorctl stop netbox && supervisorctl stop redis && supervisorctl stop postgresql",
-  "backup_post": "supervisorctl start netbox"
+  "backup_post": "sleep 2; supervisorctl start netbox"
 }

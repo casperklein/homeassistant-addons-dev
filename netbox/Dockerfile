@@ -2,17 +2,17 @@ FROM	debian:12-slim AS build
 
 ENV	GIT_USER="netbox-community"
 ENV	GIT_REPO="netbox"
-ENV	GIT_COMMIT="v4.2.1"
+ENV	GIT_COMMIT="v4.3.1"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 #? https://docs.netbox.dev/en/stable/installation/3-netbox/#install-system-packages
-# ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
-ENV	PACKAGES="             stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix"
+# ENV	PACKAGES="python3-venv stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix nginx net-tools"
+ENV	PACKAGES="             stunnel4 jq sudo postgresql redis-server dumb-init supervisor procps dos2unix nginx net-tools"
 ENV	PACKAGES_BUILD="python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev"
 ENV	PACKAGES="$PACKAGES $PACKAGES_BUILD"
 ENV 	PACKAGES_CLEAN="$PACKAGES_BUILD"
 
-SHELL	["/bin/bash", "-o", "pipefail", "-c"]
+SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
 
 # Check if build args are not empty
 ARG	BUILD_ARCH
@@ -22,10 +22,12 @@ RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && ex
 
 # Install packages
 ENV	DEBIAN_FRONTEND=noninteractive
-RUN	apt-get update \
-&&	apt-get -y upgrade \
-&&	apt-get -y --no-install-recommends install $PACKAGES \
-&&	rm -rf /var/lib/apt/lists/*
+RUN <<EOF
+	apt-get update
+	apt-get -y upgrade
+	apt-get -y --no-install-recommends install $PACKAGES
+	rm -rf /var/lib/apt/lists/*
+EOF
 
 # Download source
 WORKDIR	/opt/netbox
@@ -35,28 +37,33 @@ RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 # Copy root filesystem
 COPY	rootfs /
 
-# Change supervisord defaults
-# Fix for: CRIT Supervisor is running as root. Privileges were not dropped because no user is specified in the config file.
-RUN	sedfile -i 's|\[supervisord\]|[supervisord]\nuser=root|'                            /etc/supervisor/supervisord.conf \
-# Fix for: CRIT Server 'unix_http_server' running without any HTTP authentication checking.
-&&	sedfile -i 's|\[unix_http_server\]|[unix_http_server]\nusername=foo\npassword=foo|' /etc/supervisor/supervisord.conf \
-&&	sedfile -i 's|\[supervisorctl\]|[supervisorctl]\nusername=foo\npassword=foo|'       /etc/supervisor/supervisord.conf
+RUN <<EOF
+	# Change supervisord defaults
+	# Fix for: CRIT Supervisor is running as root. Privileges were not dropped because no user is specified in the config file.
+	sedfile -i 's|\[supervisord\]|[supervisord]\nuser=root|'                            /etc/supervisor/supervisord.conf
+
+	# Fix for: CRIT Server 'unix_http_server' running without any HTTP authentication checking.
+	sedfile -i 's|\[unix_http_server\]|[unix_http_server]\nusername=foo\npassword=foo|' /etc/supervisor/supervisord.conf
+	sedfile -i 's|\[supervisorctl\]|[supervisorctl]\nusername=foo\npassword=foo|'       /etc/supervisor/supervisord.conf
+EOF
 
 WORKDIR	/opt/netbox/netbox/netbox
-RUN	cp configuration_example.py configuration.py
 
-# Customize netbox
-# https://github.com/netbox-community/netbox/blob/develop/netbox/netbox/configuration_example.py
-#	ALLOWED_HOSTS = [] --> ALLOWED_HOSTS = ['*']
-RUN	sedfile -i "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = ['*']/" configuration.py
-#	Set PostgreSQL user/password
-RUN	sedfile -i "s/^    'USER': '',               # PostgreSQL username$/    'USER': 'netbox',               # PostgreSQL username/" configuration.py
-RUN	sedfile -i "s/^    'PASSWORD': '',           # PostgreSQL password$/    'PASSWORD': 'netbox',           # PostgreSQL password/" configuration.py
-#	If not set to a dummy value, 'python3 manage.py migrate' fails
-RUN	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '**************************************************'/" configuration.py
-#	disable CSRF middleware. When enabled and using stunnel, the 'CSRF verification failed. Request aborted.'
-#	or set: CSRF_TRUSTED_ORIGINS = [ "https://example.com" ]
-RUN	sedfile -i "s/'django.middleware.csrf.CsrfViewMiddleware'/#'django.middleware.csrf.CsrfViewMiddleware'/" /opt/netbox/netbox/netbox/settings.py
+RUN <<EOF
+	cp configuration_example.py configuration.py
+
+	# Customize netbox
+	# https://github.com/netbox-community/netbox/blob/develop/netbox/netbox/configuration_example.py
+	# ALLOWED_HOSTS = [] --> ALLOWED_HOSTS = ['*']
+	sedfile -i "s/^ALLOWED_HOSTS = \[\]$/ALLOWED_HOSTS = ['*']/" configuration.py
+
+	# Set PostgreSQL user/password
+	sedfile -i "s/^        'USER': '',               # PostgreSQL username$/        'USER': 'netbox',               # PostgreSQL username/" configuration.py
+	sedfile -i "s/^        'PASSWORD': '',           # PostgreSQL password$/        'PASSWORD': 'netbox',           # PostgreSQL password/" configuration.py
+
+	# If not set to a dummy value, 'python3 manage.py migrate' fails
+	sedfile -i "s/^SECRET_KEY = ''$/SECRET_KEY = '**************************************************'/" configuration.py
+EOF
 
 # Install 'uv', an extremely fast Python package and project manager, written in Rust.
 # https://github.com/astral-sh/uv
@@ -67,43 +74,60 @@ ENV	VIRTUAL_ENV=/opt/netbox/.venv
 RUN	uv venv "$VIRTUAL_ENV"
 ENV	PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Install dependencies
 WORKDIR	/opt/netbox
 # RUN	pip3 install --no-cache-dir --upgrade pip setuptools wheel \
 # RUN	pip3 install --no-cache-dir --upgrade pip wheel \
-RUN	uv pip install --no-cache-dir -r requirements.txt
+
+RUN <<EOF
+	# Install dependencies
+	uv pip install --no-cache-dir -r requirements.txt
+	# Needed for some plugins, e.g. qrcode: https://github.com/casperklein/homeassistant-addons/issues/29
+	uv pip install --no-cache-dir setuptools wheel
+EOF
 
 # Setup netbox
 WORKDIR	/opt/netbox/netbox
-RUN	/etc/init.d/redis-server start \
-&&	pg_ctlcluster 15 main start \
-&&	sudo -u postgres psql < /db.sql \
-&&	rm -v /db.sql \
-&&	netbox-upgrade.sh \
-&&	/etc/init.d/redis-server stop \
-&&	pg_ctlcluster 15 main stop \
-#	Disable x-frame-options for usage with https://www.home-assistant.io/integrations/panel_iframe/
-&&	sedfile -i "s;X_FRAME_OPTIONS = 'SAMEORIGIN';X_FRAME_OPTIONS = 'ALLOWALL';" /opt/netbox/netbox/netbox/settings.py \
-#	Let PostgreSQL listen on all interfaces
-&&	sedfile -i "s/#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/15/main/postgresql.conf \
-&&	echo 'host all all 0.0.0.0/0 md5' >> /etc/postgresql/15/main/pg_hba.conf
+RUN <<EOF
+	/etc/init.d/redis-server start
+	pg_ctlcluster 15 main start
 
-# Customize redis
-RUN	sedfile -i 's|^daemonize yes$|daemonize no|' /etc/redis/redis.conf
+	sudo -u postgres psql < /db.sql
+	rm -v /db.sql
 
-# Setup gunicorn
-# RUN	cp /opt/netbox/contrib/gunicorn.py	/opt/netbox/gunicorn.py \
-# &&	sedfile -i "/bind = '127.0.0.1:8001'/d"	/opt/netbox/gunicorn.py
+	netbox-upgrade.sh
+
+	/etc/init.d/redis-server stop
+	pg_ctlcluster 15 main stop
+
+	# Disable x-frame-options for usage with https://www.home-assistant.io/integrations/panel_iframe/
+	sedfile -i "s;X_FRAME_OPTIONS = 'SAMEORIGIN';X_FRAME_OPTIONS = 'ALLOWALL';" /opt/netbox/netbox/netbox/settings.py
+
+	# Let PostgreSQL listen on all interfaces
+	sedfile -i "s/#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/15/main/postgresql.conf
+	echo 'host all all 0.0.0.0/0 md5' >> /etc/postgresql/15/main/pg_hba.conf
+EOF
+
+RUN <<EOF
+	# Customize redis
+	sedfile -i 's|^daemonize yes$|daemonize no|' /etc/redis/redis.conf
+
+	# Setup nginx
+	mv /opt/netbox/contrib/nginx.conf /etc/nginx/sites-available/netbox
+	rm /etc/nginx/sites-enabled/default
+
+	# Setup gunicorn
+	mv /opt/netbox/contrib/gunicorn.py	/opt/netbox/gunicorn.py
+EOF
 
 # Build the local documentation
-# TODO Needs reverse proxy for auto-indexing: http://netboxhost/static/docs/ --> http://netboxhost/static/docs/index.html
-# TODO https://github.com/netbox-community/netbox/discussions/13165
-# WORKDIR	/opt/netbox/
-# RUN	mkdocs build
+WORKDIR	/opt/netbox/
+RUN	mkdocs build
 
 # Cleanup
-RUN     apt-get -y purge $PACKAGES_CLEAN \
-&&      apt-get -y autoremove
+RUN <<EOF
+	apt-get -y purge $PACKAGES_CLEAN
+	apt-get -y autoremove
+EOF
 
 # Build final image
 FROM	scratch

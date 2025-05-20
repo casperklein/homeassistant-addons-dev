@@ -1,6 +1,6 @@
 {
   "name": "Pi-hole-dev",
-  "version": "2025.03.1.1.5",
+  "version": "2025.03.1.1.6",
   "slug": "pihole-dev",
   "description": "Network-wide Ad Blocking",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole",
@@ -16,14 +16,16 @@
     "53/udp": 53,
     "80/tcp": null,
     "443/tcp": null,
-    "123/udp": null
+    "123/udp": null,
+    "8090/tcp": null
   },
   "ports_description": {
     "53/tcp": "DNS server port",
     "53/udp": "DNS server port",
     "80/tcp": "UNPROTECTED web UI (not required for Ingress)",
     "443/tcp": "UNPROTECTED web UI (not required for Ingress)",
-    "123/udp": "NTP server port (not required, unless NTP is activated in Pi-hole)"
+    "123/udp": "NTP server port (not required, unless NTP is activated in Pi-hole)",
+    "8090/tcp": "dnsproxy test"
   },
   "privileged": ["SYS_NICE"],
   "boot": "auto",

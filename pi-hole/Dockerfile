@@ -1,7 +1,8 @@
+# check=skip=SecretsUsedInArgOrEnv
 FROM	pihole/pihole:2025.03.1 AS pihole
 
-ARG	YQ_VERSION=v4.45.1
-ARG	SV_VERSION=0.3
+ARG	YQ_VERSION=v4.45.4
+ARG	SV_VERSION=0.4
 ARG	TARGETARCH
 
 SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
@@ -15,7 +16,7 @@ RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && ex
 # Update base image packages and install additional software
 RUN <<EOF
 	apk upgrade --no-cache
-	apk add     --no-cache dumb-init nginx patch
+	apk add     --no-cache dumb-init nginx nginx-mod-http-lua patch
 EOF
 
 # Install yq
@@ -39,13 +40,15 @@ COPY	rootfs /
 
 # Remove docker-pi-hole update instructions
 RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||' /var/www/html/admin/scripts/js/footer.js
+# Disable update checks completely
+# RUN	false; sedfile -i 's|updateComponentAvailable = true;|updateComponentAvailable = false;|g' /var/www/html/admin/scripts/js/footer.js
 
 # Start DNSCrypt-Proxy right after FTL
 # RUN	sedfile -i 's|.*# Wait for the capsh process.*|  supervisor.sh start "DNSCrypt-Proxy" >/dev/null\n\n&|' /usr/bin/start.sh
 RUN	patch -i /etc/pihole-patches/start.sh.patch /usr/bin/start.sh
 
-# TODO Remove after https://github.com/pi-hole/pi-hole/pull/6095 is merged and released
-#RUN	sedfile -i 's|saveLocation})|saveLocation} 2>/dev/null)|' /opt/pihole/gravity.sh
+# TODO Temporary fix until https://github.com/pi-hole/docker-pi-hole/pull/1803 is merged and released
+RUN	sedfile -i 's| 7 PATH| 0 PATH|' /crontab.txt
 
 # Remove obsolete files
 RUN	rm /etc/nginx/http.d/default.conf /usr/bin/sedfile
@@ -53,7 +56,7 @@ RUN	rm /etc/nginx/http.d/default.conf /usr/bin/sedfile
 # Build dnscrypt-proxy from source #################################################################
 FROM	golang:bookworm AS dnscrypt
 
-ARG	DNSCRYPT_VERSION="2.1.8"
+ARG	DNSCRYPT_VERSION="2.1.11"
 ENV	URL="https://github.com/dnscrypt/dnscrypt-proxy/archive/$DNSCRYPT_VERSION.tar.gz"
 
 ENV	DEBIAN_FRONTEND="noninteractive"
@@ -91,6 +94,12 @@ LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/p
 
 # Disable Pi-hole authentication --> Single Sign On via HA Ingress
 ENV	FTLCONF_webserver_api_password=""
+
+# Needed to substitute with HA Ingress token
+# ENV	FTLCONF_webserver_paths_prefix="/live-long-and-prosper"
+
+# Let Pi-hole listen on port 8080
+ENV	FTLCONF_webserver_port="127.0.0.1:8080,443s"
 
 # Disable DHCP
 ENV	FTLCONF_dhcp_active="false"

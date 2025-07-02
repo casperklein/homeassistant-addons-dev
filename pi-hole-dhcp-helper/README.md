@@ -7,7 +7,7 @@
 ![Supports armv7 architecture][armv7-shield]
 ![Docker image size][image-size-shield]
 
-This is a small helper add-on that forwards DHCP requests to a Pi-hole installation.
+This is a helper add-on that forwards DHCP requests to a Pi-hole installation.
 
 ## Support
 

@@ -24,7 +24,7 @@ LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/p
 COPY --from=build / /
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD [ "/usr/bin/start.sh" ]
+CMD [ "/usr/bin/run.sh" ]
 
 EXPOSE 67/udp
 

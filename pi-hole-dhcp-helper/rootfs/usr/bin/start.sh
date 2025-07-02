@@ -13,9 +13,13 @@ _status() {
 }
 
 # todo Auto detect IP?
-# FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' addon_0da538cf_pihole)
 
 FORWARD_HOST=$(jq --raw-output '.forward_host' /data/options.json)
+
+if [ -z "$FORWARD_HOST" ]; then
+	_status "No Forward host configured. Autodetecting.."
+	FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' addon_0da538cf_pihole)
+fi
 
 _status "Forwarding DHCP requests to: $FORWARD_HOST"
 

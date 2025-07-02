@@ -1,6 +1,9 @@
 FROM alpine:latest AS build
 
-RUN apk upgrade --no-cache && apk --no-cache add bash dumb-init dhcp-helper
+RUN apk upgrade --no-cache && apk --no-cache add bash dumb-init dhcp-helper jq docker-cli
+
+# Copy root filesystem
+COPY	rootfs /
 
 # Build final image ################################################################################
 FROM	scratch

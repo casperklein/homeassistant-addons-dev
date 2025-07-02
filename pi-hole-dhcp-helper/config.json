@@ -10,7 +10,7 @@
   "host_network": true,
   "privileged": ["NET_ADMIN"],
                                                               "boot": "auto",
-                                                              "docker_api": false,
+                                                              "docker_api": true,
   "options": {
     "forward_host": ""
   },

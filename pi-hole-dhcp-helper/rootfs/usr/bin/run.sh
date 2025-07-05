@@ -3,9 +3,14 @@
 # https://docs.pi-hole.net/docker/dhcp/#docker-pi-hole-with-a-bridge-networking
 # https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038
 
+# todo icon/logo
+
 set -ueo pipefail
 
 CONTAINER="addon_0da538cf_pihole"
+
+# add empty line to docker log, after exit
+trap echo EXIT
 
 _status() {
 	local BLUE=$'\e[0;34m'
@@ -20,15 +25,24 @@ _status() {
 FORWARD_HOST=$(jq --raw-output '.forward_host' /data/options.json)
 
 if [ -z "$FORWARD_HOST" ]; then
-	_status "No IP address for DHCP request forwarding found in the add-on configuration. Auto-detecting internal IP address of Pi-hole.."
+	_status "No IP address for DHCP request forwarding found in the add-on configuration. Auto-detecting the internal IP address of Pi-hole.."
 	if [ ! -S /var/run/docker.sock ]; then
 		_status "Error: Protection mode is enabled!"
 		_status "For auto-detecting to work, you'll need to disable protection mode on this add-on."
 		exit 1
 	fi
+
+
+	# docker ps -a --filter "name=$CONTAINER" --filter "status=running" --format '{{.Names}}'
+	CONTAINER_STATUS=$(docker ps --filter "name=$CONTAINER" --format '{{.Names}}')
+	if [ -z "$CONTAINER_STATUS" ]; then
+		_status "Error: Auto-detecting failed. The Pi-hole add-on is not running."
+		exit 1
+	fi
+
 	FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CONTAINER")
 	if [ -z "$FORWARD_HOST" ]; then
-		_status "Error: Audo-detecting failed."
+		_status "Error: Auto-detecting failed for an unknown reason. You can try to configure the IP address manually."
 		exit 1
 	fi
 fi

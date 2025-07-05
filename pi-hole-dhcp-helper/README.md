@@ -59,7 +59,7 @@ Replace `127.0.0.1` with your Home Assistant IP address.
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-blue.svg
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-blue.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-blue.svg
-[version-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fcasperklein%2Fhomeassistant-addons-dev%2Fmaster%2Fpi-hole-dhcp-helper%2Fconfig.json
+[version-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fcasperklein%2Fhomeassistant-addons-dev%2Fmaster%2Fpi-hole-dhcp-helper-dev%2Fconfig.json
 [image-size-shield]: https://img.shields.io/docker/image-size/casperklein/homeassistant-pihole-dhcp-helper/latest
 [addon-shield]: https://img.shields.io/badge/Show%20add--on%20on%20my-Home%20Assistant-blue?style=for-the-badge&logo=home-assistant
 [addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=83ea786c_pihole-dhcp-helper&repository_url=https%3A%2F%2Fgithub.com%2Fcasperklein%2Fhomeassistant-addons-dev

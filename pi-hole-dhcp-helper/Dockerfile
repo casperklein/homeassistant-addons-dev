@@ -21,12 +21,9 @@ LABEL	image="casperklein/homeassistant-pihole-dhcp-helper-dev:${VERSION}"
 LABEL	maintainer="Casper Klein"
 LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole-dhcp-helper"
 
-COPY --from=build / /
+COPY	--from=build / /
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD [ "/usr/bin/run.sh" ]
+CMD	[ "/usr/bin/run.sh" ]
 
-EXPOSE 67/udp
-
-# https://docs.pi-hole.net/docker/dhcp/#docker-pi-hole-with-a-bridge-networking
-# https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038
+EXPOSE	67/udp

@@ -27,8 +27,7 @@ FORWARD_HOST=$(jq --raw-output '.forward_host' /data/options.json)
 if [ -z "$FORWARD_HOST" ]; then
 	_status "No IP address for DHCP request forwarding found in the add-on configuration. Auto-detecting the internal IP address of Pi-hole.."
 	if [ ! -S /var/run/docker.sock ]; then
-		_status "Error: Protection mode is enabled!"
-		_status "For auto-detecting to work, you'll need to disable protection mode on this add-on."
+		_status "Error: Protection mode is enabled! For auto-detecting to work, you'll need to disable protection mode on this add-on."
 		exit 1
 	fi
 

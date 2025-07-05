@@ -4,7 +4,7 @@
   "slug": "pihole-dhcp-helper-dev",
   "description": "DHCP-helper for Pi-hole",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole-dhcp-helper",
-  "image": "casperklein/homeassistant-pihole-dhcp-helper-dev",
+  "image": "casperklein/homeassistant-pi-hole-dhcp-helper-dev",
   "arch": ["aarch64", "amd64", "armhf", "armv7"],
   "startup": "system",
   "host_network": true,

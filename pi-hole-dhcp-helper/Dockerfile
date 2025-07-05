@@ -17,7 +17,7 @@ LABEL	io.hass.arch="${BUILD_ARCH}"
 LABEL	io.hass.type="addon"
 LABEL	io.hass.version="${VERSION}"
 
-LABEL	image="casperklein/homeassistant-pihole-dhcp-helper-dev:${VERSION}"
+LABEL	image="casperklein/homeassistant-pi-hole-dhcp-helper-dev:${VERSION}"
 LABEL	maintainer="Casper Klein"
 LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole-dhcp-helper"
 

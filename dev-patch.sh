@@ -28,8 +28,8 @@ sedfile -i    's|casperklein/homeassistant-addons/tree/master|casperklein/homeas
 sedfile -i -E 's|casperklein/homeassistant-addons\)|casperklein/homeassistant-addons-dev)|g' README.md
 sedfile -i -E 's|casperklein%2Fhomeassistant-addons%2F|casperklein%2Fhomeassistant-addons-dev%2F|g' README.md
 sedfile -i -E 's|casperklein%2Fhomeassistant-addons$|casperklein%2Fhomeassistant-addons-dev|g' README.md
-sedfile -i -E "s|$1|$1-dev|g" README.md
 
+sedfile -i -E "s|$1|$1-dev|g" README.md
 sedfile -i -E 's|-dev%2Fconfig.json|%2Fconfig.json|g' README.md # Fix version shield
 
 IDENTIFIER_STABLE=$(printf %s https://github.com/casperklein/homeassistant-addons  | sha1sum | head -c8)

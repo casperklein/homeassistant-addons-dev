@@ -9,9 +9,6 @@ set -ueo pipefail
 
 CONTAINER="addon_0da538cf_pihole"
 
-# add empty line to docker log, after exit
-trap echo EXIT
-
 _status() {
 	local BLUE=$'\e[0;34m'
 	local RESET=$'\e[0m'

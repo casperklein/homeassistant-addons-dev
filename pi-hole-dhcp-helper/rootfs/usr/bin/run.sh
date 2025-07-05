@@ -1,6 +1,11 @@
 #!/bin/bash
 
+# https://docs.pi-hole.net/docker/dhcp/#docker-pi-hole-with-a-bridge-networking
+# https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038
+
 set -ueo pipefail
+
+CONTAINER="addon_0da538cf_pihole"
 
 _status() {
 	local BLUE=$'\e[0;34m'
@@ -21,7 +26,7 @@ if [ -z "$FORWARD_HOST" ]; then
 		_status "For auto-detecting to work, you'll need to disable protection mode on this add-on."
 		exit 1
 	fi
-	FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' addon_0da538cf_pihole)
+	FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CONTAINER")
 	if [ -z "$FORWARD_HOST" ]; then
 		_status "Error: Audo-detecting failed."
 		exit 1
@@ -34,8 +39,3 @@ _status "Forwarding DHCP requests to: $FORWARD_HOST"
 # -d               Debug mode, do not change UID, write a pid-file or go into the background.
 # -s <server>      Forward DHCP requests to <server>
 exec dhcp-helper -d -s "$FORWARD_HOST"
-
-
-# todo
-# misc.dnsmasq_lines
-# dhcp-option=option:dns-server,192.168.x.x

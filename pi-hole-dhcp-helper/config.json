@@ -1,6 +1,6 @@
 {
   "name": "Pi-hole-DHCP-helper-dev",
-  "version": "2025.06.2",
+  "version": "0.1",
   "slug": "pihole-dhcp-helper-dev",
   "description": "DHCP-helper for Pi-hole",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole-dhcp-helper",

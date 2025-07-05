@@ -25,9 +25,17 @@ If you like the add-on and would like to support my work, you might [![Buy me a 
 
 This add-on must be installed on the same Home Assistant instance as the Pi-hole add-on.
 
-## Setup
+## Setup DHCP-helper
 
-### DHCP-helper
+The add-on needs the internal Pi-hole IP address to forward the DHCP requests to.
+
+There are two methods to configure the IP address:
+
+### 1. Automatic detection
+
+Disable the protection mode and start the add-on.
+
+### 2. Manual IP address configuration
 
 Get internal IP address of the Pi-hole addon:
 
@@ -35,7 +43,7 @@ Get internal IP address of the Pi-hole addon:
 
 Configure the IP address (e.g. `172.30.33.1`) in the add-on configuration as *internal IP address of the Pi-hole addon* and start the add-on.
 
-### Pi-hole
+## Setup Pi-hole
 
 By default, Pi-hole sends it's internal IP address as DNS server to the DHCP clients. However the internal IP address is not reachable for them.
 

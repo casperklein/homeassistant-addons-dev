@@ -7,7 +7,7 @@
 ![Supports armv7 architecture][armv7-shield]
 ![Docker image size][image-size-shield]
 
-This is a helper add-on that forwards DHCP requests to a Pi-hole installation.
+This is a helper add-on for Home Assistant that forwards DHCP requests to a Pi-hole instance.
 
 ## Support
 
@@ -23,21 +23,21 @@ If you like the add-on and would like to support my work, you might [![Buy me a 
 
 ## Requirements
 
-This add-on must be installed on the same Home Assistant instance as the Pi-hole add-on.
+This add-on must be installed on the same Home Assistant instance as the Pi-hole add-on to work properly.
 
 ## Setup DHCP-helper
 
-The add-on needs the internal Pi-hole IP address to forward the DHCP requests to.
+The add-on requires the internal IP address of the Pi-hole add-on in order to forward DHCP requests.
 
 There are two methods to configure the IP address:
 
 ### 1. Automatic detection
 
-Disable the protection mode and start the add-on.
+Disable the *protection mode* on this add-on and start it.
 
 ### 2. Manual IP address configuration
 
-Get internal IP address of the Pi-hole addon:
+Get the internal IP address of the Pi-hole addon:
 
    ![Pi-hole IP address location](pi-hole-ip.png)
 
@@ -45,7 +45,7 @@ Configure the IP address (e.g. `172.30.33.1`) in the add-on configuration as *in
 
 ## Setup Pi-hole
 
-By default, Pi-hole sends it's internal IP address as DNS server to the DHCP clients. However the internal IP address is not reachable for them.
+By default, Pi-hole sends its internal IP address as DNS server to the DHCP clients. However the internal IP address is not reachable for them.
 
 We need to overwrite this with the IP address of Home Assistant, where Pi-hole is running.
 
@@ -53,7 +53,7 @@ In Pi-hole, go to *System / Settings / All settings / Miscellaneous* and look fo
 
     dhcp-option=option:dns-server,127.0.0.1
 
-Replace `127.0.0.1` with your Home Assistant IP address.
+Replace `127.0.0.1` with the IP address of your Home Assistant host (accessible by the DHCP clients).
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-blue.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-blue.svg

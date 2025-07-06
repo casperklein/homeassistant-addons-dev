@@ -3,8 +3,6 @@
 # https://docs.pi-hole.net/docker/dhcp/#docker-pi-hole-with-a-bridge-networking
 # https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038
 
-# todo icon/logo
-
 set -ueo pipefail
 
 CONTAINER="addon_0da538cf_pihole"

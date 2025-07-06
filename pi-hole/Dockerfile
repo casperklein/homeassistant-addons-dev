@@ -1,5 +1,5 @@
 # check=skip=SecretsUsedInArgOrEnv
-FROM	pihole/pihole:2025.03.1 AS pihole
+FROM	pihole/pihole:2025.06.2 AS pihole
 
 ARG	YQ_VERSION=v4.45.4
 ARG	SV_VERSION=0.4
@@ -39,16 +39,9 @@ EOF
 COPY	rootfs /
 
 # Remove docker-pi-hole update instructions
-RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" rel="noopener" target="_blank">replace this old container with a fresh upgraded image</a>.||' /var/www/html/admin/scripts/js/footer.js
+RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations" rel="noopener noreferrer" target="_blank">replace this old container with a fresh upgraded image</a>.||' /var/www/html/admin/scripts/js/footer.js
 # Disable update checks completely
-# RUN	false; sedfile -i 's|updateComponentAvailable = true;|updateComponentAvailable = false;|g' /var/www/html/admin/scripts/js/footer.js
-
-# Start DNSCrypt-Proxy right after FTL
-# RUN	sedfile -i 's|.*# Wait for the capsh process.*|  supervisor.sh start "DNSCrypt-Proxy" >/dev/null\n\n&|' /usr/bin/start.sh
-RUN	patch -i /etc/pihole-patches/start.sh.patch /usr/bin/start.sh
-
-# TODO Temporary fix until https://github.com/pi-hole/docker-pi-hole/pull/1803 is merged and released
-RUN	sedfile -i 's| 7 PATH| 0 PATH|' /crontab.txt
+# RUN	sedfile -i 's|updateComponentAvailable = true;|updateComponentAvailable = false;|g' /var/www/html/admin/scripts/js/footer.js
 
 # Remove obsolete files
 RUN	rm /etc/nginx/http.d/default.conf /usr/bin/sedfile
@@ -56,7 +49,7 @@ RUN	rm /etc/nginx/http.d/default.conf /usr/bin/sedfile
 # Build dnscrypt-proxy from source #################################################################
 FROM	golang:bookworm AS dnscrypt
 
-ARG	DNSCRYPT_VERSION="2.1.11"
+ARG	DNSCRYPT_VERSION="2.1.12"
 ENV	URL="https://github.com/dnscrypt/dnscrypt-proxy/archive/$DNSCRYPT_VERSION.tar.gz"
 
 ENV	DEBIAN_FRONTEND="noninteractive"
@@ -88,21 +81,21 @@ LABEL	io.hass.arch="${BUILD_ARCH}"
 LABEL	io.hass.type="addon"
 LABEL	io.hass.version="${VERSION}"
 
-LABEL	image="casperklein/homeassistant-pihole-dev:${VERSION}"
+LABEL	image="casperklein/homeassistant-pi-hole-dev:${VERSION}"
 LABEL	maintainer="Casper Klein"
 LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole"
 
 # Disable Pi-hole authentication --> Single Sign On via HA Ingress
 ENV	FTLCONF_webserver_api_password=""
 
-# Needed to substitute with HA Ingress token
-# ENV	FTLCONF_webserver_paths_prefix="/live-long-and-prosper"
+# Placeholder for HA Ingress token (required for substitution, see rootfs/etc/nginx/http.d/ingress-proxy.conf)
+ENV	FTLCONF_webserver_paths_prefix="/live-long-and-prosper"
 
 # Let Pi-hole listen on port 8080
 ENV	FTLCONF_webserver_port="127.0.0.1:8080,443s"
 
 # Disable DHCP
-ENV	FTLCONF_dhcp_active="false"
+# ENV	FTLCONF_dhcp_active="false"
 
 COPY	--from=dnscrypt /build/dnscrypt-proxy/dnscrypt-proxy /usr/bin/
 COPY	--from=pihole / /
@@ -123,5 +116,5 @@ EXPOSE 53/udp
 # EXPOSE 67/udp
 EXPOSE 80/tcp
 # Healthcheck is disabled, to avoid waiting 30s (until container is healthy) to access Pi-hole via HA Ingress
-# HEALTHCHECK CMD dig +short +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
+# HEALTHCHECK CMD dig -p $(pihole-FTL --config dns.port) +short +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
 WORKDIR /

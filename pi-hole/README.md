@@ -48,8 +48,6 @@ To use Pi-hole also as an NTP server, it must be enabled under *System / Setting
 
 To use the DHCP functionality of Pi-hole, [this](https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole-dhcp-helper) helper add-on is required.
 
-- Pi-hole DHCP server functionality
-
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-blue.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-blue.svg
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-blue.svg

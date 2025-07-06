@@ -5,7 +5,8 @@
 
 set -ueo pipefail
 
-CONTAINER="addon_0da538cf_pihole"
+# CONTAINER="addon_0da538cf_pihole"
+CONTAINER="addon_83ea786c_pihole-dev"
 
 _status() {
 	local BLUE=$'\e[0;34m'

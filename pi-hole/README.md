@@ -44,7 +44,9 @@ To test your setup, visit [https://1.1.1.1/help](https://1.1.1.1/help). If you s
 
 To use Pi-hole also as an NTP server, it must be enabled under *System / Settings / All settings / Network Time Sync*. Additionally, port 123/UDP must be exposed in the add-on configuration.
 
-## Not implemented
+## DHCP
+
+To use the DHCP functionality of Pi-hole, [this](https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole-dhcp-helper) helper add-on is required.
 
 - Pi-hole DHCP server functionality
 

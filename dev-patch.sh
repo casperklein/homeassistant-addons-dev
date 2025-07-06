@@ -33,8 +33,8 @@ sedfile -i 's|2Fhomeassistant-addons|&-dev|g' README.md
 sedfile -i "s|$1|&-dev|g" README.md
 sedfile -i "s|master%2F$1-dev|master%2F$1|g" README.md # Fix version shield
 
-# Only for pi-hole-dhcp-helper
-if [ "$1" == "pi-hole-dhcp-helper" ]; then
+# Only for pi-hole*
+if [[ "$1" == "pi-hole" || "$1" == "pi-hole-dhcp-helper" ]]; then
 	sedfile -i "s|master/$1-dev|master/$1|g"     README.md # Fix embedded images
 else
 	# Needed for other add-ons?

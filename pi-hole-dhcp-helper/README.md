@@ -18,7 +18,7 @@ If you like the add-on and would like to support my work, you might [![Buy me a 
 [![Open this add-on in your Home Assistant instance.][addon-shield]][addon]
 
 1. Add [this](https://github.com/casperklein/homeassistant-addons-dev) Home Assistant add-ons repository to your Home Assistant instance or use the button above.
-1. Install the Pi-hole-DHCP-helper-dev add-on.
+1. Install the Pi-hole-DHCP-helper add-on.
 1. Start the add-on.
 
 ## Requirements

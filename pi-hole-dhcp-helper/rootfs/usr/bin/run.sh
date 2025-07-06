@@ -5,8 +5,11 @@
 
 set -ueo pipefail
 
-# CONTAINER="addon_0da538cf_pihole"
-CONTAINER="addon_83ea786c_pihole-dev"
+if [[ $HOSTNAME != *-dev ]]; then
+	CONTAINER_NAME="addon_0da538cf_pihole"
+else
+	CONTAINER_NAME="addon_83ea786c_pihole-dev"
+fi
 
 _status() {
 	local BLUE=$'\e[0;34m'
@@ -18,8 +21,10 @@ _status() {
 	printf -- '%s\n' "$RESET" # Reset color
 }
 
+# Get FORWARD_HOST from add-on configuration
 FORWARD_HOST=$(jq --raw-output '.forward_host' /data/options.json)
 
+# Start auto-detection if necessary
 if [ -z "$FORWARD_HOST" ]; then
 	_status "No IP address for DHCP request forwarding found in the add-on configuration. Auto-detecting the internal IP address of Pi-hole.."
 	if [ ! -S /var/run/docker.sock ]; then
@@ -27,15 +32,14 @@ if [ -z "$FORWARD_HOST" ]; then
 		exit 1
 	fi
 
-
 	# docker ps -a --filter "name=$CONTAINER" --filter "status=running" --format '{{.Names}}'
-	CONTAINER_STATUS=$(docker ps --filter "name=$CONTAINER" --format '{{.Names}}')
+	CONTAINER_STATUS=$(docker ps --filter "name=$CONTAINER_NAME" --format '{{.Names}}')
 	if [ -z "$CONTAINER_STATUS" ]; then
 		_status "Error: Auto-detecting failed. The Pi-hole add-on is not running."
 		exit 1
 	fi
 
-	FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CONTAINER")
+	FORWARD_HOST=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$CONTAINER_NAME")
 	if [ -z "$FORWARD_HOST" ]; then
 		_status "Error: Auto-detecting failed for an unknown reason. You can try to configure the IP address manually."
 		exit 1

@@ -25,7 +25,7 @@
     "443/tcp": "UNPROTECTED web UI (not required for Ingress)",
     "123/udp": "NTP server port (not required, unless NTP is activated in Pi-hole)"
   },
-  "privileged": ["SYS_NICE"],
+  "privileged": ["SYS_NICE", "NET_ADMIN"],
   "boot": "auto",
   "timeout": 60,
   "options": {

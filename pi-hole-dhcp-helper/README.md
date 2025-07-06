@@ -39,7 +39,7 @@ Disable the *protection mode* on this add-on and start it.
 
 Get the internal IP address of the Pi-hole addon:
 
-   ![Pi-hole IP address location](pi-hole-ip.png)
+   ![Pi-hole IP address location](https://github.com/casperklein/homeassistant-addons-dev/raw/master/pi-hole-dhcp-helper-dev/pi-hole-ip.png)
 
 Configure the IP address (e.g. `172.30.33.1`) in the add-on configuration as *internal IP address of the Pi-hole addon* and start the add-on.
 

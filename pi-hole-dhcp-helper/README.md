@@ -7,7 +7,7 @@
 ![Supports armv7 architecture][armv7-shield]
 ![Docker image size][image-size-shield]
 
-This is a helper add-on for Home Assistant that forwards DHCP requests to a Pi-hole instance.
+This is a helper add-on that forwards DHCP requests to a Pi-hole instance.
 
 ## Support
 
@@ -18,7 +18,7 @@ If you like the add-on and would like to support my work, you might [![Buy me a 
 [![Open this add-on in your Home Assistant instance.][addon-shield]][addon]
 
 1. Add [this](https://github.com/casperklein/homeassistant-addons-dev) Home Assistant add-ons repository to your Home Assistant instance or use the button above.
-1. Install the Pi-hole-dhcp-helper add-on.
+1. Install the Pi-hole-DHCP-helper-dev add-on.
 1. Start the add-on.
 
 ## Requirements

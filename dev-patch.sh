@@ -29,11 +29,11 @@ sedfile -i    's|casperklein/homeassistant-addons/tree/master|casperklein/homeas
 # sedfile -i -E 's|casperklein%2Fhomeassistant-addons%2F|casperklein%2Fhomeassistant-addons-dev%2F|g' README.md
 # sedfile -i -E 's|casperklein%2Fhomeassistant-addons$|casperklein%2Fhomeassistant-addons-dev|g' README.md
 
-sedfile -i 's|/homeassistant-addons|/homeassistant-addons-dev|g'   README.md
-sedfile -i 's|2Fhomeassistant-addons|2Fhomeassistant-addons-dev|g' README.md
+sedfile -i 's|/homeassistant-addons|&-dev|g'   README.md
+sedfile -i 's|2Fhomeassistant-addons|&-dev|g' README.md
 
 
-sedfile -i "s|$1|$1-dev|g" README.md
+sedfile -i "s|$1|&-dev|ig" README.md
 #sedfile -i 's|-dev%2Fconfig.json|%2Fconfig.json|g' README.md # Fix version shield
 sedfile -i "s|master%2F$1-dev|master%2F$1|g" README.md # Fix version shield
 

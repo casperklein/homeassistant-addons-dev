@@ -36,5 +36,10 @@ IDENTIFIER_STABLE=$(printf %s https://github.com/casperklein/homeassistant-addon
 IDENTIFIER_DEV=$(printf %s https://github.com/casperklein/homeassistant-addons-dev | sha1sum | head -c8)
 sedfile -i "s|$IDENTIFIER_STABLE|$IDENTIFIER_DEV|g" README.md
 
+# Only for pihole:
+if [ "$1" == "pi-hole" ]; then
+	sedfile -i -E 's|_pihole|_pihole-dev|g' README.md
+fi
+
 echo "Info: config.json and Dockerfile successful patched."
 echo

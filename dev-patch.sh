@@ -34,7 +34,7 @@ sedfile -i "s|$1|&-dev|g" README.md
 sedfile -i "s|master%2F$1-dev|master%2F$1|g" README.md # Fix version shield
 
 # Only for pi-hole*
-if [[ "$1" == "pi-hole" || "$1" == "pi-hole-dhcp-helper" ]]; then
+if [[ "$1" == "placeholder-for-future-use" || "$1" == "pi-hole-dhcp-helper" ]]; then
 	sedfile -i "s|master/$1-dev|master/$1|g"     README.md # Fix embedded images
 else
 	# Needed for other add-ons?
@@ -45,8 +45,8 @@ else
 	fi >&2
 fi
 
-IDENTIFIER_STABLE=$(printf %s https://github.com/casperklein/homeassistant-addons  | sha1sum | head -c8)
-IDENTIFIER_DEV=$(printf %s https://github.com/casperklein/homeassistant-addons-dev | sha1sum | head -c8)
+IDENTIFIER_STABLE=0da538cf #$(printf %s https://github.com/casperklein/homeassistant-addons     | sha1sum | head -c8)
+IDENTIFIER_DEV=83ea786c    #$(printf %s https://github.com/casperklein/homeassistant-addons-dev | sha1sum | head -c8)
 sedfile -i "s|$IDENTIFIER_STABLE|$IDENTIFIER_DEV|g" README.md
 
 # Only for pi-hole, because HA slug differs from directory name (legacy)

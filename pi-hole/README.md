@@ -35,18 +35,20 @@ DNS stamps contain all the parameters required to connect to a secure DNS server
 
 In Pi-hole the following **must** be configured:
 
-- Custom DNS server: `127.0.0.1#5353`
+- Custom DNS server: `127.0.0.1#5335`
 - Disable all other configured DNS servers
 
 To test your setup, visit [https://1.1.1.1/help](https://1.1.1.1/help). If you see "Using DNS over HTTPS (DoH): yes", all should be fine :)
 
-## NTP
+## Direct HTTP/HTTPS access
 
-To use Pi-hole also as an NTP server, it must be enabled under *System / Settings / All settings / Network Time Sync*. Additionally, port 123/UDP must be exposed in the add-on configuration.
+You can open the Pi-hole Web UI in Home Assistant using Ingress. Simply click *Open Web UI* on the add-on page.
 
-## Not implemented
+If you additionally want to enable direct HTTP(S) access, open the add-on's Network settings and assign a port.
 
-- Pi-hole DHCP server functionality
+For HTTPS, you can configure a certificate and key file located in `/ssl`. If no certificate is provided, a self-signed certificate will be generated and used.
+
+You can secure direct access by enabling the *Authentication* option in the add-on configuration.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-blue.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-blue.svg

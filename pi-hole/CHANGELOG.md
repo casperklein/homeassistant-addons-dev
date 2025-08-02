@@ -1,5 +1,27 @@
 # Changelog
 
+## unreleased
+
+This Update adds full support for NTP and DHCP. Now, Pi-hole's complete feature set is covered.
+
+### New features
+
+- DHCP support added.
+- NTP support for synchronizing the system time added.
+- Authentication option for direct HTTP/HTTPS access added.
+- For direct HTTPS access, a certificate can be configured. If no certificate is provided, a self-signed certificate will be generated and used.
+- Direct web access can be secured with authentication.
+- IPv6 support for direct web access added.
+
+### Breaking changes
+
+- DNSCrypt-Proxy now listens on `127.0.0.1#5335`. If you are using DNSCrypt-Proxy, you must update Pi-hole’s custom DNS server setting with this new value.
+
+### Internal changes
+
+- The add-on network mode changed from *bridge* to *host*.
+- If a service fails to start or exits unexpectedly, the add-on now stops.
+
 ## 2025.07.1
 
 - [Pi-hole 6.1.4](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.4) ([6.1.3](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.3))

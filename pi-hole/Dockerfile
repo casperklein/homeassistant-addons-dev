@@ -1,7 +1,7 @@
 # check=skip=SecretsUsedInArgOrEnv
 FROM	pihole/pihole:2025.07.1 AS pihole
 
-ARG	YQ_VERSION=v4.45.4
+ARG	YQ_VERSION=v4.47.1
 ARG	SV_VERSION=0.4
 ARG	TARGETARCH
 
@@ -10,8 +10,9 @@ SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
 # Ensure that build args are given
 ARG	BUILD_ARCH
 ARG	VERSION
-RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
-RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
+# !!!!!!!!!!!!!!!!!!!!!!!
+# RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
+# RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
 # Update base image packages and install additional software
 RUN <<EOF
@@ -44,7 +45,7 @@ RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker
 # RUN	sedfile -i 's|updateComponentAvailable = true;|updateComponentAvailable = false;|g' /var/www/html/admin/scripts/js/footer.js
 
 # Remove obsolete files
-RUN	rm /etc/nginx/http.d/default.conf /usr/bin/sedfile
+RUN	rm /etc/nginx/http.d/default.conf
 
 # Build dnscrypt-proxy from source #################################################################
 FROM	golang:bookworm AS dnscrypt
@@ -88,14 +89,14 @@ LABEL	url="https://github.com/casperklein/homeassistant-addons-dev/tree/master/p
 # Disable Pi-hole authentication --> Single Sign On via HA Ingress
 ENV	FTLCONF_webserver_api_password=""
 
-# Placeholder for HA Ingress token (required for substitution, see rootfs/etc/nginx/http.d/ingress-proxy.conf)
+# Placeholder for HA Ingress token (required for substitution, see rootfs/etc/nginx/http.d/ingress.conf)
 ENV	FTLCONF_webserver_paths_prefix="/live-long-and-prosper"
 
-# Let Pi-hole listen on port 8080
-ENV	FTLCONF_webserver_port="127.0.0.1:8080,443s"
+# Let Pi-hole web server listen on port 31415
+ENV	FTLCONF_webserver_port="127.0.0.1:31415"
 
 # Disable DHCP
-ENV	FTLCONF_dhcp_active="false"
+# ENV	FTLCONF_dhcp_active="false"
 
 COPY	--from=dnscrypt /build/dnscrypt-proxy/dnscrypt-proxy /usr/bin/
 COPY	--from=pihole / /

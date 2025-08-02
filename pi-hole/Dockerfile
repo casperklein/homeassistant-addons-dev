@@ -1,5 +1,5 @@
 # check=skip=SecretsUsedInArgOrEnv
-FROM	pihole/pihole:2025.06.2 AS pihole
+FROM	pihole/pihole:2025.07.1 AS pihole
 
 ARG	YQ_VERSION=v4.45.4
 ARG	SV_VERSION=0.4
@@ -95,7 +95,7 @@ ENV	FTLCONF_webserver_paths_prefix="/live-long-and-prosper"
 ENV	FTLCONF_webserver_port="127.0.0.1:8080,443s"
 
 # Disable DHCP
-# ENV	FTLCONF_dhcp_active="false"
+ENV	FTLCONF_dhcp_active="false"
 
 COPY	--from=dnscrypt /build/dnscrypt-proxy/dnscrypt-proxy /usr/bin/
 COPY	--from=pihole / /

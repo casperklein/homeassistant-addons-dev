@@ -1,9 +1,9 @@
 # Changelog
 
-## unreleased
+## 2025.07.1
 
-- Internal: change image name
-- allow DHCP
+- [Pi-hole 6.1.4](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.4) ([6.1.3](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.3))
+- Internal: Image name changed
 
 ## 2025.06.2
 

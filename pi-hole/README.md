@@ -40,6 +40,19 @@ In Pi-hole the following **must** be configured:
 
 To test your setup, visit [https://1.1.1.1/help](https://1.1.1.1/help). If you see "Using DNS over HTTPS (DoH): yes", all should be fine :)
 
+## Pi-hole integration and custom card
+
+If you want to integrate Pi-hole with Home Assistant, I highly recommend [Bastgau's custom integration](https://github.com/bastgau/ha-pi-hole-dev-v6).
+It’s better maintained and provides more features than the built-in native integration.
+
+To set up the integration:
+
+1. Use `http://127.0.0.1:31415/api` as the *Address*.
+
+1. Leave the *Password* field blank.
+
+Once you've set up the integration, you can also use [this](https://github.com/homeassistant-extras/pi-hole-dev-card) custom Pi-hole card.
+
 ## Direct HTTP/HTTPS access
 
 You can open the Pi-hole Web UI in Home Assistant using Ingress. Simply click *Open Web UI* on the add-on page.

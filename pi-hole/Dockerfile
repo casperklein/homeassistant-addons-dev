@@ -1,5 +1,5 @@
 # check=skip=SecretsUsedInArgOrEnv
-FROM	pihole/pihole:2025.07.1 AS pihole
+FROM	pihole/pihole:2025.08.0 AS pihole
 
 ARG	YQ_VERSION=v4.47.1
 ARG	SV_VERSION=0.4
@@ -10,9 +10,8 @@ SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
 # Ensure that build args are given
 ARG	BUILD_ARCH
 ARG	VERSION
-# !!!!!!!!!!!!!!!!!!!!!!!
-# RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
-# RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
+RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
+RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
 # Update base image packages and install additional software
 RUN <<EOF

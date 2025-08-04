@@ -12,7 +12,7 @@ jobs:
     logfile: "/dev/stdout"
 
   - name: "Nginx"
-    command: "nginx -g 'daemon off;'"
+    command: "nginx -g 'daemon off;' || kill -SIGTERM 1"
     autostart: "off"
     restart: "off"
     logfile: "/dev/stdout"

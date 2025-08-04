@@ -20,7 +20,7 @@ _status() {
 
 DNS=()
 # Get all upstream DNS servers
-if [ -f "$PH_CONFIG" ]; then # $PH_CONFIG does not exist on first start
+# if [ -f "$PH_CONFIG" ]; then # $PH_CONFIG does not exist on first start; Update: file exists, default settings are copied from /etc/pihole-custom-defaults/pihole.toml on first start.
 	while read -r UPSTREAMS; do
 		DNS+=("$UPSTREAMS")
 	done < <(yq -r '.dns.upstreams[]' "$PH_CONFIG")
@@ -31,7 +31,7 @@ if [ -f "$PH_CONFIG" ]; then # $PH_CONFIG does not exist on first start
 			CONFIGURED_IN_PH=1
 		fi
 	done
-fi
+# fi
 
 # Check if there are dnscrypt settings
 # if ! grep -qF '"dnscrypt": []' "$ADDON_OPTIONS"; then
@@ -87,7 +87,7 @@ else
 
 	# Check if custom DNS server is configured
 	if (( CONFIGURED_IN_PH == 1 )); then
-		_status "WARNING: DNSCrypt-Proxy ($PIHOLE_SETTING) is configured as a custom DNS upstream server. DNS resolution will not work until DNSCrypt-Proxy is set up in the add-on configuration."
+		_status "WARNING: DNSCrypt-Proxy ($PIHOLE_SETTING) is configured in Pi-hole as a custom DNS upstream server. DNS resolution will not work until DNSCrypt-Proxy is set up in the add-on configuration."
 	fi
 
 	exit 0 # Graceful exit, to not trigger a restart by supervisor.sh

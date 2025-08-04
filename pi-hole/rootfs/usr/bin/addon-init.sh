@@ -57,9 +57,13 @@ else
 	_status "Migrating the Pi-hole configuration to persistent storage"
 	mv /etc/pihole /data/pihole
 
-	#? The existence of /data/pihole/pihole.toml is checked in dnscrypt-proxy-init.sh. This can be removed, when below lines are enabled again.
-	# _status "Adjusting the default settings"
-	# cp /etc/pihole-custom-defaults/pihole.toml /data/pihole
+	_status "Customize initial default settings:"
+	_status "  - dns.listeningMode:     all" # Pi-hole uses eth0 by default. If the interface name differs (e.g. end0), DNS resolution will not work (out-of-the-box).
+	_status "  - dns.cache.optimizer: -3600" # Avoid issues, by never using outdated DNS data.
+	_status "  - ntp.ipv4.active:     false" # todo
+	_status "  - ntp.ipv6.active:     false" # Only start NTP IPv6, if the user explicitly enables it.
+	_status "  - ntp.sync.active:     false" # HAOS already syncs time, see /etc/systemd/timesyncd.conf.
+	cp /etc/pihole-custom-defaults/pihole.toml /data/pihole
 fi
 ln -s /data/pihole /etc/pihole
 
@@ -82,8 +86,10 @@ fi
 # SLUG="0da538cf_pihole"
 SLUG="self"
 
+_status "Configure Ingress IP and port"
+# "hassio_api": "true" is not needed in the addon config.json for these queries --> https://developers.home-assistant.io/docs/add-ons/communication#supervisor-api
 IP=$(           curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r .data.ip_address)
-INGRESS_PORT=$( curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r .data.ingress_port)
+INGRESS_PORT=$( curl -sSLf -H "Authorization: xBearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r .data.ingress_port)
 HTTP_PORT=$(    curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r '.data.network | ."80/tcp" // empty')
 HTTPS_PORT=$(   curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r '.data.network | ."443/tcp" // empty')
 
@@ -97,16 +103,6 @@ DIRECT_CONF=/etc/nginx/http.d/direct.conf
 if [[ -n "$HTTP_PORT" || -n "$HTTPS_PORT" ]]; then
 	# Activate configuration
 	mv "$DIRECT_CONF".disabled "$DIRECT_CONF"
-
-	# Get 'authentication' add-on setting
-	AUTHENTICATION=$(jq -r '.authentication' "$OPTIONS")
-
-	# Enable/disable authentication based on configuration
-	if [ "$AUTHENTICATION" == "false" ]; then
-		# Remove authentication config
-		sedfile -i -E '/^\s*include.+auth-request.conf/d'  "$DIRECT_CONF"
-		sedfile -i -E '/^\s*include.+auth-location.conf/d' "$DIRECT_CONF"
-	fi
 
 	# If HTTP port is configured, enable access
 	if [ -n "$HTTP_PORT" ]; then
@@ -138,10 +134,14 @@ if [[ -n "$HTTP_PORT" || -n "$HTTPS_PORT" ]]; then
 			if [ ! -f "$CERTIFICATE" ]; then
 				_status "Generating self-signed certificate"
 				pihole-FTL --gen-x509 "$CERTIFICATE"
-				# Extract private key
-				sed -n '/-----BEGIN .*PRIVATE KEY-----/,/-----END .*PRIVATE KEY-----/p' "$CERTIFICATE" > "$CERTIFICATE_KEY"
 			else
 				_status "Using self-signed certificate"
+			fi
+
+			# Versions before 2025.07.02 did not create $CERTIFICATE_KEY
+			if [ ! -f "$CERTIFICATE_KEY" ]; then
+				# Extract private key
+				sed -n '/-----BEGIN .*PRIVATE KEY-----/,/-----END .*PRIVATE KEY-----/p' "$CERTIFICATE" > "$CERTIFICATE_KEY"
 			fi
 		fi
 
@@ -153,6 +153,19 @@ if [[ -n "$HTTP_PORT" || -n "$HTTPS_PORT" ]]; then
 		sedfile -i "/%HTTPS_PORT%/d"             "$DIRECT_CONF"
 		sedfile -i "/%HTTP2%/d"                  "$DIRECT_CONF"
 		sedfile -i -E '/^\s*include.+ssl.conf/d' "$DIRECT_CONF"
+	fi
+
+	# Get 'authentication' add-on setting
+	AUTHENTICATION=$(jq -r '.authentication' "$OPTIONS")
+
+	# Enable/disable authentication based on configuration
+	if [ "$AUTHENTICATION" == "false" ]; then
+		# Remove authentication config
+		sedfile -i -E '/^\s*include.+auth-request.conf/d'  "$DIRECT_CONF"
+		sedfile -i -E '/^\s*include.+auth-location.conf/d' "$DIRECT_CONF"
+	else
+		_status "Enabling authentication" # todo useful? or use pi-hole password
+		# todo test pi-hole integration
 	fi
 fi
 

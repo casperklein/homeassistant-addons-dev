@@ -1,17 +1,21 @@
 {
   "name": "Pi-hole-dev",
-  "version": "2025.07.2",
+  "version": "2025.08.0",
   "slug": "pihole-dev",
   "description": "Network-wide Ad Blocking",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole",
   "image": "casperklein/homeassistant-pi-hole-dev",
-  "arch": ["aarch64", "amd64", "armhf", "armv7"],
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armhf",
+    "armv7"
+  ],
   "ingress": true,
   "ingress_port": 0,
   "panel_icon": "mdi:pi-hole",
   "startup": "system",
   "auth_api": true,
-  "hassio_api": true,
   "host_network": true,
   "ports": {
     "80/tcp": null,
@@ -21,10 +25,16 @@
     "80/tcp": "HTTP (not required for Ingress)",
     "443/tcp": "HTTPS (not required for Ingress)"
   },
-  "privileged": ["NET_ADMIN", "SYS_NICE", "SYS_TIME"],
+  "privileged": [
+    "NET_ADMIN",
+    "SYS_NICE",
+    "SYS_TIME"
+  ],
   "boot": "auto",
   "timeout": 60,
-  "map": ["ssl"],
+  "map": [
+    "ssl"
+  ],
   "options": {
     "dnscrypt": [],
     "update_gravity_on_start": false,

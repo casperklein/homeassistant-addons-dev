@@ -57,9 +57,9 @@ Once you've set up the integration, you can also use [this](https://github.com/h
 
 You can open the Pi-hole Web UI in Home Assistant using Ingress. Simply click *Open Web UI* on the add-on page.
 
-If you additionally want to enable direct HTTP(S) access, open the add-on's Network settings and assign a port.
+If you also want to enable direct HTTP/HTTPS access, open the add-on's Network settings and assign a port to HTTP/HTTPS.
 
-For HTTPS, you can configure a certificate and key file located in `/ssl`. If no certificate is provided, a self-signed certificate will be generated and used.
+For HTTPS, you can configure a certificate and key file located in `/ssl` in the add-on settings. If no certificate is provided, a self-signed certificate will be generated and used.
 
 You can secure direct access by enabling the *Authentication* option in the add-on configuration.
 

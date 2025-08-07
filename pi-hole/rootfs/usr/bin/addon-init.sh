@@ -59,10 +59,10 @@ else
 
 	_status "Customize initial default settings:"
 	_status "  - dns.listeningMode:     all" # Pi-hole uses eth0 by default. If the interface name differs (e.g. end0), DNS resolution will not work (out-of-the-box).
-	_status "  - dns.cache.optimizer: -3600" # Avoid issues, by never using outdated DNS data.
-	_status "  - ntp.ipv4.active:     false" # todo
-	_status "  - ntp.ipv6.active:     false" # Only start NTP IPv6, if the user explicitly enables it.
-	_status "  - ntp.sync.active:     false" # HAOS already syncs time, see /etc/systemd/timesyncd.conf.
+	_status "  - dns.cache.optimizer: -3600" # Respect the TTL and do not return any outdated DNS data.
+	_status "  - ntp.ipv4.active:     false" # No need to activate NTP, while DHCP is disabled.
+	_status "  - ntp.ipv6.active:     false" # No need to activate NTP, while DHCP is disabled.
+	_status "  - ntp.sync.active:     false" # HAOS already syncs the time, see /etc/systemd/timesyncd.conf.
 	cp /etc/pihole-custom-defaults/pihole.toml /data/pihole
 fi
 ln -s /data/pihole /etc/pihole
@@ -89,7 +89,7 @@ SLUG="self"
 _status "Configure Ingress IP and port"
 # "hassio_api": "true" is not needed in the addon config.json for these queries --> https://developers.home-assistant.io/docs/add-ons/communication#supervisor-api
 IP=$(           curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r .data.ip_address)
-INGRESS_PORT=$( curl -sSLf -H "Authorization: xBearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r .data.ingress_port)
+INGRESS_PORT=$( curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r .data.ingress_port)
 HTTP_PORT=$(    curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r '.data.network | ."80/tcp" // empty')
 HTTPS_PORT=$(   curl -sSLf -H "Authorization: Bearer $SUPERVISOR_TOKEN" "http://supervisor/addons/$SLUG/info" | jq -r '.data.network | ."443/tcp" // empty')
 
@@ -164,8 +164,7 @@ if [[ -n "$HTTP_PORT" || -n "$HTTPS_PORT" ]]; then
 		sedfile -i -E '/^\s*include.+auth-request.conf/d'  "$DIRECT_CONF"
 		sedfile -i -E '/^\s*include.+auth-location.conf/d' "$DIRECT_CONF"
 	else
-		_status "Enabling authentication" # todo useful? or use pi-hole password
-		# todo test pi-hole integration
+		_status "Enabling authentication"
 	fi
 fi
 

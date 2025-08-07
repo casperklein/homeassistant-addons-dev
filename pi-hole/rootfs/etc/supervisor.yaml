@@ -24,7 +24,8 @@ jobs:
     logfile: "/dev/stdout"
 
   - name: "Pi-hole"
-    command: "sleep 0.5; /usr/bin/start.sh || kill -SIGTERM 1"
+    command: "sleep 0.5; /usr/bin/start.sh || kill -SIGTERM 1" # todo
+    # command: "sleep 0.5; /usr/bin/echo-server -p 31415 || kill -SIGTERM 1"
     autostart: "off"
     restart: "off"
     logfile: "/dev/stdout"

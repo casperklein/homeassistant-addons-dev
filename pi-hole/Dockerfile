@@ -10,6 +10,7 @@ SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
 # Ensure that build args are given
 ARG	BUILD_ARCH
 ARG	VERSION
+#todo
 RUN	[ -z "$BUILD_ARCH" ] && echo "Error: Build argument 'BUILD_ARCH' is missing" && exit 1 || true
 RUN	[ -z "$VERSION" ] && echo "Error: Build argument 'VERSION' is missing" && exit 1 || true
 
@@ -45,6 +46,9 @@ RUN	sedfile -i 's|To install updates, <a href="https://github.com/pi-hole/docker
 
 # Remove obsolete files
 RUN	rm /etc/nginx/http.d/default.conf
+
+# Temporary fix, until https://github.com/pi-hole/web/issues/3577 is solved.
+RUN	patch -i /etc/pihole-patches/header.lp.patch /var/www/html/admin/scripts/lua/header.lp
 
 # Build dnscrypt-proxy from source #################################################################
 FROM	golang:bookworm AS dnscrypt

@@ -1,5 +1,41 @@
 # Changelog
 
+## 4.5.6
+
+- [netbox 4.5.6](https://github.com/netbox-community/netbox/releases/tag/v4.5.6)
+
+## 4.5.5
+
+- [netbox 4.5.5](https://github.com/netbox-community/netbox/releases/tag/v4.5.5)
+
+## 4.5.4
+
+- [netbox 4.5.4](https://github.com/netbox-community/netbox/releases/tag/v4.5.4)
+
+## 4.5.3
+
+- [netbox 4.5.3](https://github.com/netbox-community/netbox/releases/tag/v4.5.3)
+
+## 4.5.2
+
+- [netbox 4.5.2](https://github.com/netbox-community/netbox/releases/tag/v4.5.2)
+
+## 4.5.1
+
+- [netbox 4.5.1](https://github.com/netbox-community/netbox/releases/tag/v4.5.1)
+
+## 4.5.0
+
+This update introduces breaking changes in netbox and migrates the database to a newer version.
+
+**It's strongly recommended to make a backup of the add-on so it can be restored in case of any issues.**
+
+### What's new
+
+- [netbox 4.5.0](https://github.com/netbox-community/netbox/releases/tag/v4.5.0)
+- Base image updated to Debian 13
+- PostgreSQL 15 updated to 17. The database migration can take some time on the first add-on start.
+
 ## 4.4.10
 
 - [netbox 4.4.10](https://github.com/netbox-community/netbox/releases/tag/v4.4.10)

@@ -1,0 +1,567 @@
+# Changelog
+
+## 2026.05.0
+
+### Pi-hole Updates
+
+- [FTL 6.6.2](https://github.com/pi-hole/FTL/releases/tag/v6.6.2)
+
+### Internal
+
+- crond output is now prefixed with date/time in the app log
+
+## 2026.04.1
+
+### Pi-hole Updates
+
+- [Pi-hole Blog](https://pi-hole.net/blog/2026/04/24/pi-hole-ftl-v6-6-1-and-core-v6-4-2-released/)
+- [Pi-hole 6.4.2](https://github.com/pi-hole/pi-hole/releases/tag/v6.4.2)
+- [FTL 6.6.1](https://github.com/pi-hole/FTL/releases/tag/v6.6.1)
+
+### Internal
+
+- [yq 4.53.2](https://github.com/mikefarah/yq/releases/tag/v4.53.2)
+
+## 2026.04.0
+
+### Pi-hole Updates
+
+- [Pi-hole Blog](https://pi-hole.net/blog/2026/04/03/pi-hole-ftl-v6-6-web-v6-5-and-core-v6-4-1-released/)
+- [Pi-hole 6.4.1](https://github.com/pi-hole/pi-hole/releases/tag/v6.4.1)
+- [Web 6.5](https://github.com/pi-hole/web/releases/tag/v6.5)
+- [FTL 6.6](https://github.com/pi-hole/FTL/releases/tag/v6.6)
+
+### Internal
+
+- [yq 4.52.5](https://github.com/mikefarah/yq/releases/tag/v4.52.5)
+
+## 2026.02.0
+
+### Pi-hole Updates
+
+- [Pi-hole Blog](https://pi-hole.net/blog/2026/02/17/pi-hole-ftl-v6-5-web-v6-4-1-and-core-v6-4-released/)
+- [Pi-hole 6.4](https://github.com/pi-hole/pi-hole/releases/tag/v6.4)
+- [Web 6.4.1](https://github.com/pi-hole/web/releases/tag/v6.4.1)
+- [FTL 6.5](https://github.com/pi-hole/FTL/releases/tag/v6.5)
+
+### Internal
+
+- Content-Security-Policy header adjusted for HA Ingress
+- [supervisor.sh 0.14](https://github.com/casperklein/supervisor.sh/releases/tag/0.14)
+- [yq 4.52.4](https://github.com/mikefarah/yq/releases/tag/v4.52.4)
+
+## 2025.11.1.2
+
+This is a bugfix and maintenance release.
+
+### Internal
+
+- Fixed an [issue](https://github.com/pi-hole/FTL/issues/2260) that prevented enabling or disabling lists in Pi-hole.
+- [supervisor.sh 0.13](https://github.com/casperklein/supervisor.sh/releases/tag/0.13)
+- [yq 4.52.2](https://github.com/mikefarah/yq/releases/tag/v4.52.2)
+
+## 2025.11.1.1
+
+This is a maintenance release, without Pi-hole specific changes.
+
+### Internal
+
+- [DNSCrypt-Proxy 2.1.15](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.15)
+- [supervisor.sh 0.12](https://github.com/casperklein/supervisor.sh/releases/tag/0.12)
+- Golang build image for DNSCrypt-Proxy updated from Bookworm to Trixie.
+- Improved status messages:
+  - Get FTL exit code from log file instead of `start.sh`.
+  - `crond` startup is now visible.
+- Notification service removed and logging simplified.
+
+## 2025.11.1
+
+### Pi-hole Updates
+
+- [Pi-hole Blog](https://pi-hole.net/blog/2025/11/27/pi-hole-ftl-v6-4-web-v6-4-and-core-v6-3-released/)
+- [Pi-hole 6.3](https://github.com/pi-hole/pi-hole/releases/tag/v6.3)
+- [Web 6.4](https://github.com/pi-hole/web/releases/tag/v6.4)
+- [FTL 6.4.1](https://github.com/pi-hole/FTL/releases/tag/v6.4.1)
+
+### Internal
+
+- [supervisor.sh 0.11](https://github.com/casperklein/supervisor.sh/releases/tag/0.11)
+- [yq 4.49.1](https://github.com/mikefarah/yq/releases/tag/v4.49.1)
+
+## 2025.11.0
+
+### Pi-hole Updates
+
+- [FTL 6.3.3](https://github.com/pi-hole/FTL/releases/tag/v6.3.3)
+
+### Internal
+
+- [supervisor.sh 0.10](https://github.com/casperklein/supervisor.sh/releases/tag/0.10)
+
+## 2025.10.3
+
+### Pi-hole Updates
+
+- [Pi-hole Blog](https://pi-hole.net/blog/2025/10/25/pi-hole-ftl-v6-3-web-v6-3-and-core-v6-2-released/)
+- [Pi-hole 6.2.2](https://github.com/pi-hole/pi-hole/releases/tag/v6.2.2) ([6.2.1](https://github.com/pi-hole/pi-hole/releases/tag/v6.2.1), [6.2.0](https://github.com/pi-hole/pi-hole/releases/tag/v6.2.0))
+- [Web 6.3](https://github.com/pi-hole/web/releases/tag/v6.3)
+- [FTL 6.3.2](https://github.com/pi-hole/FTL/releases/tag/v6.3.2) ([6.3.1](https://github.com/pi-hole/FTL/releases/tag/v6.3.1), [6.3](https://github.com/pi-hole/FTL/releases/tag/v6.3))
+
+### Internal
+
+- [supervisor.sh 0.9](https://github.com/casperklein/supervisor.sh/releases/tag/0.9)
+
+## 2025.08.0.3
+
+This update is a maintenance release and includes only minor enhancements:
+
+- Adjusted wording in log messages to better match this add-on.
+- [supervisor.sh 0.8](https://github.com/casperklein/supervisor.sh/releases/tag/0.8)
+- [yq 4.48.1](https://github.com/mikefarah/yq/releases/tag/v4.48.1)
+
+## 2025.08.0.2
+
+This update is a maintenance release and includes minor enhancements.
+
+### Internal changes
+
+- Added log messages for when the Home Assistant backup starts and finishes.
+- [supervisor.sh 0.7](https://github.com/casperklein/supervisor.sh/releases/tag/0.7)
+- The job configuration now avoids sub-shells. This fixes a non-critical issue where Pi-hole reported twice that a stop was requested.
+
+## 2025.08.0.1
+
+This update fixes an issue where multiple `crond` instances could corrupt the Gravity database. It also updates DNSCrypt-Proxy to version 2.1.14.
+
+### Fixes
+
+- Do not run multiple `crond` instances after a Home Assistant backup ([#43](https://github.com/casperklein/homeassistant-addons/issues/43))
+
+### Updates
+
+- [DNSCrypt-Proxy 2.1.14](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.14)
+
+### Internal
+
+- [supervisor.sh 0.6](https://github.com/casperklein/supervisor.sh/releases/tag/0.6)
+- [yq 4.47.2](https://github.com/mikefarah/yq/releases/tag/v4.47.2)
+
+## 2025.08.0
+
+This update adds full support for NTP and DHCP, meaning Pi-hole's entire feature set is now fully supported.
+
+**Before updating, it's strongly recommended to make a backup of the add-on so it can be restored in case of any issues.**
+
+### New features
+
+- DHCP support added.
+- NTP support for synchronizing the system time added.
+- For direct HTTPS access, a certificate can be configured. If no certificate is provided, a self-signed certificate will be generated and used.
+- Authentication option for direct HTTP/HTTPS access added.
+- IPv6 support for direct web access added.
+- Information about using Bastgau's custom Pi-hole integration for Home Assistant has been added to the README file.
+
+### Breaking changes
+
+- DNSCrypt-Proxy now listens on `127.0.0.1#5335`. If you are using DNSCrypt-Proxy, you must update Pi-hole’s custom DNS server setting with this new value.
+- Previously, the DNS and NTP ports could be exposed in the network settings. This option has been removed as it's no longer needed. It's recommended to reset the network settings to reflect the new changes.
+
+### Internal changes
+
+- The add-on network mode changed from *bridge* to *host*.
+- If a service fails to start or exits unexpectedly, the add-on now stops.
+- Web access is now more streamlined: all requests are handled by Nginx. Previously, Pi-hole served HTTPS directly.
+
+## 2025.07.1
+
+- [Pi-hole 6.1.4](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.4) ([6.1.3](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.3))
+- Internal: Image name changed
+
+## 2025.06.2
+
+- [FTL 6.2.3](https://github.com/pi-hole/FTL/releases/tag/v6.2.3)
+
+## 2025.06.1
+
+- [Pi-hole 6.1.2](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.2) ([6.1](https://github.com/pi-hole/pi-hole/releases/tag/v6.1), [6.1.1](https://github.com/pi-hole/pi-hole/releases/tag/v6.1.1))
+- [Web 6.2.1](https://github.com/pi-hole/web/releases/tag/v6.2.1) ([6.2](https://github.com/pi-hole/web/releases/tag/v6.2))
+- [FTL 6.2.2](https://github.com/pi-hole/FTL/releases/tag/v6.2.2) ([6.2](https://github.com/pi-hole/FTL/releases/tag/v6.2), [6.2.1](https://github.com/pi-hole/FTL/releases/tag/v6.2.1))
+- [DNSCrypt-Proxy 2.1.12](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.12)
+- [supervisor.sh 0.4](https://github.com/casperklein/supervisor.sh/releases/tag/0.4)
+- [yq 4.45.4](https://github.com/mikefarah/yq/releases/tag/v4.45.4)
+- Disabled a misleading build warning
+- Changed service order: DNSCrypt-Proxy now starts before Pi-hole
+
+## 2025.03.1.1
+
+- Fix gravity update cronjob on sunday
+- Fix for [#32](https://github.com/casperklein/homeassistant-addons/issues/32)
+
+## 2025.03.1
+
+- [Pi-hole 6.0.6](https://github.com/pi-hole/pi-hole/releases/tag/v6.0.6)
+- [Web 6.1](https://github.com/pi-hole/web/releases/tag/v6.1)
+- [FTL 6.1](https://github.com/pi-hole/FTL/releases/tag/v6.1)
+
+## 2025.03.0.2
+
+- [DNSCrypt-Proxy 2.1.8](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.8)
+
+## 2025.03.0.1
+
+- Improved DNSCrypt-Proxy startup
+- New add-on option: Update gravity on startup
+- supervisor.sh output is now colorized
+- Disabled Nginx access logging
+
+## 2025.03.0
+
+A new major version of Pi-hole has been released. Be sure to create a backup before updating.
+
+### Add-on Updates
+
+- The base image was switched from Debian to Alpine, reducing the add-on size by more than 50%.
+- NTP support has been added.
+- The Pi-hole process is now stopped before Home Assistant creates a backup, ensuring database consistency.
+- Extensive internal rewrites to support Pi-hole v6.
+
+### Pi-hole v6 Release Notes
+
+- [Introducing Pi-hole v6](https://pi-hole.net/blog/2025/02/18/introducing-pi-hole-v6/)
+- [FTL](https://github.com/pi-hole/FTL/releases/tag/v6.0)
+- [Web](https://github.com/pi-hole/web/releases/tag/v6.0)
+- [Core](https://github.com/pi-hole/pi-hole/releases/tag/v6.0)
+
+### Included Versions
+
+- [Pi-hole 6.0.5](https://github.com/pi-hole/pi-hole/releases/tag/v6.0.5)
+- [Web 6.0.2](https://github.com/pi-hole/web/releases/tag/v6.0.2)
+- [FTL 6.0.4](https://github.com/pi-hole/FTL/releases/tag/v6.0.4)
+
+## 2024.07.0.2
+
+- [dnscrypt-proxy 2.1.7](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.7)
+
+## 2024.07.0.1
+
+- [dnscrypt-proxy 2.1.6](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.6)
+
+## 2024.07.0
+
+- [Pi-hole 5.18.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.18.3)
+
+## 2024.06.0
+
+- [Maintenance release](https://github.com/pi-hole/docker-pi-hole/releases/tag/2024.06.0)
+
+## 2024.05.0
+
+- [FTL 5.25.2](https://github.com/pi-hole/FTL/releases/tag/v5.25.2)
+
+## 2024.03.2
+
+- [Pi-hole 5.18.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.18.2)
+
+## 2024.03.1
+
+- [Pi-hole 5.18.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.18.1)
+
+## 2024.03.0
+
+- [Pi-hole 5.18](https://github.com/pi-hole/pi-hole/releases/tag/v5.18)
+
+## 2024.02.1
+
+- [FTL 5.25.1](https://github.com/pi-hole/FTL/releases/tag/v5.25.1)
+
+## 2024.02.0
+
+- [FTL 5.25](https://github.com/pi-hole/FTL/releases/tag/v5.25)
+
+## 2024.01.0
+
+- [Pi-hole 5.17.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.17.3)
+- [FTL 5.24](https://github.com/pi-hole/FTL/releases/tag/v5.24)
+- Internal code cleanup
+
+## 2023.11.0
+
+- [Web 5.21](https://github.com/pi-hole/web/releases/tag/v5.21)
+
+## 2023.10.0
+
+- [Pi-hole 5.17.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.17.2)
+- [Web 5.20.2](https://github.com/pi-hole/web/releases/tag/v5.20.2) (previously known as AdminLTE)
+
+## 2023.05.2.1
+
+- [dnscrypt-proxy 2.1.5](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.5)
+
+## 2023.05.2
+
+- [Pi-hole 5.17.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.17.1)
+- [AdminLTE 5.20.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.20.1)
+- [FTL 5.23](https://github.com/pi-hole/FTL/releases/tag/v5.23)
+
+## 2023.03.1
+
+- [Pi-hole 5.16.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.16.2)
+- [AdminLTE 5.19](https://github.com/pi-hole/AdminLTE/releases/tag/v5.19)
+- [FTL 5.22](https://github.com/pi-hole/FTL/releases/tag/v5.22)
+
+## 2023.02.2
+
+- [Minor improvements](https://github.com/pi-hole/docker-pi-hole/releases/tag/2023.02.2)
+
+## 2023.02.1
+
+- [Pi-hole 5.15.5](https://github.com/pi-hole/pi-hole/releases/tag/v5.15.5)
+- [AdminLTE 5.18.4](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18.4)
+- [FTL 5.21](https://github.com/pi-hole/FTL/releases/tag/v5.21)
+- [dnscrypt-proxy 2.1.4](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.4)
+
+## 2023.01.10
+
+- [Pi-hole 5.15.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.15.3)
+- [AdminLTE 5.18.3](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18.3)
+- [FTL 5.20.1](https://github.com/pi-hole/FTL/releases/tag/v5.20.1)
+- [dnscrypt-proxy 2.1.3](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.3)
+
+## 2022.12
+
+- [AdminLTE 5.18](https://github.com/pi-hole/AdminLTE/releases/tag/v5.18)
+- [FTL 5.20](https://github.com/pi-hole/FTL/releases/tag/v5.20)
+
+## 2022.11.2
+
+- [Pi-hole 5.14.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.14.2)
+
+## 2022.11.1
+
+- [FTL 5.19.2](https://github.com/pi-hole/FTL/releases/tag/v5.19.2)
+
+## 2022.11
+
+- [Pi-hole 5.14.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.14.1)
+- [AdminLTE 5.17](https://github.com/pi-hole/AdminLTE/releases/tag/v5.17)
+- [FTL 5.19.1](https://github.com/pi-hole/FTL/releases/tag/v5.19.1)
+
+## 2022.10
+
+- [Pi-hole 5.13](https://github.com/pi-hole/pi-hole/releases/tag/v5.13)
+- [AdminLTE 5.16](https://github.com/pi-hole/AdminLTE/releases/tag/v5.16)
+- [FTL 5.18.2](https://github.com/pi-hole/FTL/releases/tag/v5.18.2)
+
+## 2022.09.4
+
+- [Pi-hole 5.12.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.12.2)
+- [AdminLTE 5.15.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.15.1)
+- [FTL 5.18.1](https://github.com/pi-hole/FTL/releases/tag/v5.18.1)
+
+## 2022.09.3
+
+- [Pi-hole 5.12.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.12.1)
+- [AdminLTE 5.15](https://github.com/pi-hole/AdminLTE/releases/tag/v5.15)
+- [FTL 5.18](https://github.com/pi-hole/FTL/releases/tag/v5.18)
+
+## 2022.09.2
+
+- [AdminLTE 5.14.2](https://github.com/pi-hole/AdminLTE/releases/tag/v5.14.2)
+
+## 2022.09.1
+
+- [Pi-hole 5.12](https://github.com/pi-hole/pi-hole/releases/tag/v5.12)
+- [AdminLTE 5.14.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.14.1)
+- [FTL 5.17](https://github.com/pi-hole/FTL/releases/tag/v5.17)
+
+## 2022.08.3
+
+- [FTL 5.16.3](https://github.com/pi-hole/FTL/releases/tag/v5.16.3)
+
+## 2022.07.1
+
+- [Pi-hole 5.11.4](https://github.com/pi-hole/pi-hole/releases/tag/v5.11.4)
+- [dnscrypt-proxy 2.1.2](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.2)
+
+## 2022.07
+
+- [Pi-hole 5.11.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.11)
+- [AdminLTE 5.13](https://github.com/pi-hole/AdminLTE/releases/tag/v5.13)
+- [FTL 5.16.1](https://github.com/pi-hole/FTL/releases/tag/v5.16)
+
+## 2022.04.3
+
+- [Pi-hole 5.10](https://github.com/pi-hole/pi-hole/releases/tag/v5.10)
+- [AdminLTE 5.12](https://github.com/pi-hole/AdminLTE/releases/tag/v5.12)
+- [FTL 5.15](https://github.com/pi-hole/FTL/releases/tag/v5.15)
+
+## 2022.04.1
+
+- [Pi-hole 5.9.1](https://github.com/pi-hole/pi-hole/releases/tag/v5.9.1)
+
+## 2022.02.1
+
+- [Pi-hole 5.9](https://github.com/pi-hole/pi-hole/releases/tag/v5.9)
+- [AdminLTE 5.11](https://github.com/pi-hole/AdminLTE/releases/tag/v5.11)
+- [FTL 5.14](https://github.com/pi-hole/FTL/releases/tag/v5.14)
+
+## 2022.01.1
+
+- [Pi-hole 5.8](https://github.com/pi-hole/pi-hole/releases/tag/v5.8)
+- [AdminLTE 5.10](https://github.com/pi-hole/AdminLTE/releases/tag/v5.10)
+- [FTL 5.13](https://github.com/pi-hole/FTL/releases/tag/v5.13)
+
+## 2022.01
+
+- [Some fixes](https://github.com/pi-hole/docker-pi-hole/releases/tag/2022.01)
+
+## 2021.12.1
+
+- [Pi-hole 5.7](https://github.com/pi-hole/pi-hole/releases/tag/v5.7)
+- [AdminLTE 5.9](https://github.com/pi-hole/AdminLTE/releases/tag/v5.9)
+- [FTL 5.12.1](https://github.com/pi-hole/FTL/releases/tag/v5.12.1)
+
+## 2021.10.1
+
+- [Pi-hole 5.6](https://github.com/pi-hole/pi-hole/releases/tag/v5.6)
+- [AdminLTE 5.8](https://github.com/pi-hole/AdminLTE/releases/tag/v5.8)
+- [FTL 5.11](https://github.com/pi-hole/FTL/releases/tag/v5.11)
+
+## 2021.10
+
+- [Pi-hole 5.5](https://github.com/pi-hole/pi-hole/releases/tag/v5.5)
+- [AdminLTE 5.7](https://github.com/pi-hole/AdminLTE/releases/tag/v5.7)
+- [FTL 5.10.2](https://github.com/pi-hole/FTL/releases/tag/v5.10.2)
+- [dnscrypt-proxy 2.1.1](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.1)
+
+## 2021.09
+
+- [Pi-hole Blog](https://pi-hole.net/2021/09/11/pi-hole-ftl-v5-9-web-v5-6-and-core-v5-4-released/)
+- [Pi-hole 5.4](https://github.com/pi-hole/pi-hole/releases/tag/v5.4)
+- [AdminLTE 5.6](https://github.com/pi-hole/AdminLTE/releases/tag/v5.6)
+- [FTL 5.9](https://github.com/pi-hole/FTL/releases/tag/v5.9)
+
+## 5.8.1.4
+
+- [dnscrypt-proxy 2.1.0](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.1.0)
+
+## 5.8.1.3
+
+-Fix permissions
+
+## 5.8.1.2
+
+- [AdminLTE 5.5.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.5.1)
+
+## 5.8.1.1
+
+- Fix permissions
+
+## 5.8.1
+
+- [FTL 5.8.1](https://github.com/pi-hole/FTL/releases/tag/v5.8.1)
+
+## 5.8
+
+- [Pi-hole Blog](https://pi-hole.net/2021/04/14/pi-hole-ftl-v5-8-web-v5-5-and-core-v5-3-released/)
+- [FTL 5.8](https://github.com/pi-hole/FTL/releases/tag/v5.8)
+- [AdminLTE 5.5](https://github.com/pi-hole/AdminLTE/releases/tag/v5.5)
+
+## 5.7
+
+- [Pi-hole Blog](https://pi-hole.net/2021/02/16/pi-hole-ftl-v5-7-and-web-v5-4-released/)
+- [FTL 5.7](https://github.com/pi-hole/FTL/releases/tag/v5.7)
+- [AdminLTE 5.4](https://github.com/pi-hole/AdminLTE/releases/tag/v5.4)
+
+## 5.6
+
+- [FTL 5.6](https://github.com/pi-hole/FTL/releases/tag/v5.6) [Blog](https://pi-hole.net/2021/01/27/pi-hole-ftl-v5-6-released/#page-content)
+- [#771](https://github.com/pi-hole/docker-pi-hole/pull/771) Skip full distro check on start
+
+## 5.5.1 - Security Update for FTL
+
+- [Pi-hole 5.2.4](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.4)
+- [AdminLTE 5.3.1](https://github.com/pi-hole/AdminLTE/releases/tag/v5.3.1)
+- [FTL 5.5.1](https://github.com/pi-hole/FTL/releases/tag/v5.5.1)
+
+## 5.4.0
+
+- [Pi-hole 5.2.3](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.3)
+- [AdminLTE 5.3](https://github.com/pi-hole/AdminLTE/releases/tag/v5.3)
+- [FTL 5.4](https://github.com/pi-hole/FTL/releases/tag/v5.4)
+
+## 5.3.4.2
+
+- [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) added. DNSCrypt and DNS over HTTPS (DoH) can now be used with Pi-hole. See README for more information.
+
+## 5.3.4.1
+
+- [Fix chmod/chown error on addon start](https://github.com/pi-hole/docker-pi-hole/pull/676)
+
+## 5.3.4
+
+- [Pi-hole 5.2.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.2)
+- [AdminLTE 5.2.2](https://github.com/pi-hole/AdminLTE/releases/tag/v5.2.2)
+- [FTL 5.3.4](https://github.com/pi-hole/FTL/releases/tag/v5.3.4)
+
+## 5.2.2
+
+- [Pi-hole 5.2.2](https://github.com/pi-hole/pi-hole/releases/tag/v5.2.2)
+- [Changes to DNS settings are no longer lost on add-on restart](https://github.com/pi-hole/docker-pi-hole/pull/721)
+
+## 5.2.1
+
+- Pi-hole 5.2.1
+
+## 5.2.0
+
+- Pi-hole 5.2
+
+## 5.1.2.4
+
+- fix caching problem
+
+## 5.1.2.3
+
+- fix invalid X-Frame-Options
+
+## 5.1.2.2
+
+- maintenance release
+
+## 5.1.2.1
+
+- maintenance release
+
+## 5.1.2
+
+- Pi-hole 5.1.2
+
+## 5.1.1
+
+- Pi-hole 5.1.1
+
+## 5.0.5
+
+- version bug fixed
+
+## 5.0.4
+
+- maintenance release
+- image size improved
+
+## 5.0.3
+
+- maintenance release
+
+## 5.0.2
+
+- labels added
+
+## 5.0.1
+
+- fix permissions on start
+
+## 5.0.0
+
+- initial release

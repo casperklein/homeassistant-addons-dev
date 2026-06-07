@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+ADDON_OPTIONS="/data/options.json"
+DNSCRYPT_CONFIG="/etc/dnscrypt-proxy.toml"
+PH_CONFIG="/etc/pihole/pihole.toml"
+CONFIGURED_IN_PH=0
+PIHOLE_SETTING="127.0.0.1#5335"
+
+# shellcheck source=status-function.sh
+source /usr/bin/status-function.sh
+
+DNS=()
+# Get all upstream DNS servers
+if [ -f "$PH_CONFIG" ]; then # $PH_CONFIG does normally not exist on first startup; However, since custom default settings (/etc/pihole-custom-defaults/pihole.toml) are copied, the file exist. Keeping the check as safety net.
+	while read -r UPSTREAMS; do
+		DNS+=("$UPSTREAMS")
+	done < <(yq -r '.dns.upstreams[]' "$PH_CONFIG")
+
+	# Check if DNSCrypt-Proxy is configured in Pi-hole
+	for i in "${DNS[@]}"; do
+		if [ "$i" == "$PIHOLE_SETTING" ]; then
+			CONFIGURED_IN_PH=1
+		fi
+	done
+fi
+
+# Check if there are dnscrypt settings
+# if ! grep -qF '"dnscrypt": []' "$ADDON_OPTIONS"; then
+if (( $(jq '.dnscrypt | length' "$ADDON_OPTIONS") > 0 )); then
+	# Append configuration only on first run
+	if ! grep -qF 'server_names' "$DNSCRYPT_CONFIG"; then
+		# _status "Creating DNSCrypt-Proxy configuration"
+
+		# Read settings
+		while read -r SERVER; do
+			# {"name":"cloud1","stamp":"sdns://AgcAAAAAAAAABzEuMS4xLjEAEmNsb3VkZmxhcmUtZG5zLmNvbQovZG5zLXF1ZXJ5"}
+			NAME+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f4)")
+			STAMP+=("$(echo "$SERVER" | base64 -d | cut -d'"' -f8)")
+		done < <(jq -r '.dnscrypt[] | @base64' "$ADDON_OPTIONS")
+
+		# Create DNSCrypt-Proxy configuration
+		{
+			FIRST_SERVER=1
+			echo -n 'server_names = ['
+			for i in "${NAME[@]}"; do
+				if (( FIRST_SERVER == 1 )) then
+					echo -n "'$i'"
+					FIRST_SERVER=0
+				else
+					echo -n ",'$i'"
+				fi
+			done
+			echo ']'
+			echo "[static]"
+		} >> "$DNSCRYPT_CONFIG"
+
+		for i in "${!NAME[@]}"; do
+			echo "[static.'${NAME[i]}']"
+			echo "stamp = '${STAMP[i]}'"
+		done >> "$DNSCRYPT_CONFIG"
+	fi
+
+	if (( CONFIGURED_IN_PH == 0 )); then
+		_status "WARNING: Custom DNS server $PIHOLE_SETTING is not configured in Pi-hole. DNSCrypt/DoH name resolution will not work until this is resolved."
+	fi
+
+	# Check if custom DNS server is properly configured
+	if (( ${#DNS[@]} > 1 )); then
+		if (( CONFIGURED_IN_PH == 1 )); then
+			_status "WARNING: More than one DNS upstream server is configured in Pi-hole. Not all DNS queries will be handled by DNSCrypt-Proxy."
+		fi
+	fi
+
+	exec dnscrypt-proxy -config "$DNSCRYPT_CONFIG"
+else
+	_status "INFO: No DNSCrypt/DoH settings found in the app configuration"
+
+	# Check if custom DNS server is configured
+	if (( CONFIGURED_IN_PH == 1 )); then
+		_status "WARNING: DNSCrypt-Proxy ($PIHOLE_SETTING) is configured in Pi-hole as a custom DNS upstream server. DNS resolution will not work until DNSCrypt-Proxy is set up in the app configuration."
+	fi
+
+	# DNSCrypt-Proxy job is configured as 'required'. 'exit 0' would supervisor stop
+	# exit 0
+	supervisor.sh stop "DNSCrypt-Proxy" >/dev/null
+fi

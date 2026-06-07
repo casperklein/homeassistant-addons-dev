@@ -1,0 +1,34 @@
+supervisor:
+  logfile: "/dev/stdout"
+  sigterm_grace_period: 55
+  keep_running: "off"
+  color: "\e[0;32m"
+
+jobs:
+  - name: "Initialization"
+    command: "/usr/bin/app-init.sh || kill -SIGTERM 1"
+    autostart: "on"
+    restart: "off"
+    required: "no"
+    logfile: "/dev/stdout"
+
+  - name: "Nginx"
+    command: "nginx -g 'daemon off;'"
+    autostart: "off"
+    restart: "off"
+    required: "yes"
+    logfile: "/dev/stdout"
+
+  - name: "DNSCrypt-Proxy"
+    command: "/usr/bin/dnscrypt-proxy-init.sh"
+    autostart: "off"
+    restart: "off"
+    required: "yes"
+    logfile: "/dev/stdout"
+
+  - name: "Pi-hole"
+    command: "killall -q crond; sleep 0.5; /usr/bin/start.sh"
+    autostart: "off"
+    restart: "off"
+    required: "yes"
+    logfile: "/dev/stdout"

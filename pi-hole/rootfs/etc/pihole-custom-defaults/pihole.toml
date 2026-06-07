@@ -1,0 +1,13 @@
+[dns]
+  [dns.cache]
+    optimizer = -3600
+
+[dhcp]
+  [ntp.ipv4]
+    active = false
+
+  [ntp.ipv6]
+    active = false
+
+  [ntp.sync]
+    active = false

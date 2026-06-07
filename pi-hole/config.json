@@ -1,15 +1,13 @@
 {
   "name": "Pi-hole-dev",
-  "version": "2026.05.0",
+  "version": "2026.05.0.1",
   "slug": "pihole-dev",
   "description": "Network-wide Ad Blocking",
   "url": "https://github.com/casperklein/homeassistant-addons-dev/tree/master/pi-hole",
   "image": "casperklein/homeassistant-pi-hole-dev",
   "arch": [
     "aarch64",
-    "amd64",
-    "armhf",
-    "armv7"
+    "amd64"
   ],
   "ingress": true,
   "ingress_port": 0,
